@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <link th:replace="/fragments/fragments :: bootstrap_css">
+    <link th:replace="/fragments/fragments :: fragment_css">
+</head>
+<body>
+    <header th:replace="/fragments/fragments :: header"></header>
+
+    <div class="container about-area">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <h1>About US</h1>
+                <p><strong>SUSHI2GO</strong>  opened since 1996. We established with vision “The best Japanese dining experience to customer”.<br></p>
+
+                   <p> We have two branches, located in Etobicoke Area, are Japanese fine restaurant offering the finest in Japanese food, including sushi, sashimi, favorite Japanese cooked entrees such as tempura, teriyaki and noodle dishes, famous rolls as nigiri, maki, special salads & outstanding desserts.
+                       We have an excellent selection of fine wines, famous Japanese sake and beer. We also specialize in take-out service package with touch of professional chef and also prepare off-premises catering now. Come in and experience our quick and delicious Japanese fine food. You will find out why our loyal customers return again and again.<br></p>
+
+                   <p> We offer dine in service as well as to go order so you can enjoy your meal either in our well severed restaurant, or in the comfort of your home.</p>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="/fragments/fragments :: pre-footer"></div>
+    <div th:replace="/fragments/fragments :: footer"></div>
+    <script th:replace="/fragments/fragments :: jquery"></script>
+    <script th:replace="/fragments/fragments :: bootstrap_js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+.pre-footer {
+    background-color: rgba(0,0,0,0.8);
+    width: 100%;
+}
+
+.icon-bar {
+    margin-top: 5%;
+    padding: 2%;
+}
+
+.icon-bar ul {
+    list-style: none;
+}
+
+.icon-bar ul li {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.pre-footer.ul li a{
+    text-decoration: none;
+}
+
+
+.footer {
+    background-color: rgba(0,0,0,0.8);
+    width: 100%;
+}
+
+footer p {
+    color: white;
+    text-align: center;
+}
+
+.about-area {
+    position: relative;
+    display: flex;
+    margin-top: 5%;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 100%;
+}
