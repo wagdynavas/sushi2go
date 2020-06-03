@@ -1,5 +1,6 @@
 package com.wagdynavas.sushi2go.service;
 
+import com.wagdynavas.sushi2go.model.Product;
 import com.wagdynavas.sushi2go.model.User;
 import com.wagdynavas.sushi2go.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" th:fragment="bootstrap_css">
-    <link rel="stylesheet" href="css/fragments.css" th:fragment="fragment_css">
+    <link rel="stylesheet" href="../css/fragments.css" th:fragment="fragment_css">
     <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, minimum-scale=1, user-scalable=no">
 </head>
 <body>
@@ -18,10 +18,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse mr-auto " id="navbarSupportedContent">
+            <div class="collapse navbar-collapse mr-auto" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="">About</a>
+                        <a class="nav-link" href="/about">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">Order Online</a>
@@ -29,18 +29,33 @@
                     <li class="nav-item">
                         <a class="nav-link" href="">Contact</a>
                     </li>
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/products/list">Products</a>
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                        </div>
+                    </div>
+
+                </ul>
+                <ul class="navbar-nav  ml-md-auto">
                     <li class="nav-item">
-                        <a class="nav-link " href="">Login</a>
+                        <a class="btn btn-dark btn-red" href="#"><span class="glyphicon glyphicon-user"></span>Create Account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="">Create Account</a>
+                        <a class="btn btn-dark" href="#"> Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-dark" href="#"><img src="../img/icons/cart-69-32.png"> </a>
                     </li>
                 </ul>
             </div>
         </nav>
     </header>
 
-    <section class="pre-footer" th:fragment="pre-footer">
+
+    <footer class="footer fixed-bottom" th:fragment="footer">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-6 col-lg-3 col align-self-center">
@@ -48,17 +63,17 @@
                         <ul>
                             <li>
                                 <a href="https://www.facebook.com/pages/Sushi%202%20Go/130046903693978/" target="_blank">
-                                    <img src="img/icons/facebook-7-32.png">
+                                    <img src="../img/icons/facebook-7-32.png">
                                 </a>
                             </li>
                             <li>
                                 <a href="https://twitter.com/boogaby" target="_blank">
-                                    <img src="img/icons/twitter-4-32.png">
+                                    <img src="../img/icons/twitter-4-32.png">
                                 </a>
                             </li>
                             <li>
                                 <a href="https://www.instagram.com/sushi2go.ca/" target="_blank">
-                                    <img src="img/icons/instagram-32.png">
+                                    <img src="../img/icons/instagram-32.png">
                                 </a>
                             </li>
                         </ul>
@@ -66,9 +81,10 @@
                 </div>
             </div>
         </div>
-    </section>
-    <footer class="footer" th:fragment="footer">
-        <p> &copy; Copyright 2020 Sushi2GO - Powered by Wagdy Navas | wagdynavas@gmail.com</p>
+        <div class="row">
+            <p class="copy-rights"> &copy; Copyright 2020 Sushi2GO - Powered by Wagdy Navas | wagdynavas@gmail.com</p>
+        </div>
+
     </footer>
     <script src="/webjars/jquery/3.4.1/jquery.min.js" th:fragment="jquery"></script>
     <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js" th:fragment="bootstrap_js"></script>

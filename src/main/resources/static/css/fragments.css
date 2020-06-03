@@ -25,11 +25,16 @@
 .footer {
     background-color: rgba(0,0,0,0.8);
     width: 100%;
+    text-align: center;
 }
 
-footer p {
+.copy-rights {
     color: white;
-    text-align: center;
+    margin-top: 4%;
+}
+
+.btn-red {
+    background-color: rgb(128, 5, 33); !important;
 }
 
 .about-area {

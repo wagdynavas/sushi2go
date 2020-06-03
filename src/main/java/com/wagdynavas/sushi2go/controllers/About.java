@@ -10,7 +10,7 @@ public class About {
     @GetMapping("/about")
     public ModelAndView about() {
         ModelAndView view = new ModelAndView();
-        view.setViewName("about");
+        view.setViewName("about/about");
         return view;
     }
 }
