@@ -9,6 +9,7 @@ public enum CategoryTypes  {
     FUNKY_ROLLS,
     NIGIRI_SUSHI,
     MAKI_SUSHI,
+    VEGETABLE_MAKI,
     NIGIRI_AND_MAKI_SUSHI,
     SASHIMI_NIGIRI_MAKI,
     SASHIMI,

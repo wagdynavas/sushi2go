@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+hmlt, body {
+    height: 100%;
+}
+
+
+.form-container {
+    min-height: 100%;
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+
+
+.btn {
+    font-weight: 700;
+    height: 36px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+.card-container {
+    max-width: 100%;
+    max-height: 52%;
+    padding: 40px 40px;
+}
+
+
+.card {
+    background-color: #f7f7f7;
+    /* just in case there no content*/
+    padding: 20px 25px 30px;
+    margin: 130px auto 25px;
+    /* shadows and rounded borders */
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+row-logo {
+
+}
+
+.logo {
+
+}
+

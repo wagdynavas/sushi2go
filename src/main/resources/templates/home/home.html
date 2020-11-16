@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link th:replace="/fragments/fragments :: bootstrap_css">
+    <link th:replace="/fragments/fragments :: fragment_css">
+    <link rel="stylesheet" type="text/css" href="css/home.css">
+
+</head>
+<body>
+<header th:replace="/fragments/fragments :: header"></header>
+
+<div class="container-fluid">
+        <div class="slide slide-bg slide-bg-img-01 fade">
+            <div class="slide-text"></div>
+        </div>
+        <div class="slide slide-bg slide-bg-img-02 fade">
+            <div class="slide-text"></div>
+        </div>
+        <div class="slide slide-bg slide-bg-img-03 fade">
+            <div class="slide-text"></div>
+        </div>
+    <div class="dot-container">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+</div>
+<div class="footer" th:replace="/fragments/fragments :: footer"></div>
+<script th:replace="/fragments/fragments :: jquery"></script>
+<script th:replace="/fragments/fragments :: bootstrap_js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

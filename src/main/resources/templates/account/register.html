@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+
+    <link th:replace="/fragments/fragments :: bootstrap_css">
+    <link th:replace="/fragments/fragments :: fragment_css">
+    <link rel="stylesheet" href="css/register.css">
+</head>
+<body>
+    <div class="container card main-container">
+            <form class="form-horizontal" action="/registration" method="post"  th:object="${user}">
+                <div class="form-group text-center">
+                    <div class="col-12">
+                        <a href="/"><img class="logo" src="img/logo/sushi2go_logo.png" alt="Sushi2GO logo"></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <h2>Create an account</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-12">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('username')}">
+                            <label th:errors="*{username}"></label>
+                        </div>
+                        <input type="text" autofocus class="form-control" placeholder="Username" id="username"  th:field="*{username}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-12">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('password')}">
+                            <label th:errors="*{password}"></label>
+                        </div>
+                        <input type="password"  name="password" class="form-control" placeholder="Password" id="password" th:field="*{password}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-12">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('password')}">
+                            <label th:errors="*{password}"></label>
+                        </div>
+                        <input type="password"  name="password" class="form-control" placeholder="Confirm password" id="confirmPassword" th:field="*{confirmPassword}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-12">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}">
+                            <label th:errors="*{email}"></label>
+                        </div>
+                        <input type="text"  class="form-control" placeholder="Email" id="email"  th:field="*{email}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-12">
+                        <select th:field="*{role}" class="form-control" id="role">
+                            <option th:value="${null}">Select role</option>
+                            <option th:value="ROLE_ADMIN">Admin</option>
+                            <option th:value="ROLE_USER">User</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-bold">Save</button>
+                <button type="button" onclick="cancel()" id="btn-cancel" class="btn btn-secondary" >Cancel</button>
+            </form>
+    </div>
+
+    <script th:replace="/fragments/fragments :: jquery"></script>
+    <script th:replace="/fragments/fragments :: bootstrap_js"></script>
+    <script>
+        function cancel() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

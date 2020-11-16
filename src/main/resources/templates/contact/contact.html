@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link th:replace="/fragments/fragments :: bootstrap_css">
+    <link th:replace="/fragments/fragments :: fragment_css">
+    <link rel="stylesheet" type="text/css" href="/css/contact.css">
+
+</head>
+<body>
+    <header th:replace="/fragments/fragments :: header"></header>
+
+    <div class="container-fluid">
+        <h1></h1>
+        <iframe class="map-frame" src="https://www.google.com/maps/d/embed?mid=1XnEN1w8-Vs7USE6zf91BcyRTmU1rq4l5&hl=en"></iframe>
+        <div class="container-md">
+            <div class="row">
+                <div class="col-12 col-lg-4 address-container">
+                    <h4>Queensway & Islington (Queensway)</h4>
+                    <p> Open Monday to Saturday<br> Tel 416-259-4246, 416-259-4665<br>
+                        Address: 892 The Queensway<</p>
+                </div>
+                <div class="col-12 col-lg-3  address-container">
+                    <h4>Dundas & Kipling (Dundas)</h4>
+                    <p> Open Monday to Saturday <br> Tel 416-233-4227 <br>
+                        Address: 892 The Queensway</p>
+                </div>
+
+                <div class="col-12 col-lg-4 address-container">
+                    <h4>Bloor & Royal York (Royal York)</h4>
+                    <p> Open Tuesday to Sunday<br> 416-232-9030, 416-236-5909<br>
+                        Address: 892 The Queensway</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer" th:replace="/fragments/fragments :: footer"></div>
+    <script th:replace="/fragments/fragments :: jquery"></script>
+    <script th:replace="/fragments/fragments :: bootstrap_js"></script>
+    <script src="/js/contact.js"></script>
+</body>
+</html>

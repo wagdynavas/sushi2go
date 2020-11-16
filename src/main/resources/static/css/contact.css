@@ -1,0 +1,25 @@
+#map_wrapper {
+    height: 400px;
+}
+
+#map_canvas {
+    width: 100%;
+    height: 100%;
+}
+
+iframe {
+    margin: 0;
+    padding: 0;
+}
+
+.map-frame {
+    margin-top: -60px;
+    margin-left: -10px;
+    margin-bottom: 3%;
+    width: 101%;
+    height: 550px;
+}
+
+.address-container {
+    margin-left: 2%;
+}

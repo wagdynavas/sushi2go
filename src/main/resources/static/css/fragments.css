@@ -1,6 +1,10 @@
-.pre-footer {
-    background-color: rgba(0,0,0,0.8);
-    width: 100%;
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 .icon-bar {
@@ -17,13 +21,12 @@
     margin-left: 10px;
 }
 
-.pre-footer.ul li a{
+.footer.ul li a{
     text-decoration: none;
 }
 
-
 .footer {
-    background-color: rgba(0,0,0,0.8);
+    background-color: #343a40;
     width: 100%;
     text-align: center;
 }
@@ -37,13 +40,17 @@
     background-color: rgb(128, 5, 33); !important;
 }
 
-.about-area {
-    position: relative;
-    display: flex;
-    margin-top: 5%;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    flex-direction: row;
-    width: 100%;
+.logo {
+    width: 180px;
+    height: 60px;
+    margin-bottom: 1%;
+    margin-right: 3%;
+}
+
+.nav-right {
+    margin-right: 1%;
+}
+
+.nav-item-li {
+    margin-left: 10px;
 }

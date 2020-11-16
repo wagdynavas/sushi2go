@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in</title>
+
+    <link th:replace="/fragments/fragments :: bootstrap_css">
+    <link th:replace="/fragments/fragments :: fragment_css">
+    <link rel="stylesheet" href="css/sign-in.css">
+</head>
+<body>
+
+
+    <div class="container form-container">
+        <div class="col-lg-3 col-1"></div>
+        <div class="col-10 col-lg-6">
+            <div class="card card-container text-center">
+                <div class="main">
+                    <form  action="/login" method="post" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-12">
+                                <a href="/"><img class="logo" src="img/logo/sushi2go_logo.png" alt="Sushi2GO logo"></a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input type="text" id="username" name="username" placeholder="Username" autofocus class="form-control"> <!-- esse * e pq o objeto task ja foi declarado em th:object-->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input type="password" id="password" name="password" placeholder="Password" class="form-control" > <!-- esse * e pq o objeto task ja foi declarado em th:object-->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <a  class="btn-link" href="#">Forgot your password?</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                                <div class="alert alert-danger" role="alert" th:if="${param.error}">
+                                    Incorrect Username or Password.
+                                </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1 col-1"></div>
+    </div>
+
+    <script th:replace="/fragments/fragments :: jquery"></script>
+    <script th:replace="/fragments/fragments :: bootstrap_js"></script>
+</body>
+</html>

@@ -1,3 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+
+.text-container {
+    height: 300px ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.menu-title {
+    background-image: url("../img/menu/title/menu-title.jpg");
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.menu-title h1 {
+    font-size: 3.5em;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 0;
+    color: rgb(128, 5, 33); !important;
+}
+
+h2 {
+    color: rgb(128, 5, 33); !important;
+}
+
+.product-container h1 {
+    margin-top: 100px;
+}
+
 .product-name {
     font-weight: bold;
 }
+
+.create-product {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
+
+.product-container {
+    min-height: 85%;
+}
+
+.all-product-container {
+    min-height: 100%;
+}
+
+.main {
+    padding-bottom: 100px;
+}
+
+.product-footer {
+    background-color: rgba(0,0,0,0.8);
+    width: 100%;
+    text-align: center;
+    position: relative;
+    margin-top: -100px;
+    clear: both;
+}
+
+.menu-image {
+    height: 150px;
+    width: 190px;
+}
+
+.menu-image-modal {
+    width: 100%;
+}
+
+.close-modal {
+    font-size: 3em;
+}
+
+
+.price {
+    position: relative;
+    margin-top: 55px;
+    font-weight: bold;
+}
+
+.row {
+    margin-bottom: 10px;
+}
+
+.product-item:hover{
+    background-color: #f7f7f7;
+}
+
+
+.add-remove-btn {
+    font-weight: bold;
+    background-color: #f7f7f7;;
+}
+
+h5 {
+    font-size: 1.8em;
+}
+

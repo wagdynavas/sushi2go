@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link th:replace="/fragments/fragments :: bootstrap_css">
+    <link th:replace="/fragments/fragments :: fragment_css">
+    <link type="text/css" rel="stylesheet" href="/css/product.css">
+</head>
+<body>
+<header th:replace="/fragments/fragments :: header"></header>
+
+    <div class="container product-container">
+        <div class="main">
+            <h1 th:text="${h1}"></h1>
+            <form class="from-horizontal main" action="/products/create" method="post" th:object="${product}" enctype="multipart/form-data">
+                <input type="hidden" th:field="*{id}">
+                <div class="row">
+                    <div class="col-12 col-lg-9 form-group">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('productName')}">
+                            <label th:errors="*{productName}"></label>
+                        </div>
+                        <label for="productName">Name</label>
+                        <input type="text" id="productName" class="form-control" th:field="*{productName}">
+                    </div>
+                    <div class="col-12 col-lg-3 form-group">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('category')}">
+                            <label th:errors="*{category}"></label>
+                        </div>
+                        <label for="category">Category</label>
+                        <select  th:field="*{category}" id="category" class="form-control">
+                            <option th:value="${null}"  >Select a category</option>
+                            <option th:value="${category}" th:each="category : ${categories}" th:text="${category}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12  form-group">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('productDescription')}">
+                            <label th:errors="*{productDescription}"></label>
+                        </div>
+                        <label for="price">Description</label>
+                        <textarea rows="4" id="productDescription" class="form-control" th:field="*{productDescription}"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-3 form-group">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('price')}">
+                            <label th:errors="*{price}"></label>
+                        </div>
+                        <label for="price">Price</label>
+                        <input type="text" id="price" class="form-control" th:field="*{price}">
+                    </div>
+                    <div class="col-12 col-lg-3 form-group">
+                        <label for="image">Image</label>
+                        <input type="file" id="image" name="imageFile" accept=".jpg, .jpeg, .png" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-3 form-group">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a href="/products/list" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+<div class="product-footer" th:replace="/fragments/fragments :: footer"></div>
+<script th:replace="/fragments/fragments :: jquery"></script>
+<script th:replace="/fragments/fragments :: bootstrap_js"></script>
+</body>
+</html>
