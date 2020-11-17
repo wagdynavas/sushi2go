@@ -29,44 +29,86 @@ public class ProductService {
         List<CategoryTypes> categories  = Arrays.asList(CategoryTypes.values());
         ModelAndView view = new ModelAndView();
         view.setViewName("product/list-products");
-
+        final String quantity = "_quantity";
+        String quantityName = "";
             for (CategoryTypes categoryType : categories) {
                 List<Product> products = productRepository.findAllByCategory(categoryType.toString());
-                    if (categoryType.equals(CategoryTypes.LUNCH_SUSHI)) {
+
+                switch (categoryType) {
+                    case LUNCH_SUSHI: {
                         view.addObject(CategoryTypes.LUNCH_SUSHI.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.LUNCH_ENTREES)) {
+                        quantityName = CategoryTypes.LUNCH_SUSHI.toString().toLowerCase() + quantity;
+                        break;
+
+                    } case LUNCH_ENTREES: {
                         view.addObject(CategoryTypes.LUNCH_ENTREES.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.LUNCH_NOODLES)) {
+                        quantityName =  CategoryTypes.LUNCH_ENTREES.toString().toLowerCase() + quantity;
+                        break;
+                    } case LUNCH_NOODLES: {
                         view.addObject(CategoryTypes.LUNCH_NOODLES.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.DINNER)) {
+                        quantityName =  CategoryTypes.LUNCH_NOODLES.toString().toLowerCase() + quantity;
+                        break;
+                    } case DINNER: {
                         view.addObject(CategoryTypes.DINNER.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.FUNKY_ROLLS)) {
+                        quantityName =  CategoryTypes.DINNER.toString().toLowerCase() + quantity;
+                        break;
+                    } case FUNKY_ROLLS: {
                         view.addObject(CategoryTypes.FUNKY_ROLLS.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.NIGIRI_SUSHI)) {
+                        quantityName =  CategoryTypes.FUNKY_ROLLS.toString().toLowerCase() + quantity;
+                        break;
+                    } case NIGIRI_SUSHI: {
                         view.addObject(CategoryTypes.NIGIRI_SUSHI.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.MAKI_SUSHI)) {
+                        quantityName =  CategoryTypes.NIGIRI_SUSHI.toString().toLowerCase() + quantity;
+                        break;
+                    } case MAKI_SUSHI: {
                         view.addObject(CategoryTypes.MAKI_SUSHI.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.NIGIRI_AND_MAKI_SUSHI)) {
+                        quantityName =  CategoryTypes.MAKI_SUSHI.toString().toLowerCase() + quantity;
+                        break;
+                    } case NIGIRI_AND_MAKI_SUSHI: {
                         view.addObject(CategoryTypes.NIGIRI_AND_MAKI_SUSHI.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.SASHIMI)) {
+                        quantityName =  CategoryTypes.NIGIRI_AND_MAKI_SUSHI.toString().toLowerCase() + quantity;
+                        break;
+                    } case SASHIMI: {
                         view.addObject(CategoryTypes.SASHIMI.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.APPETIZER)) {
+                        quantityName =  CategoryTypes.SASHIMI.toString().toLowerCase() + quantity;
+                        break;
+                    } case APPETIZER: {
                         view.addObject(CategoryTypes.APPETIZER.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.DESSERT)) {
+                        quantityName =  CategoryTypes.APPETIZER.toString().toLowerCase() + quantity;
+                        break;
+                    } case DESSERT: {
                         view.addObject(CategoryTypes.DESSERT.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.SOUP_AND_SALAD)) {
+                        quantityName =  CategoryTypes.DESSERT.toString().toLowerCase() + quantity;
+                        break;
+                    } case SOUP_AND_SALAD: {
                         view.addObject(CategoryTypes.SOUP_AND_SALAD.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.SIDE_ORDER)) {
+                        quantityName =  CategoryTypes.SOUP_AND_SALAD.toString().toLowerCase() + quantity;
+                        break;
+                    } case SIDE_ORDER: {
                         view.addObject(CategoryTypes.SIDE_ORDER.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.BENTO_BOX)) {
+                        quantityName =  CategoryTypes.SIDE_ORDER.toString().toLowerCase() + quantity;
+                    } case BENTO_BOX: {
                         view.addObject(CategoryTypes.BENTO_BOX.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.LUNCH_BENTO_BOX)) {
+                        quantityName =  CategoryTypes.BENTO_BOX.toString().toLowerCase() + quantity;
+                        break;
+                    } case LUNCH_BENTO_BOX: {
                         view.addObject(CategoryTypes.LUNCH_BENTO_BOX.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.SASHIMI_NIGIRI_MAKI)) {
+                        quantityName =  CategoryTypes.LUNCH_BENTO_BOX.toString().toLowerCase() + quantity;
+                        break;
+                    } case SASHIMI_NIGIRI_MAKI:{
                         view.addObject(CategoryTypes.SASHIMI_NIGIRI_MAKI.toString(), products);
-                    } else if (categoryType.equals(CategoryTypes.VEGETABLE_MAKI)) {
+                        quantityName =  CategoryTypes.SASHIMI_NIGIRI_MAKI.toString().toLowerCase() + quantity;
+                        break;
+                    } case VEGETABLE_MAKI: {
                         view.addObject(CategoryTypes.VEGETABLE_MAKI.toString(), products);
+                        quantityName =  CategoryTypes.VEGETABLE_MAKI.toString().toLowerCase() + quantity;
+                        break;
+                    } default: {
+                        break;
                     }
+
+                }
+                    view.addObject(quantityName, 1);
                 }
 
 
