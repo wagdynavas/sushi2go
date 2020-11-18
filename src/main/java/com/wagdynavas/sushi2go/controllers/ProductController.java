@@ -31,7 +31,6 @@ public class ProductController {
         ModelAndView mv =  productService.getAllProductsSortByCategory();
         mv.addObject("order", new Order());
         mv.addObject("addProductToOrder", new Product());
-        mv.addObject("quantity", 1);
 
 
         return mv;
