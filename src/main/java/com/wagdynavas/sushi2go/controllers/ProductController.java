@@ -90,10 +90,10 @@ public class ProductController {
     }
 
 
-    @GetMapping("/add/{qty}")
-    public Long addToProductQuantity(@PathVariable("qty") String quantity) {
+    @GetMapping("/add/{product_quantity_id}")
+    public Long addToProductQuantity(@PathVariable("product_quantity_id") String product_quantity_id) {
 
-        return Long.valueOf(quantity) + 1;
+        return Long.valueOf(product_quantity_id) + 1;
     }
 
 }

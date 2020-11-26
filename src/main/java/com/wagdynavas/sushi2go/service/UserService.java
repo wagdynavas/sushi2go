@@ -1,17 +1,14 @@
 package com.wagdynavas.sushi2go.service;
 
-import com.wagdynavas.sushi2go.model.Product;
 import com.wagdynavas.sushi2go.model.User;
 import com.wagdynavas.sushi2go.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Service

@@ -108,7 +108,7 @@ public class ProductService {
                     }
 
                 }
-                    view.addObject(quantityName, 1);
+                    view.addObject(quantityName, 0);
                 }
 
 
@@ -129,7 +129,6 @@ public class ProductService {
      * @return
      */
     public ModelAndView createProduct(Product product, BindingResult result, MultipartFile imageFile) {
-        //TODO User ImageFile para armazanar o path na base de dados e tambem salvar a imagem no sistema
         ModelAndView view = new ModelAndView();
         if (result.hasErrors()) {
             view.addObject(product);
