@@ -28,6 +28,8 @@ public class Order {
     @OneToMany
     private List<Product> products;
 
+    transient private Product product;
+
     //private PaymentDetails paymentDetails;
     //TODO: Payment_Details. criar objecto e verificar como funcina todo o mecanoismo  de pagamentos com cartao de cretito
 

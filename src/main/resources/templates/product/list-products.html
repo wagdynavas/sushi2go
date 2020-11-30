@@ -149,34 +149,37 @@
                     </div>
                         <div class="modal fade" th:attr="id='addToOrderModal' + ${entrees.id}" tabindex="-1" role="dialog" aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <div class="row">
-                                            <div th:if="${entrees.productImagePath != null}" class="col-12">
-                                                <img class="img-thumbnail menu-image-modal"  th:src="@{/img/{img}(img=${entrees.productImagePath})}" alt="">
-                                            </div>
-                                            <div class="col-12">
-                                                <h5 class="modal-title" th:text="${entrees.productName}"></h5>
+                                <form class="" method="post" action="/products/add-to-order" th:object="${order}">
+                                    <div class="modal-content" >
+                                        <div class="modal-header">
+                                            <div class="row">
+                                                <div th:if="${entrees.productImagePath != null}" class="col-12">
+                                                    <img class="img-thumbnail menu-image-modal"  th:src="@{/img/{img}(img=${entrees.productImagePath})}" alt="">
+                                                </div>
+                                                <input class="product-id" type="hidden" th:field="*{product.id}">
+                                                <div class="col-12">
+                                                    <h5 class="modal-title" th:text="${entrees.productName}"></h5>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete this Item?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="lunch_entrees_quantity">
+                                                -
+                                            </button>
+                                            <input type="text"  class="lunch_entrees_quantity"  name="lunch_entrees_quantity" th:field="*{product.quantity}" value="0" min="0" max="50"/>
+                                            <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="lunch_entrees_quantity">
+                                                +
+                                            </button>
+                                            <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="lunch_entrees_quantity">Add</button>
+                                            <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="lunch_entrees_quantity">
+                                                Cancel
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to delete this Item?
-                                    </div>
-                                    <div class="modal-footer">
-                                                <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="lunch_entrees_quantity">
-                                                    -
-                                                </button>
-                                                <input type="text" id="lunch_entrees_quantity" class="lunch_entrees_quantity"  name="lunch_entrees_quantity" th:value="${lunch_entrees_quantity}" min="0" max="50"/>
-                                                <button  class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="lunch_entrees_quantity">
-                                                    +
-                                                </button>
-                                                <a th:href="@{/products/add-to-order/{id}/{qty}(id=${entrees.id}, qty=${lunch_entrees_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                                <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="lunch_entrees_quantity">
-                                                    Cancel
-                                                </button>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                 </div>
@@ -1360,19 +1363,48 @@
     <div th:replace="/fragments/fragments :: footer"></div>
     <script th:replace="/fragments/fragments :: jquery"></script>
     <script th:replace="/fragments/fragments :: bootstrap_js"></script>
-    <script src="/js/product.js"></script>
-    <script>
+    <script th:inline="javascript">
+
         $(document).ready(function(){
-            $('.lunch_entrees_quantity').prop('disabled', true);
-            $(document).on('click','.plus',function(){
-                $('.count').val(parseInt($('.lunch_entrees_quantity').val()) + 1 );
-            });
-            $(document).on('click','.minus',function(){
-                $('.lunch_entrees_quantity').val(parseInt($('.lunch_entrees_quantity').val()) - 1 );
-                if ($('.lunch_entrees_quantity').val() == 0) {
-                    $('.lunch_entrees_quantity').val(1);
+            $(document).on('click','.add-remove-btn',function(){
+                    let fieldName = $(this).attr('data-field');
+                    let type      = $(this).attr('data-type');
+                    let input = $("input[name='"+fieldName+"']");
+
+                let currentVal = parseInt(input.val());
+                if (!isNaN(currentVal)) {
+                    if (type == "minus") {
+                        if (currentVal > input.attr("min")) {
+                            input.val(currentVal - 1).change();
+                        }
+
+                        if(parseInt(input.val()) == input.attr('min')) {
+                            $(this).attr('disabled', true);
+                        }
+                    } else if (type == "plus") {
+                        if(currentVal < input.attr('max')) {
+                            input.val(currentVal + 1).change();
+                            $(this).attr('disabled', false);
+                        }
+                        if(parseInt(input.val()) == input.attr('max')) {
+                            $(this).attr('disabled', true);
+                        }
+                    } else {
+                        input.val(0);
+                    }
                 }
             });
+
+
+            $(".btn-close").on('click', function () {
+                let fieldName = $(this).attr('data-field');
+                let input = $("input[name='"+fieldName+"']");
+
+                input.val(0);
+            })
+
+
+
         });
     </script>
 </body>

@@ -41,5 +41,5 @@ public class Product {
     private String category;
 
 
-    transient private Integer Quantity;
+    transient private Integer quantity;
 }

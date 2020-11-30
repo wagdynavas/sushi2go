@@ -29,7 +29,10 @@ public class ProductController {
     @GetMapping("/list")
     public ModelAndView listMenu() {
         ModelAndView mv =  productService.getAllProductsSortByCategory();
-        mv.addObject("order", new Order());
+        Order order = new Order();
+        order.setProduct(new Product());
+        order.getProduct().setQuantity(0);
+        mv.addObject("order", order);
         mv.addObject("addProductToOrder", new Product());
 
 
@@ -74,19 +77,26 @@ public class ProductController {
         return "redirect:/products/list";
     }
 
-    @GetMapping("/add-to-order/{id}/{qty}")
-    public ModelAndView addProductToOrder(@PathVariable("id") Long id, @PathVariable("qty") Long quantity) {
-        Optional<Product> optionalProduct = productService.getProductById(id);
-        Order order = new Order();
-        List products = new ArrayList();
+    @GetMapping("/add-to-order")
+    public ModelAndView addProductToOrder(@Valid Order order, BindingResult result) {
+        Optional<Product> optionalProduct = productService.getProductById(order.getProduct().getId());
+        ModelAndView view = new ModelAndView();
+        view.setViewName("redirect:/products/list");
+        List products = order.getProducts();
+
+        if (products == null) {
+            products = new ArrayList();
+        }
+
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
+            int quantity = product.getQuantity();
             for (int i = 0; i > quantity; i++) {
                 products.add(product);
             }
-            order.setProducts(products);
+            order.getProducts().addAll(products);
         }
-        return new ModelAndView("redirect:/products/list");
+        return view;
     }
 
 

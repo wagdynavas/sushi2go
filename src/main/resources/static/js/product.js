@@ -16,6 +16,7 @@ $(document).ready(function(){
             } else if (type == "plus") {
                 if(currentVal < input.attr('max')) {
                     input.val(currentVal + 1).change();
+                    $(this).attr('disabled', false);
                 }
                 if(parseInt(input.val()) == input.attr('max')) {
                     $(this).attr('disabled', true);
@@ -34,11 +35,6 @@ $(document).ready(function(){
         input.val(0);
     })
 
-    function getValue() {
-        let fieldName = $(this).attr('data-field');
-        let input = $("input[name='"+fieldName+"']");
 
-        return input.val();
-    }
 
 });
