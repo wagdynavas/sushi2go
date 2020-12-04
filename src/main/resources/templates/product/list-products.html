@@ -82,15 +82,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="lunch_sushi_quantity">
+                                        -
                                     </button>
-                                    <div class="lunch_sushi_quantity" th:data="${lunch_sushi_quantity}" th:text="${lunch_sushi_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    <input type="text"  class="lunch_sushi_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="lunch_sushi_quantity">
+                                        +
                                     </button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${lunch.id}, qty=${lunch_sushi_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="lunch_sushi_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="lunch_sushi_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -331,11 +331,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="lunch_bento_box_quantity" th:data="${lunch_bento_box_quantity}" th:text="${lunch_bento_box_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${lbb.id}, qty=${lunch_bento_box_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="lunch_bento_box_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="lunch_bento_box_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="lunch_bento_box_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="lunch_bento_box_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="lunch_bento_box_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -409,11 +413,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="dinner_quantity" th:data="${dinner_quantity}" th:text="${dinner_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${dinner.id}, qty=${dinner_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="dinner_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="dinner_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="dinner_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="dinner_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="dinner_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -487,11 +495,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="funky_roll_quantity" th:data="${funky_roll_quantity}" th:text="${funky_roll_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${fr.id}, qty=${funky_roll_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="funky_roll_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="funky_roll_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="funky_roll_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="funky_roll_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="funky_roll_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -566,11 +578,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="nigiri_sushi_quantity" th:data="${nigiri_sushi_quantity}" th:text="${nigiri_sushi_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${nigiri_sushi.id}, qty=${fnigiri_sushi_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="fnigiri_sushi_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="fnigiri_sushi_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="fnigiri_sushi_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="fnigiri_sushi_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="fnigiri_sushi_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -645,11 +661,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="maki_sushi_quantity" th:data="${maki_sushi_quantity}" th:text="${maki_sushi_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${maki_sushi.id}, qty=${maki_sushi_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="maki_sushi_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="maki_sushi_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="maki_sushi_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="maki_sushi_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="maki_sushi_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -723,11 +743,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="vegetable_maki_quantity" th:data="${vegetable_maki_quantity}" th:text="${vegetable_maki_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${vm.id}, qty=${vegetable_maki_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="vegetable_maki_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="vegetable_maki_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="vegetable_maki_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="vegetable_maki_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="vegetable_maki_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -800,11 +824,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="nigiri_and_maki_sushi_quantity" th:data="${nigiri_and_maki_sushi_quantity}" th:text="${nigiri_and_maki_sushi_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${nigiri_maki.id}, qty=${nigiri_and_maki_sushi_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="nigiri_and_maki_sushi_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="nigiri_and_maki_sushi_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="nigiri_and_maki_sushi_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="nigiri_and_maki_sushi_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="nigiri_and_maki_sushi_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -879,11 +907,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="sashimi_nigiri_maki_quantity" th:data="${sashimi_nigiri_maki_quantity}" th:text="${sashimi_nigiri_maki_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${snm.id}, qty=${sashimi_nigiri_maki_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="sashimi_nigiri_maki_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="sashimi_nigiri_maki_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="sashimi_nigiri_maki_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="sashimi_nigiri_maki_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="sashimi_nigiri_maki_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -957,11 +989,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="sashimi_quantity" th:data="${sashimi_quantity}" th:text="${sashimi_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${sahsimi.id}, qty=${sashimi_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="sashimi_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="sashimi_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="sashimi_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="sashimi_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="sashimi_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -1035,11 +1071,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="appetizer_quantity" th:data="${appetizer_quantity}" th:text="${appetizer_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${appetizer.id}, qty=${appetizer_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="appetizer_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="appetizer_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="appetizer_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="appetizer_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="appetizer_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -1113,11 +1153,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="dessert_quantity" th:data="${dessert_quantity}" th:text="${dessert_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${dessert.id}, qty=${dessert_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="dessert_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="dessert_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="dessert_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="dessert_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="dessert_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -1191,11 +1235,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="salad_and_soup_quantity" th:data="${salad_and_soup_quantity}" th:text="${salad_and_soup_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${ss.id}, qty=${salad_and_soup_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="salad_and_soup_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="salad_and_soup_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="salad_and_soup_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="salad_and_soup_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="salad_and_soup_quantity">
                                         Cancel
                                     </button>
                                 </div>
@@ -1269,11 +1317,15 @@
                                     Are you sure you want to delete this Item?
                                 </div>
                                 <div class="modal-footer">
-                                    <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                    <div class="side_order_quantity" th:data="${side_order_quantity}" th:text="${side_order_quantity}"></div>
-                                    <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${so.id}, qty=${side_order_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
-                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
+                                    <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="side_order_quantity">
+                                        -
+                                    </button>
+                                    <input type="text"  class="side_order_quantity"  name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="side_order_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit"  class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="side_order_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="side_order_quantity">
                                         Cancel
                                     </button>
                                 </div>

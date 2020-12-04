@@ -10,16 +10,9 @@ $(document).ready(function(){
                     input.val(currentVal - 1).change();
                 }
 
-                if(parseInt(input.val()) == input.attr('min')) {
-                    $(this).attr('disabled', true);
-                }
             } else if (type == "plus") {
                 if(currentVal < input.attr('max')) {
                     input.val(currentVal + 1).change();
-                    $(this).attr('disabled', false);
-                }
-                if(parseInt(input.val()) == input.attr('max')) {
-                    $(this).attr('disabled', true);
                 }
             } else {
                 input.val(0);

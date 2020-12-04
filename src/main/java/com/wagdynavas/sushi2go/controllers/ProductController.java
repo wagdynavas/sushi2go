@@ -19,7 +19,8 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/products")
-@SessionAttributes("order")
+//. Any object can be added to the model in controller and it will stored in session if its name matches with the argument in @SessionAttributes
+@SessionAttributes("order") //
 public class ProductController {
 
     private final  ProductService productService;
