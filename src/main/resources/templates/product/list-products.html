@@ -39,7 +39,7 @@
                         </div>
                     </div>
 
-                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark" th:href="@{/products/manage/{id}(id=${entrees.id})}">Edit</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark" th:href="@{/products/manage/{id}(id=${lunch.id})}">Edit</a>
                     <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${entrees.id}">
                         Delete
                     </button>
@@ -149,14 +149,14 @@
                     </div>
                         <div class="modal fade" th:attr="id='addToOrderModal' + ${entrees.id}" tabindex="-1" role="dialog" aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
-                                <form class="" method="post" action="/products/add-to-order" th:object="${order}">
+                                <form class="" method="post" action="/products/add-to-order">
                                     <div class="modal-content" >
                                         <div class="modal-header">
                                             <div class="row">
                                                 <div th:if="${entrees.productImagePath != null}" class="col-12">
                                                     <img class="img-thumbnail menu-image-modal"  th:src="@{/img/{img}(img=${entrees.productImagePath})}" alt="">
                                                 </div>
-                                                <input class="product-id" type="hidden" th:field="*{product.id}">
+                                                <input class="product-id" name="product-id" type="hidden" th:value="${entrees.id}">
                                                 <div class="col-12">
                                                     <h5 class="modal-title" th:text="${entrees.productName}"></h5>
                                                 </div>
@@ -169,7 +169,7 @@
                                             <button  type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="lunch_entrees_quantity">
                                                 -
                                             </button>
-                                            <input type="text"  class="lunch_entrees_quantity"  name="lunch_entrees_quantity" th:field="*{product.quantity}" value="0" min="0" max="50"/>
+                                            <input type="text"  class="lunch_entrees_quantity"  name="lunch_entrees_quantity" value="0" min="0" max="50"/>
                                             <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="lunch_entrees_quantity">
                                                 +
                                             </button>
@@ -1346,7 +1346,7 @@
                                     <button  class="btn rounded-circle btn-lg add-remove-btn">-</button>
                                     <div class="bento_box_quantity" th:data="${bento_box_quantity}" th:text="${bento_box_quantity}"></div>
                                     <button  class="btn rounded-circle  add-remove-btn">+</button>
-                                    <a th:href="@{/products/add-to-order/{id}/{qty}(id=${bb.id}, qty=${bento_box_quantity})}" class="btn btn-dark btn-red btn-lg">Add</a>
+                                    <botton th:href="@{/products/add-to-order/{id}/{qty}(id=${bb.id}, qty=${bento_box_quantity})}" class="btn btn-dark btn-red btn-lg">Add</botton>
                                     <button type="button" class="btn-lg btn-secondary" data-dismiss="modal" aria-label="Close">
                                         Cancel
                                     </button>
@@ -1363,49 +1363,7 @@
     <div th:replace="/fragments/fragments :: footer"></div>
     <script th:replace="/fragments/fragments :: jquery"></script>
     <script th:replace="/fragments/fragments :: bootstrap_js"></script>
-    <script th:inline="javascript">
+    <script type="application/javascript" src="/js/product.js"></script>
 
-        $(document).ready(function(){
-            $(document).on('click','.add-remove-btn',function(){
-                    let fieldName = $(this).attr('data-field');
-                    let type      = $(this).attr('data-type');
-                    let input = $("input[name='"+fieldName+"']");
-
-                let currentVal = parseInt(input.val());
-                if (!isNaN(currentVal)) {
-                    if (type == "minus") {
-                        if (currentVal > input.attr("min")) {
-                            input.val(currentVal - 1).change();
-                        }
-
-                        if(parseInt(input.val()) == input.attr('min')) {
-                            $(this).attr('disabled', true);
-                        }
-                    } else if (type == "plus") {
-                        if(currentVal < input.attr('max')) {
-                            input.val(currentVal + 1).change();
-                            $(this).attr('disabled', false);
-                        }
-                        if(parseInt(input.val()) == input.attr('max')) {
-                            $(this).attr('disabled', true);
-                        }
-                    } else {
-                        input.val(0);
-                    }
-                }
-            });
-
-
-            $(".btn-close").on('click', function () {
-                let fieldName = $(this).attr('data-field');
-                let input = $("input[name='"+fieldName+"']");
-
-                input.val(0);
-            })
-
-
-
-        });
-    </script>
 </body>
 </html>

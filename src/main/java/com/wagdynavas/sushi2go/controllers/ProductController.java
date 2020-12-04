@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/products")
+@SessionAttributes("order")
 public class ProductController {
 
     private final  ProductService productService;
@@ -27,15 +29,23 @@ public class ProductController {
     }
 
     @GetMapping("/list")
-    public ModelAndView listMenu() {
+    public ModelAndView listProduct() {
         ModelAndView mv =  productService.getAllProductsSortByCategory();
         Order order = new Order();
         order.setProduct(new Product());
         order.getProduct().setQuantity(0);
         mv.addObject("order", order);
-        mv.addObject("addProductToOrder", new Product());
 
 
+        return mv;
+    }
+
+    /**
+     * Reload The view without having to add new Objects to it
+     * @return
+     */
+    private ModelAndView reloadProductList() {
+        ModelAndView mv =  productService.getAllProductsSortByCategory();
         return mv;
     }
 
@@ -77,33 +87,30 @@ public class ProductController {
         return "redirect:/products/list";
     }
 
-    @GetMapping("/add-to-order")
-    public ModelAndView addProductToOrder(@Valid Order order, BindingResult result) {
-        Optional<Product> optionalProduct = productService.getProductById(order.getProduct().getId());
-        ModelAndView view = new ModelAndView();
-        view.setViewName("redirect:/products/list");
+    @PostMapping("/add-to-order")
+    public ModelAndView addProductToOrder( Order order, HttpServletRequest  request) {
+        String productId = request.getParameter("product-id");
+        Optional<Product> optionalProduct = productService.getProductById(Long.valueOf(productId));
         List products = order.getProducts();
 
+
+         Order o2 = (Order) request.getSession().getAttribute("order");
         if (products == null) {
             products = new ArrayList();
         }
 
+        String productQuantity = request.getParameter("lunch_entrees_quantity");
+
         if (optionalProduct.isPresent()) {
-            Product product = optionalProduct.get();
-            int quantity = product.getQuantity();
-            for (int i = 0; i > quantity; i++) {
-                products.add(product);
+            Product p = optionalProduct.get();
+            int quantity = Integer.valueOf(productQuantity);
+            for (int i = 0; i < quantity; i++) {
+                products.add(p);
             }
-            order.getProducts().addAll(products);
+            order.setProducts(products);
         }
+
+        ModelAndView view = listProduct();
         return view;
     }
-
-
-    @GetMapping("/add/{product_quantity_id}")
-    public Long addToProductQuantity(@PathVariable("product_quantity_id") String product_quantity_id) {
-
-        return Long.valueOf(product_quantity_id) + 1;
-    }
-
 }
