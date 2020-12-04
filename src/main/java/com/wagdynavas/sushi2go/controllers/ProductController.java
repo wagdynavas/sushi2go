@@ -94,12 +94,11 @@ public class ProductController {
         List products = order.getProducts();
 
 
-         Order o2 = (Order) request.getSession().getAttribute("order");
         if (products == null) {
             products = new ArrayList();
         }
 
-        String productQuantity = request.getParameter("lunch_entrees_quantity");
+        String productQuantity = request.getParameter("product_quantity");
 
         if (optionalProduct.isPresent()) {
             Product p = optionalProduct.get();
