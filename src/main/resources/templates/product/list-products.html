@@ -16,6 +16,13 @@
         </div>
     </div>
     <div class="container-fluid mb-auto">
+        <nav class="navbar">
+            <ul  th:each=" menuItem : ${menuItems}" class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:text="${menuItem}" th:href=" '#' + ${menuItem}"></a>
+                </li>
+            </ul>
+        </nav>
         <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark btn-red create-product" href="/products/create">Create New</a>
         <div class="container-md">
             <h2>Lunch Sushi</h2>

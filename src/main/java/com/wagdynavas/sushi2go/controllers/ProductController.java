@@ -36,6 +36,7 @@ public class ProductController {
         order.setProduct(new Product());
         order.getProduct().setQuantity(0);
         mv.addObject("order", order);
+        mv.addObject("menuItems", createSubmenuNamesFromCategoryTypes(CategoryTypes.values()));
 
 
         return mv;
@@ -113,4 +114,16 @@ public class ProductController {
         ModelAndView view = listProduct();
         return view;
     }
-}
+
+
+    private List<String> createSubmenuNamesFromCategoryTypes(CategoryTypes[] types) {
+        List<String> menuItems = new ArrayList<>();
+        String menuName;
+        for (CategoryTypes type : types) {
+            menuName = type.toString().replaceAll("_", " ").toLowerCase();
+            menuItems.add(menuName);
+        }
+
+        return menuItems;
+    }
+ }
