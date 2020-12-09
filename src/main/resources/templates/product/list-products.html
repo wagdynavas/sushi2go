@@ -19,13 +19,13 @@
         <nav class="navbar">
             <ul  th:each=" menuItem : ${menuItems}" class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" th:text="${menuItem}" th:href=" '#' + ${menuItem}"></a>
+                    <a class="nav-link" th:text="${menuItem.name}" th:href=" '#' + ${menuItem.value}"></a>
                 </li>
             </ul>
         </nav>
         <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark btn-red create-product" href="/products/create">Create New</a>
         <div class="container-md">
-            <h2>Lunch Sushi</h2>
+            <h2 id="lunch_sushi">Lunch Sushi</h2>
             <div th:each="ls : ${T(com.google.common.collect.Lists).partition(LUNCH_SUSHI, 2)}" class="row">
                 <div th:each="lunch : ${ls}" th:object="${lunch}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${lunch.id}">
@@ -108,7 +108,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Lunch Entrees</h2>
+            <h2 id="lunch_entrees">Lunch Entrees</h2>
             <div th:each="ln : ${T(com.google.common.collect.Lists).partition(LUNCH_ENTREES, 2)}" class="row">
                 <div th:each="entrees : ${ln}" th:object="${entrees}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${entrees.id}">
@@ -193,7 +193,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Lunch Noodles</h2>
+            <h2 id="lunch_noodles">Lunch Noodles</h2>
             <div th:each="ln : ${T(com.google.common.collect.Lists).partition(LUNCH_NOODLES, 2)}" class="row">
                 <div th:each="noodles : ${ln}" th:object="${noodles}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${noodles.id}">
@@ -275,7 +275,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Lunch bento box</h2>
+            <h2 id="lunch_bento_box">Lunch bento box</h2>
             <div th:each="bb : ${T(com.google.common.collect.Lists).partition(LUNCH_BENTO_BOX, 2)}" class="row">
                 <div th:each="lbb : ${bb}" th:object="${lbb}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${lbb.id}">
@@ -357,7 +357,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Dinner Entrees</h2>
+            <h2 id="dinner">Dinner Entrees</h2>
             <div th:each="d : ${T(com.google.common.collect.Lists).partition(DINNER, 2)}" class="row">
                 <div th:each="dinner : ${d}" th:object="${dinner}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${dinner.id}">
@@ -439,7 +439,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Funky Roll</h2>
+            <h2 id="funky_roll">Funky Roll</h2>
             <div th:each="fkr : ${T(com.google.common.collect.Lists).partition(FUNKY_ROLLS, 2)}" class="row">
                 <div th:each="fr : ${fkr}" th:object="${fr}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${fr.id}">
@@ -521,7 +521,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Nigiri Sushi</h2>
+            <h2 id="nigiri_sushi">Nigiri Sushi</h2>
             <div th:each="ns : ${T(com.google.common.collect.Lists).partition(NIGIRI_SUSHI, 2)}" class="row">
                 <div th:each="nigiri_sushi : ${ns}" th:object="${nigiri_sushi}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${nigiri_sushi.id}">
@@ -604,7 +604,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Maki Sushi</h2>
+            <h2 id="maki_sushi">Maki Sushi</h2>
             <div th:each="mks : ${T(com.google.common.collect.Lists).partition(MAKI_SUSHI, 2)}" class="row">
                 <div th:each="maki_sushi : ${mks}" th:object="${maki_sushi}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${maki_sushi.id}">
@@ -687,7 +687,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Vagetable Maki</h2>
+            <h2 id="vegetable_maki">Vagetable Maki</h2>
             <div th:each="vegetable_makis : ${T(com.google.common.collect.Lists).partition(VEGETABLE_MAKI, 2)}" class="row">
                 <div th:each="vm : ${vegetable_makis}" th:object="${vm}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${vm.id}">
@@ -769,7 +769,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Nigiri And Maki Sushi</h2>
+            <h2 id="nigiri_and_maki_sushi">Nigiri And Maki Sushi</h2>
             <div th:each="nms : ${T(com.google.common.collect.Lists).partition(NIGIRI_AND_MAKI_SUSHI, 2)}" class="row">
                 <div th:each="nigiri_maki : ${nms}" th:object="${nms}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${nigiri_maki.id}">
@@ -851,7 +851,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Sashimi, Nigiri And Maki</h2>
+            <h2 id="sashimi_nigiri_maki">Sashimi, Nigiri And Maki</h2>
             <div th:each="sashimi_nigiri_maki : ${T(com.google.common.collect.Lists).partition(SASHIMI_NIGIRI_MAKI, 2)}" class="row">
                 <div th:each="snm : ${sashimi_nigiri_maki}" th:object="${snm}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${snm.id}">
@@ -933,7 +933,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Sashimi</h2>
+            <h2 id="sashimi">Sashimi</h2>
             <div th:each="sashimis : ${T(com.google.common.collect.Lists).partition(SASHIMI, 2)}" class="row">
                 <div th:each="sahsimi : ${sashimis}" th:object="${sahsimi}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${sahsimi.id}">
@@ -1015,7 +1015,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Appetizer</h2>
+            <h2 id="appetizer">Appetizer</h2>
             <div th:each="appetizers : ${T(com.google.common.collect.Lists).partition(APPETIZER, 2)}" class="row">
                 <div th:each="appetizer : ${appetizers}" th:object="${appetizer}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${appetizer.id}">
@@ -1097,7 +1097,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Dessert</h2>
+            <h2 id="dessert">Dessert</h2>
             <div th:each="desserts : ${T(com.google.common.collect.Lists).partition(DESSERT, 2)}" class="row">
                 <div th:each="dessert : ${desserts}" th:object="${dessert}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${dessert.id}">
@@ -1179,7 +1179,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Soup And Salad</h2>
+            <h2 id="soup_and_salad">Soup And Salad</h2>
             <div th:each="soup_salads : ${T(com.google.common.collect.Lists).partition(SOUP_AND_SALAD, 2)}" class="row">
                 <div th:each="ss : ${soup_salads}" th:object="${ss}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${ss.id}">
@@ -1261,7 +1261,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Side Order</h2>
+            <h2 id="side_order">Side Order</h2>
             <div th:each="side_orders : ${T(com.google.common.collect.Lists).partition(SIDE_ORDER, 2)}" class="row">
                 <div th:each="so : ${side_orders}" th:object="${so}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${so.id}">
@@ -1343,7 +1343,7 @@
             </div>
         </div>
         <div class="container-md">
-            <h2>Bento box</h2>
+            <h2 id="bento_box">Bento box</h2>
             <div th:each="bento_box : ${T(com.google.common.collect.Lists).partition(BENTO_BOX, 2)}" class="row">
                 <div th:each="bb : ${bento_box}" th:object="${bb}" class="span6 col=12 col-lg-6">
                     <div class="row product-item" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${bb.id}">

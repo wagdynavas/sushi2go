@@ -1,6 +1,7 @@
 package com.wagdynavas.sushi2go.controllers;
 
 
+import com.wagdynavas.sushi2go.model.Category;
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.model.Product;
 import com.wagdynavas.sushi2go.service.ProductService;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +38,7 @@ public class ProductController {
         order.setProduct(new Product());
         order.getProduct().setQuantity(0);
         mv.addObject("order", order);
-        mv.addObject("menuItems", createSubmenuNamesFromCategoryTypes(CategoryTypes.values()));
-
+        mv.addObject("menuItems", CategoryTypes.values());
 
         return mv;
     }
@@ -115,12 +116,19 @@ public class ProductController {
         return view;
     }
 
-
     private List<String> createSubmenuNamesFromCategoryTypes(CategoryTypes[] types) {
+        return createSubmenuNamesFromCategoryTypes(types, null, null);
+    }
+
+    private List<String> createSubmenuNamesFromCategoryTypes(CategoryTypes[] types, String tobeReplaced, String replacement) {
         List<String> menuItems = new ArrayList<>();
         String menuName;
         for (CategoryTypes type : types) {
-            menuName = type.toString().replaceAll("_", " ").toLowerCase();
+            if (replacement == null || tobeReplaced == null) {
+                menuName = type.toString().toLowerCase();
+            } else {
+                menuName = type.toString().replaceAll(tobeReplaced, replacement).toLowerCase();
+            }
             menuItems.add(menuName);
         }
 
