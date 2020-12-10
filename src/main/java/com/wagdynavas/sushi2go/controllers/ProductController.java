@@ -104,10 +104,10 @@ public class ProductController {
         String productQuantity = request.getParameter("product_quantity");
 
         if (optionalProduct.isPresent()) {
-            Product p = optionalProduct.get();
+            Product product = optionalProduct.get();
             int quantity = Integer.valueOf(productQuantity);
             for (int i = 0; i < quantity; i++) {
-                products.add(p);
+                products.add(product);
             }
             order.setProducts(products);
         }
@@ -116,22 +116,4 @@ public class ProductController {
         return view;
     }
 
-    private List<String> createSubmenuNamesFromCategoryTypes(CategoryTypes[] types) {
-        return createSubmenuNamesFromCategoryTypes(types, null, null);
-    }
-
-    private List<String> createSubmenuNamesFromCategoryTypes(CategoryTypes[] types, String tobeReplaced, String replacement) {
-        List<String> menuItems = new ArrayList<>();
-        String menuName;
-        for (CategoryTypes type : types) {
-            if (replacement == null || tobeReplaced == null) {
-                menuName = type.toString().toLowerCase();
-            } else {
-                menuName = type.toString().replaceAll(tobeReplaced, replacement).toLowerCase();
-            }
-            menuItems.add(menuName);
-        }
-
-        return menuItems;
-    }
  }

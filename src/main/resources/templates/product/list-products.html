@@ -16,10 +16,10 @@
         </div>
     </div>
     <div class="container-fluid mb-auto">
-        <nav class="navbar">
+        <nav class="navbar navbar-light">
             <ul  th:each=" menuItem : ${menuItems}" class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" th:text="${menuItem.name}" th:href=" '#' + ${menuItem.value}"></a>
+                    <a class="nav-link" th:text="${menuItem.name}" data-scroll th:href=" '#' + ${menuItem.value}"></a>
                 </li>
             </ul>
         </nav>
@@ -1438,7 +1438,10 @@
     <div th:replace="/fragments/fragments :: footer"></div>
     <script th:replace="/fragments/fragments :: jquery"></script>
     <script th:replace="/fragments/fragments :: bootstrap_js"></script>
-    <script type="application/javascript" src="/js/product.js"></script>
-
+    <script  src="/js/product.js"></script>
+    <script src="/js/smooth-scroll.polyfills.min.js"></script>
+    <script>
+        var scroll = new SmoothScroll('a[href*="#"]');
+    </script>
 </body>
 </html>
