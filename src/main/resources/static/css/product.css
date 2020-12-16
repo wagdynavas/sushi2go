@@ -3,14 +3,14 @@
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+}
 
 html, body {
     height: 100%;
 }
 
-body {
-    scroll-behavior: smooth;
-}
 
 
 .text-container {
@@ -33,6 +33,18 @@ body {
     font-weight: bold;
     margin: 0;
     color: rgb(128, 5, 33); !important;
+}
+
+.sub-menu {
+    background-color: #F7F7F7;
+}
+
+.sub-menu-top {
+    z-index: 9999;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
 }
 
 h2 {
@@ -116,4 +128,9 @@ h5 {
 .product-id {
     display: none;
 }
+
+#lunch_noodles {
+    height: 80px;
+}
+
 

@@ -29,5 +29,12 @@ $(document).ready(function(){
     })
 
 
+    $(window).bind("scroll", function () {
+        if ($(window).scrollTop() > 300) {
+            $('.sub-menu').addClass('sub-menu-top');
+        } else {
+            $('.sub-menu').removeClass('sub-menu-top');
+        }
+    })
 
 });
