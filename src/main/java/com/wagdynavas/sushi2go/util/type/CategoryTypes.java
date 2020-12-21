@@ -1,23 +1,27 @@
 package com.wagdynavas.sushi2go.util.type;
 
 public enum CategoryTypes  {
+    SIDE_ORDER("Side Order", "side_order"),
+    SOUP_AND_SALAD("Soup And Salad", "soup_and_salad"),
+    APPETIZER("Appetizer", "appetizer"),
+    NIGIRI_A_LA_CARTE("Nigiri A La Carte", "nigiri_a_la_carte"),
+    SASHIMI_A_LA_CARTE("Sashimi A La Carte", "sashimi_a_la_carte"),
+    MAKI("Maki", "maki"),
+    HAND_ROLL("Hand Roll", "hand_roll"),
+    VEGETABLE_MAKI("Vegetarian maki", "vegetable_maki"),
+    FUNKY_ROLLS("Funky Roll", "funky_roll"),
     LUNCH_SUSHI("Lunch Sushi", "lunch_sushi") ,
     LUNCH_ENTREES("Lunch Entrees", "lunch_entrees"),
     LUNCH_NOODLES("Lunch Noodles", "lunch_noodles"),
     LUNCH_BENTO_BOX("Lunch Bento Box", "lunch_bento_box"),
-    DINNER("Dinner", "dinner"),
-    FUNKY_ROLLS("Funky Roll", "funky_roll"),
     NIGIRI_SUSHI("Nigiri Sushi", "nigiri_sushi"),
-    MAKI_SUSHI("Maki Sushi", "maki_sushi"),
-    VEGETABLE_MAKI("Vegetable maki", "vegetable_maki"),
     NIGIRI_AND_MAKI_SUSHI("Nigiri And Maki Sushi", "nigiri_and_maki_sushi"),
     SASHIMI_NIGIRI_MAKI("Sashimi Nigiri and Maki", "sashimi_nigiri_maki"),
     SASHIMI("Sashimi", "sashimi"),
-    APPETIZER("Appetizer", "appetizer"),
     DESSERT("Dessert", "dessert"),
-    SOUP_AND_SALAD("Soup And Salad", "soup_and_salad"),
-    SIDE_ORDER("side Order", "side_order"),
-    BENTO_BOX("Bento Box", "bento_box");
+    BENTO_BOX("Bento Box", "bento_box"),
+    LUNCH("Lunch", "lunch"),
+    DINNER("Dinner", "dinner");
 
 
     private String name;

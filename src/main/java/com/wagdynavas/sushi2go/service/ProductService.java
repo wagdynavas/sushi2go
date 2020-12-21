@@ -48,10 +48,6 @@ public class ProductService {
                         view.addObject(CategoryTypes.LUNCH_NOODLES.toString(), products);
                         quantityName =  CategoryTypes.LUNCH_NOODLES.toString().toLowerCase() + quantity;
                         break;
-                    } case DINNER: {
-                        view.addObject(CategoryTypes.DINNER.toString(), products);
-                        quantityName =  CategoryTypes.DINNER.toString().toLowerCase() + quantity;
-                        break;
                     } case FUNKY_ROLLS: {
                         view.addObject(CategoryTypes.FUNKY_ROLLS.toString(), products);
                         quantityName =  CategoryTypes.FUNKY_ROLLS.toString().toLowerCase() + quantity;
@@ -60,9 +56,9 @@ public class ProductService {
                         view.addObject(CategoryTypes.NIGIRI_SUSHI.toString(), products);
                         quantityName =  CategoryTypes.NIGIRI_SUSHI.toString().toLowerCase() + quantity;
                         break;
-                    } case MAKI_SUSHI: {
-                        view.addObject(CategoryTypes.MAKI_SUSHI.toString(), products);
-                        quantityName =  CategoryTypes.MAKI_SUSHI.toString().toLowerCase() + quantity;
+                    } case MAKI: {
+                        view.addObject(CategoryTypes.MAKI.toString(), products);
+                        quantityName =  CategoryTypes.MAKI.toString().toLowerCase() + quantity;
                         break;
                     } case NIGIRI_AND_MAKI_SUSHI: {
                         view.addObject(CategoryTypes.NIGIRI_AND_MAKI_SUSHI.toString(), products);
@@ -103,6 +99,9 @@ public class ProductService {
                         view.addObject(CategoryTypes.VEGETABLE_MAKI.toString(), products);
                         quantityName =  CategoryTypes.VEGETABLE_MAKI.toString().toLowerCase() + quantity;
                         break;
+                    } case HAND_ROLL: {
+                        view.addObject(CategoryTypes.HAND_ROLL.toString(), products);
+                        quantityName =  CategoryTypes.HAND_ROLL.toString().toLowerCase() + quantity;
                     } default: {
                         break;
                     }

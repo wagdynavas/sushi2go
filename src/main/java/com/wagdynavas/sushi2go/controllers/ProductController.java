@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/products")
@@ -39,6 +40,8 @@ public class ProductController {
         order.getProduct().setQuantity(0);
         mv.addObject("order", order);
         mv.addObject("menuItems", CategoryTypes.values());
+        mv.addObject("menuLunches", createMenuItems(CategoryTypes.values(),CategoryTypes.LUNCH ));
+        mv.addObject("menuDinners", createMenuItems(CategoryTypes.values(),CategoryTypes.DINNER ));
 
         return mv;
     }
@@ -114,6 +117,23 @@ public class ProductController {
 
         ModelAndView view = listProduct();
         return view;
+    }
+
+    /**
+     *
+     * @param categoryTypes
+     * @param menuType define menu type, ex: Dinner, Lunch etc..
+     * @return
+     */
+    private List<CategoryTypes> createMenuItems(CategoryTypes[] categoryTypes, CategoryTypes menuType) {
+        List<CategoryTypes> menuItems;
+        if (menuType == CategoryTypes.LUNCH) {
+             menuItems = Arrays.asList(categoryTypes).stream().filter(ct -> ct.getValue().startsWith("lunch_")).collect(Collectors.toList());
+        } else {
+            menuItems = Arrays.asList(categoryTypes).stream().filter(ct -> !ct.getValue().startsWith("lunch") && !ct.getValue().equals("dinner")).collect(Collectors.toList());
+        }
+
+        return menuItems;
     }
 
  }

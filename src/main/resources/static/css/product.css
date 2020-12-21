@@ -47,6 +47,13 @@ html, body {
     width: 100%;
 }
 
+
+
+.hide-menu {
+    display: none;
+}
+
+
 h2 {
     color: rgb(128, 5, 33); !important;
 }
@@ -129,7 +136,34 @@ h5 {
     display: none;
 }
 
+#lunch_sushi {
+    height: 80px;
+}
+
+#lunch_entrees {
+    height: 80px;
+}
 #lunch_noodles {
+    height: 80px;
+}
+
+#lunch_bento_box {
+    height: 80px;
+}
+
+#dinner {
+    height: 80px;
+}
+
+#funky_roll {
+    height: 80px;
+}
+
+#nigiri_sushi {
+    height: 80px;
+}
+
+#maki_sushi {
     height: 80px;
 }
 

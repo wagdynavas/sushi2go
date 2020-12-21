@@ -37,4 +37,20 @@ $(document).ready(function(){
         }
     })
 
+
+    $(".btn-lunch").on("click", function () {
+        $(".menu-lunch").removeClass("hide-menu");
+        $(".menu-dinner").addClass("hide-menu");
+        $(".btn-dinner").removeClass("active");
+        $(".btn-lunch").addClass("active");
+    })
+
+    $(".btn-dinner").on("click", function () {
+        $(".menu-dinner").removeClass("hide-menu");
+        $(".menu-lunch").addClass("hide-menu");
+        $(".btn-dinner").addClass("active");
+        $(".btn-lunch").removeClass("active")
+    });
+
+
 });
