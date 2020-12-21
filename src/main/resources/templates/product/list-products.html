@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark" th:href="@{/products/manage/{id}(id=${so.id})}">Edit</a>
-                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${so.id}">
                         Delete
                     </button>
 
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark" th:href="@{/products/manage/{id}(id=${ss.id})}">Edit</a>
-                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${ss.id}">
                         Delete
                     </button>
 
@@ -227,7 +227,7 @@
                         </div>
                     </div>
                     <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark" th:href="@{/products/manage/{id}(id=${appetizer.id})}">Edit</a>
-                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${appetizer.id}">
                         Delete
                     </button>
 
@@ -299,7 +299,7 @@
                                 <div class="product-name col=12 col-lg-6" th:text="${maki.productName}"></div>
                             </div>
                             <div class="row">
-                                <div class="col=12 col-lg-6" th:text="${maki.productDescription}"></div>
+                                <div class="col=12 col-lg-9" th:text="${maki.productDescription}"></div>
                             </div>
                             <div class="row price">
                                 <div class="col=12 col-lg-6" th:text="${'$' + maki.price}"></div>
@@ -311,7 +311,7 @@
                         </div>
                     </div>
                     <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark" th:href="@{/products/manage/{id}(id=${maki.id})}">Edit</a>
-                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${maki.id}">
                         Delete
                     </button>
 
@@ -397,7 +397,7 @@
                         </div>
                     </div>
                     <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark" th:href="@{/products/manage/{id}(id=${hand_roll.id})}">Edit</a>
-                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${hand_roll.id}">
                         Delete
                     </button>
 

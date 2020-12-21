@@ -129,10 +129,11 @@ public class ProductService {
      */
     public ModelAndView createProduct(Product product, BindingResult result, MultipartFile imageFile) {
         ModelAndView view = new ModelAndView();
+
         if (result.hasErrors()) {
             view.addObject(product);
             view.setViewName("product/manage-product");
-        } else {
+        } else if(!imageFile.isEmpty()) {
             Path imagePath = null;
             try {
                 String imageDirectory = product.getCategory().toLowerCase();
@@ -143,8 +144,14 @@ public class ProductService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String productImagePath = parseImageAbsolutePathToSRC(imagePath.toString());
-            product.setProductImagePath(productImagePath);
+
+            if (imagePath != null) {
+                String productImagePath = parseImageAbsolutePathToSRC(imagePath.toString());
+                product.setProductImagePath(productImagePath);
+            }
+            productRepository.save(product);
+            view.setViewName("redirect:/products/list");
+        } else {
             productRepository.save(product);
             view.setViewName("redirect:/products/list");
         }
