@@ -52,10 +52,6 @@ public class ProductService {
                         view.addObject(CategoryTypes.FUNKY_ROLLS.toString(), products);
                         quantityName =  CategoryTypes.FUNKY_ROLLS.toString().toLowerCase() + quantity;
                         break;
-                    } case NIGIRI_SUSHI: {
-                        view.addObject(CategoryTypes.NIGIRI_SUSHI.toString(), products);
-                        quantityName =  CategoryTypes.NIGIRI_SUSHI.toString().toLowerCase() + quantity;
-                        break;
                     } case MAKI: {
                         view.addObject(CategoryTypes.MAKI.toString(), products);
                         quantityName =  CategoryTypes.MAKI.toString().toLowerCase() + quantity;
@@ -102,6 +98,9 @@ public class ProductService {
                     } case HAND_ROLL: {
                         view.addObject(CategoryTypes.HAND_ROLL.toString(), products);
                         quantityName =  CategoryTypes.HAND_ROLL.toString().toLowerCase() + quantity;
+                    } case BEVERAGES: {
+                        view.addObject(CategoryTypes.BEVERAGES.toString(), products);
+                        quantityName =  CategoryTypes.BEVERAGES.toString().toLowerCase() + quantity;
                     } default: {
                         break;
                     }

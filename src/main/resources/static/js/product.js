@@ -35,7 +35,7 @@ $(document).ready(function(){
         } else {
             $('.sub-menu').removeClass('sub-menu-top');
         }
-    })
+    });
 
 
     $(".btn-lunch").on("click", function () {

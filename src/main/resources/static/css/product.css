@@ -55,7 +55,9 @@ html, body {
 
 
 h2 {
+    font-size: 1.3em;
     color: rgb(128, 5, 33); !important;
+    margin-bottom: 30px;
 }
 
 .product-container h1 {
@@ -95,8 +97,8 @@ h2 {
 }
 
 .menu-image {
-    height: 150px;
-    width: 190px;
+    height: auto;
+    width: 100%;
 }
 
 .menu-image-modal {
@@ -117,6 +119,15 @@ h2 {
 .row {
     margin-bottom: 10px;
 }
+
+
+
+.product-item {
+    border-style: solid;
+    border-width: thin;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
 
 .product-item:hover{
     background-color: #f7f7f7;
