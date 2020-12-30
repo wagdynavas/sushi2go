@@ -112,6 +112,10 @@ public class ProductService {
                         view.addObject(CategoryTypes.SASHIMI_A_LA_CARTE.toString(), products);
                         quantityName =  CategoryTypes.SASHIMI_A_LA_CARTE.toString().toLowerCase() + quantity;
                         break;
+                    } case DINNER_ENTREES: {
+                        view.addObject(CategoryTypes.DINNER_ENTREES.toString(), products);
+                        quantityName =  CategoryTypes.DINNER_ENTREES.toString().toLowerCase() + quantity;
+                        break;
                     } default: {
                         break;
                     }
