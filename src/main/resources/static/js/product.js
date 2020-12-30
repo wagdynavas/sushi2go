@@ -52,7 +52,7 @@ $(document).ready(function(){
     });
 
 
-    $("#btn-dinner").click(function(e) {
+    $("#btn-dinner, #close-sidebar").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });

@@ -79,6 +79,7 @@ public class ProductService {
                     } case SIDE_ORDER: {
                         view.addObject(CategoryTypes.SIDE_ORDER.toString(), products);
                         quantityName =  CategoryTypes.SIDE_ORDER.toString().toLowerCase() + quantity;
+                        break;
                     } case BENTO_BOX: {
                         view.addObject(CategoryTypes.BENTO_BOX.toString(), products);
                         quantityName =  CategoryTypes.BENTO_BOX.toString().toLowerCase() + quantity;
@@ -98,9 +99,19 @@ public class ProductService {
                     } case HAND_ROLL: {
                         view.addObject(CategoryTypes.HAND_ROLL.toString(), products);
                         quantityName =  CategoryTypes.HAND_ROLL.toString().toLowerCase() + quantity;
+                        break;
                     } case BEVERAGES: {
                         view.addObject(CategoryTypes.BEVERAGES.toString(), products);
                         quantityName =  CategoryTypes.BEVERAGES.toString().toLowerCase() + quantity;
+                        break;
+                    } case NIGIRI_A_LA_CARTE: {
+                        view.addObject(CategoryTypes.NIGIRI_A_LA_CARTE.toString(), products);
+                        quantityName =  CategoryTypes.NIGIRI_A_LA_CARTE.toString().toLowerCase() + quantity;
+                        break;
+                    } case SASHIMI_A_LA_CARTE: {
+                        view.addObject(CategoryTypes.SASHIMI_A_LA_CARTE.toString(), products);
+                        quantityName =  CategoryTypes.SASHIMI_A_LA_CARTE.toString().toLowerCase() + quantity;
+                        break;
                     } default: {
                         break;
                     }
