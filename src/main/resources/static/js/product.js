@@ -30,7 +30,7 @@ $(document).ready(function(){
 
 
 
-
+/*
     $(function() {
         var $sidebar   = $("#sidebar-wrapper"),
             $window    = $(window),
@@ -50,7 +50,7 @@ $(document).ready(function(){
         });
 
     });
-
+*/
 
     $("#btn-dinner, #close-sidebar").click(function(e) {
         e.preventDefault();

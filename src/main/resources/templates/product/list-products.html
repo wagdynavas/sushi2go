@@ -142,10 +142,10 @@
             <div class="container-md">
                 <h2 id="soup_and_salad">Soup And Salad</h2>
                 <div th:each="soup_salads : ${T(com.google.common.collect.Lists).partition(SOUP_AND_SALAD, 3)}" class="row row-eq-height ">
-                    <div th:each="ss : ${soup_salads}" th:object="${ss}" class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div th:each="ss : ${soup_salads}" th:object="${ss}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
                         <div class="col-12">
                             <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${ss.id}">
-                                <div class="col-6 col-md-6 col-lg-8 col-xl-8">
+                                <div class="col-6">
                                     <div class="row">
                                         <div class="product-name col-12" th:text="${ss.productName}"></div>
                                     </div>
@@ -157,9 +157,9 @@
                                     </div>
                                 </div>
 
-                                <div th:if="${ssproductImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
+                                <div th:if="${ssproductImagePath != null}" class="col-6">
                                     <img class="img-fluid rounded float-end"
-                                         th:src="@{/img/{img}(img=${ss.productImagePath})}" alt="">
+                                         th:src="@{/img/{img}(img=${ss.productImagePath})}" alt="Soup and Salad" aria-hidden="true">
                                 </div>
                             </div>
                         </div>
@@ -238,10 +238,10 @@
             <div class="container-md">
                 <h2 id="appetizer">Appetizer</h2>
                 <div th:each="appetizers : ${T(com.google.common.collect.Lists).partition(APPETIZER, 3)}" class="row row-eq-height">
-                    <div th:each="appetizer : ${appetizers}" th:object="${appetizer}" class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div th:each="appetizer : ${appetizers}" th:object="${appetizer}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
                         <div class="col-12">
                             <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${appetizer.id}">
-                                <div class="col-6 col-md-6 col-lg-8 col-xl-8">
+                                <div class="col-6">
                                     <div class="row">
                                         <div class="product-name col-12" th:text="${appetizer.productName}"></div>
                                     </div>
@@ -253,16 +253,13 @@
                                     </div>
                                 </div>
 
-                                <div th:if="${appetizer.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                    <img class="img-fluid rounded float-end"
-                                         th:src="@{/img/{img}(img=${appetizer.productImagePath})}" alt="">
+                                <div th:if="${appetizer.productImagePath != null}" class="col-6">
+                                    <img class="img-fluid rounded float-end" th:src="@{/img/{img}(img=${appetizer.productImagePath})}" alt="Appertizar" aria-hidden="true">
                                 </div>
                             </div>
                         </div>
-                        <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
-                           th:href="@{/products/manage/{id}(id=${appetizer.id})}">Edit</a>
-                        <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
-                                data-toggle="modal" th:attr="data-target='#deleteModal'+ ${appetizer.id}">
+                        <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark" th:href="@{/products/manage/{id}(id=${appetizer.id})}">Edit</a>
+                        <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${appetizer.id}">
                             Delete
                         </button>
 
@@ -335,10 +332,10 @@
                 <div id="nigiri_a_la_carte"></div>
                 <h2>Nigiri A La Carte</h2>
                 <div th:each="nigiri_a_la_carte : ${T(com.google.common.collect.Lists).partition(NIGIRI_A_LA_CARTE, 3)}" class="row row-eq-height">
-                    <div th:each="nlc : ${nigiri_a_la_carte}" th:object="${nlc}" class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div th:each="nlc : ${nigiri_a_la_carte}" th:object="${nlc}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
                         <div class="col-12">
                             <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${nlc.id}">
-                                <div class="col-6 col-md-9 col-lg-8 col-xl-8">
+                                <div class="col-6">
                                     <div class="row">
                                         <div class="product-name col-12 col-lg-6" th:text="${nlc.productName}"></div>
                                     </div>
@@ -350,8 +347,8 @@
                                     </div>
                                 </div>
 
-                                <div th:if="${nlc.productImagePath != null}" class="col-6 col-md-4 col-lg-4 col-xl-4">
-                                    <img class="menu-image" th:src="@{/img/{img}(img=${nlc.productImagePath})}" alt="">
+                                <div th:if="${nlc.productImagePath != null}" class="col-6">
+                                    <img class="menu-image" th:src="@{/img/{img}(img=${nlc.productImagePath})}" alt="Nigiri a la carte" aria-hidden="true">
                                 </div>
                             </div>
                         </div>
@@ -430,10 +427,10 @@
                 <div id="sashimi_a_la_carte"></div>
                 <h2>Sahimi A La Carte</h2>
                 <div th:each="sashimi_a_la_carte : ${T(com.google.common.collect.Lists).partition(SASHIMI_A_LA_CARTE, 3)}" class="row row-eq-height">
-                    <div th:each="slc : ${sashimi_a_la_carte}" th:object="${slc}" class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div th:each="slc : ${sashimi_a_la_carte}" th:object="${slc}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
                         <div class="col-12">
                             <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${slc.id}">
-                                <div class="col-6 col-md-8 col-lg-8 col-xl-8">
+                                <div class="col-6">
                                     <div class="row">
                                         <div class="product-name col-12 col-lg-6" th:text="${slc.productName}"></div>
                                     </div>
@@ -445,8 +442,8 @@
                                     </div>
                                 </div>
 
-                                <div th:if="${slc.productImagePath != null}" class="col-6 col-md-4 col-lg-4 col-xl-4">
-                                    <img class="menu-image" th:src="@{/img/{img}(img=${slc.productImagePath})}" alt="">
+                                <div th:if="${slc.productImagePath != null}" class="col-6">
+                                    <img class="menu-image" th:src="@{/img/{img}(img=${slc.productImagePath})}" alt="Sashimi a la carte" aria-hidden="true">
                                 </div>
                             </div>
                         </div>
@@ -524,10 +521,10 @@
                 <div id="maki"></div>
                 <h2>Maki</h2>
                 <div th:each="mks : ${T(com.google.common.collect.Lists).partition(MAKI, 3)}" class="row">
-                    <div th:each="maki : ${mks}" th:object="${maki}" class="span6 col-12 col-md-4 col-lg-4 col-xl-4">
-                        <div class="col-12 product-item">
+                    <div th:each="maki : ${mks}" th:object="${maki}" class="span6 col-12 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                        <div class="col-12">
                             <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${maki.id}">
-                                <div class="col-6 col-md-6 col-lg-8 col-xl-8">
+                                <div class="col-6">
                                     <div class="row">
                                         <div class="product-name col-12" th:text="${maki.productName}"></div>
                                     </div>
@@ -539,8 +536,8 @@
                                     </div>
                                 </div>
 
-                                <div th:if="${maki.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                    <img class="img-fluid rounded float-end" th:src="@{/img/{img}(img=${maki.productImagePath})}" alt="">
+                                <div th:if="${maki.productImagePath != null}" class="col-6">
+                                    <img class="menu-image" th:src="@{/img/{img}(img=${maki.productImagePath})}" alt="Maki" aria-hidden="true">
                                 </div>
                             </div>
                         </div>
@@ -621,10 +618,10 @@
                 <div id="hand_roll"></div>
                 <h2>Hand Roll</h2>
                 <div th:each="hr : ${T(com.google.common.collect.Lists).partition(HAND_ROLL, 3)}" class="row">
-                    <div th:each="hand_roll : ${hr}" th:object="${hand_roll}" class="span6 col-12 col-md-4 col-lg-4 col-xl-4">
-                        <div class="col-12 product-item">
+                    <div th:each="hand_roll : ${hr}" th:object="${hand_roll}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                        <div class="col-12">
                             <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${hand_roll.id}">
-                                <div class="col-6 col-md-6 col-lg-8 col-xl-8">
+                                <div class="col-6">
                                     <div class="row">
                                         <div class="product-name col-12" th:text="${hand_roll.productName}"></div>
                                     </div>
@@ -636,9 +633,8 @@
                                     </div>
                                 </div>
 
-                                <div th:if="${hand_roll.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                    <img class="img-fluid rounded float-end"
-                                         th:src="@{/img/{img}(img=${hand_roll.productImagePath})}" alt="">
+                                <div th:if="${hand_roll.productImagePath != null}" class="col-6">
+                                    <img class="menu-image" th:src="@{/img/{img}(img=${hand_roll.productImagePath})}" alt="Hand Roll" aria-hidden="true">
                                 </div>
                             </div>
                         </div>
@@ -716,26 +712,25 @@
             <div class="container-md">
                 <div id="vegetable_maki"></div>
                 <h2>Vegetarian Maki</h2>
-                <div th:each="vegetable_makis : ${T(com.google.common.collect.Lists).partition(VEGETABLE_MAKI, 3)}"
-                     class="row">
-                    <div th:each="vm : ${vegetable_makis}" th:object="${vm}"
-                         class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
-                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${vm.id}">
-                            <div class="col-6 col-md-6 col-lg-8 col-xl-8">
-                                <div class="row">
-                                    <div class="product-name col-12" th:text="${vm.productName}"></div>
+                <div th:each="vegetable_makis : ${T(com.google.common.collect.Lists).partition(VEGETABLE_MAKI, 3)}" class="row">
+                    <div th:each="vm : ${vegetable_makis}" th:object="${vm}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4product-item">
+                        <div class="col-12">
+                            <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${vm.id}">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="product-name col-12" th:text="${vm.productName}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" th:text="${vm.productDescription}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6" th:text="${'$' + vm.price}"></div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12" th:text="${vm.productDescription}"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 col-lg-6" th:text="${'$' + vm.price}"></div>
-                                </div>
-                            </div>
 
-                            <div th:if="${vm.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                <img class="img-fluid rounded float-end"
-                                     th:src="@{/img/{img}(img=${vm.productImagePath})}" alt="">
+                                <div th:if="${vm.productImagePath != null}" class="col-6">
+                                    <img class="menu-image" th:src="@{/img/{img}(img=${vm.productImagePath})}" alt="Vegetarian Maki" aria-hidden="true">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -810,10 +805,9 @@
                 <div id="funky_roll"></div>
                 <h2>Funky Roll</h2>
                 <div th:each="fkr : ${T(com.google.common.collect.Lists).partition(FUNKY_ROLLS, 3)}" class="row">
-                    <div th:each="fr : ${fkr}" th:object="${fr}"
-                         class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div th:each="fr : ${fkr}" th:object="${fr}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
                         <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${fr.id}">
-                            <div class="col-6 col-md-6 col-lg-8 col-xl-8">
+                            <div class="col-6">
                                 <div class="row">
                                     <div class="product-name col-12" th:text="${fr.productName}"></div>
                                 </div>
@@ -825,9 +819,8 @@
                                 </div>
                             </div>
 
-                            <div th:if="${fr.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                <img class="img-fluid rounded float-end"
-                                     th:src="@{/img/{img}(img=${fr.productImagePath})}" alt="">
+                            <div th:if="${fr.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${fr.productImagePath})}" alt="Funky Roall" aria-hidden="true">
                             </div>
                         </div>
                     </div>
@@ -897,7 +890,7 @@
                 </div>
             </div>
 
-            <div class="container-md">
+          <!--  <div class="container-md">
                 <div id="lunch_sushi"></div>
                 <h2>Lunch Sushi</h2>
                 <div th:each="ls : ${T(com.google.common.collect.Lists).partition(LUNCH_SUSHI, 3)}" class="row">
@@ -917,8 +910,7 @@
                             </div>
 
                             <div th:if="${lunch.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                <img class="img-fluid rounded float-end"
-                                     th:src="@{/img/{img}(img=${lunch.productImagePath})}" alt="">
+                                <img class="img-fluid rounded float-end" th:src="@{/img/{img}(img=${lunch.productImagePath})}" alt="">
                             </div>
                         </div>
 
@@ -928,7 +920,6 @@
                                 data-toggle="modal" th:attr="data-target='#deleteModal'+ ${lunch.id}">
                             Delete
                         </button>
-                        <!-- Modal -->
                         <div class="modal fade" th:attr="id='deleteModal' + ${lunch.id}" tabindex="-1"
                              role="contentinfo" aria-labelledby="ModalTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
@@ -1024,7 +1015,6 @@
                             Delete
                         </button>
 
-                        <!-- Modal -->
                         <div class="modal fade" th:attr="id='deleteModal' + ${entrees.id}" tabindex="-1" role="dialog"
                              aria-labelledby="ModalTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1121,7 +1111,6 @@
                             Delete
                         </button>
 
-                        <!-- Modal -->
                         <div class="modal fade" th:attr="id='deleteModal' + ${noodles.id}" tabindex="-1" role="dialog"
                              aria-labelledby="ModalTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1214,7 +1203,6 @@
                             Delete
                         </button>
 
-                        <!-- Modal -->
                         <div class="modal fade" th:attr="id='deleteModal' + ${lbb.id}" tabindex="-1" role="dialog"
                              aria-labelledby="ModalTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1275,31 +1263,29 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>   -->
             <div class="container-md">
                 <h2 id="nigiri_and_maki_sushi">Nigiri And Maki Platter</h2>
-                <div th:each="nms : ${T(com.google.common.collect.Lists).partition(NIGIRI_AND_MAKI_SUSHI, 3)}"
-                     class="row">
-                    <div th:each="nigiri_maki : ${nms}" th:object="${nms}"
-                         class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
-                        <div class="row" data-toggle="modal"
-                             th:attr="data-target='#addToOrderModal'+ ${nigiri_maki.id}">
-                            <div class="col-6 col-md-6 col-lg-8 col-xl-8">
-                                <div class="row">
-                                    <div class="product-name col-12" th:text="${nigiri_maki.productName}"></div>
+                <div th:each="nms : ${T(com.google.common.collect.Lists).partition(NIGIRI_AND_MAKI_SUSHI, 3)}" class="row">
+                    <div th:each="nigiri_maki : ${nms}" th:object="${nms}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                        <div class="col-12">
+                            <div class="row" data-toggle="modal"
+                                 th:attr="data-target='#addToOrderModal'+ ${nigiri_maki.id}">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="product-name col-12" th:text="${nigiri_maki.productName}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" th:text="${nigiri_maki.productDescription}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6" th:text="${'$' + nigiri_maki.price}"></div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12" th:text="${nigiri_maki.productDescription}"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 col-lg-6" th:text="${'$' + nigiri_maki.price}"></div>
-                                </div>
-                            </div>
 
-                            <div th:if="${nigiri_maki.productImagePath != null}"
-                                 class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                <img class="img-fluid rounded float-end"
-                                     th:src="@{/img/{img}(img=${nigiri_maki.productImagePath})}" alt="">
+                                <div th:if="${nigiri_maki.productImagePath != null}" class="col-6">
+                                    <img class="menu-image" th:src="@{/img/{img}(img=${nigiri_maki.productImagePath})}" alt="Nigiri and Maki Sushi" aria-hidden="true">
+                                </div>
                             </div>
                         </div>
                         <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
@@ -1372,26 +1358,25 @@
             </div>
             <div class="container-md">
                 <h2 id="sashimi_nigiri_maki">Sashimi, Nigiri And Maki</h2>
-                <div th:each="sashimi_nigiri_maki : ${T(com.google.common.collect.Lists).partition(SASHIMI_NIGIRI_MAKI, 3)}"
-                     class="row">
-                    <div th:each="snm : ${sashimi_nigiri_maki}" th:object="${snm}"
-                         class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
-                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${snm.id}">
-                            <div class="col-6 col-md-6 col-lg-8 col-xl-8">
-                                <div class="row">
-                                    <div class="product-name col-12" th:text="${snm.productName}"></div>
+                <div th:each="sashimi_nigiri_maki : ${T(com.google.common.collect.Lists).partition(SASHIMI_NIGIRI_MAKI, 3)}" class="row">
+                    <div th:each="snm : ${sashimi_nigiri_maki}" th:object="${snm}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                        <div class="col-12">
+                            <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${snm.id}">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="product-name col-12" th:text="${snm.productName}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" th:text="${snm.productDescription}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6" th:text="${'$' + snm.price}"></div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12" th:text="${snm.productDescription}"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 col-lg-6" th:text="${'$' + snm.price}"></div>
-                                </div>
-                            </div>
 
-                            <div th:if="${snm.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                <img class="img-fluid rounded float-end"
-                                     th:src="@{/img/{img}(img=${snm.productImagePath})}" alt="">
+                                <div th:if="${snm.productImagePath != null}" class="col-6">
+                                    <img class="menu-image" th:src="@{/img/{img}(img=${snm.productImagePath})}" alt="Sashimi, Nigiri and Maki" aria-hidden="true">
+                                </div>
                             </div>
                         </div>
                         <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
@@ -1467,24 +1452,24 @@
             <div class="container-md">
                 <h2 id="sashimi">Sashimi</h2>
                 <div th:each="sashimis : ${T(com.google.common.collect.Lists).partition(SASHIMI, 3)}" class="row">
-                    <div th:each="sahsimi : ${sashimis}" th:object="${sahsimi}"
-                         class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
-                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${sahsimi.id}">
-                            <div class="col-6 col-md-6 col-lg-8 col-xl-8">
-                                <div class="row">
-                                    <div class="product-name col-12" th:text="${sahsimi.productName}"></div>
+                    <div th:each="sahsimi : ${sashimis}" th:object="${sahsimi}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                        <div class="col-12">
+                            <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${sahsimi.id}">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="product-name col-12" th:text="${sahsimi.productName}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" th:text="${sahsimi.productDescription}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6" th:text="${'$' + sahsimi.price}"></div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12" th:text="${sahsimi.productDescription}"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 col-lg-6" th:text="${'$' + sahsimi.price}"></div>
-                                </div>
-                            </div>
 
-                            <div th:if="${maki.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                <img class="img-fluid rounded float-end"
-                                     th:src="@{/img/{img}(img=${sahsimi.productImagePath})}" alt="">
+                                <div th:if="${maki.productImagePath != null}" class="col-6">
+                                    <img class="menu-image" th:src="@{/img/{img}(img=${sahsimi.productImagePath})}" alt="Sashimi">
+                                </div>
                             </div>
                         </div>
                         <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
@@ -1559,10 +1544,9 @@
             <div class="container-md">
                 <h2 id="dessert">Dessert</h2>
                 <div th:each="desserts : ${T(com.google.common.collect.Lists).partition(DESSERT, 3)}" class="row">
-                    <div th:each="dessert : ${desserts}" th:object="${dessert}"
-                         class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div th:each="dessert : ${desserts}" th:object="${dessert}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
                         <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${dessert.id}">
-                            <div class="col-6 col-md-6 col-lg-8 col-xl-8">
+                            <div class="col-6">
                                 <div class="row">
                                     <div class="product-name col-12" th:text="${dessert.productName}"></div>
                                 </div>
@@ -1574,9 +1558,8 @@
                                 </div>
                             </div>
 
-                            <div th:if="${maki.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                <img class="img-fluid rounded float-end"
-                                     th:src="@{/img/{img}(img=${dessert.productImagePath})}" alt="">
+                            <div th:if="${maki.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${dessert.productImagePath})}" alt="Dessert" aria-hidden="true">
                             </div>
                         </div>
                         <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
@@ -1650,24 +1633,24 @@
             <div class="container-md">
                 <h2 id="bento_box">Bento box</h2>
                 <div th:each="bento_box : ${T(com.google.common.collect.Lists).partition(BENTO_BOX, 3)}" class="row">
-                    <div th:each="bb : ${bento_box}" th:object="${bb}"
-                         class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
-                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${bb.id}">
-                            <div class="col-6 col-md-6 col-lg-8 col-xl-8">
-                                <div class="row">
-                                    <div class="product-name col-12" th:text="${bb.productName}"></div>
+                    <div th:each="bb : ${bento_box}" th:object="${bb}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                        <div class="col-12">
+                            <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${bb.id}">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="product-name col-12" th:text="${bb.productName}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" th:text="${bb.productDescription}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6" th:text="${'$' + bb.price}"></div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12" th:text="${bb.productDescription}"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 col-lg-6" th:text="${'$' + bb.price}"></div>
-                                </div>
-                            </div>
 
-                            <div th:if="${bb.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                <img class="img-fluid rounded float-end"
-                                     th:src="@{/img/{img}(img=${bb.productImagePath})}" alt="">
+                                <div th:if="${bb.productImagePath != null}" class="col-6">
+                                    <img class="menu-image" th:src="@{/img/{img}(img=${bb.productImagePath})}" alt="Bento Box" aria-hidden="true">
+                                </div>
                             </div>
                         </div>
                         <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
@@ -1754,24 +1737,24 @@
             <div class="container-md">
                 <h2 id="beverages">Beverages</h2>
                 <div th:each="beverages : ${T(com.google.common.collect.Lists).partition(BEVERAGES, 2)}" class="row">
-                    <div th:each="bv : ${beverages}" th:object="${bv}"
-                         class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
-                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${bv.id}">
-                            <div class="col-6 col-md-6 col-lg-8 col-xl-8">
-                                <div class="row">
-                                    <div class="product-name col-12" th:text="${bv.productName}"></div>
+                    <div th:each="bv : ${beverages}" th:object="${bv}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                        <div class="col-12">
+                            <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${bv.id}">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="product-name col-12" th:text="${bv.productName}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" th:text="${bv.productDescription}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6" th:text="${'$' + bv.price}"></div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12" th:text="${bv.productDescription}"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 col-lg-6" th:text="${'$' + bv.price}"></div>
-                                </div>
-                            </div>
 
-                            <div th:if="${bv.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
-                                <img class="img-fluid rounded float-end"
-                                     th:src="@{/img/{img}(img=${bv.productImagePath})}" alt="">
+                                <div th:if="${bv.productImagePath != null}" class="col-6">
+                                    <img class="menu-image" th:src="@{/img/{img}(img=${bv.productImagePath})}" alt="Beverages" aria-hidden="true">
+                                </div>
                             </div>
                         </div>
                         <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
