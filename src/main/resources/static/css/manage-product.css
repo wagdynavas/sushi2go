@@ -14,15 +14,20 @@ html, body {
 
 #wrapper {
     overflow-x: hidden;
+    display: flex;
+    width: 100%;
 }
 
 #sidebar-wrapper {
-    min-height: 100vh;
-    margin-left: -15rem;
-    -webkit-transition: margin .25s ease-out;
-    -moz-transition: margin .25s ease-out;
-    -o-transition: margin .25s ease-out;
-    transition: margin .25s ease-out;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    background: #7386D5;
+    color: #fff;
+    transition: all 0.3s;
 }
 
 #sidebar-wrapper .sidebar-heading {
@@ -57,10 +62,6 @@ html, body {
     }
 }
 
-.content-wrapper {
-    margin-left: 20px;
-    margin-right: 20px;
-}
 
 
 .text-container {
@@ -75,10 +76,6 @@ html, body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0;
 }
 
 .menu-title h1 {

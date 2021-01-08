@@ -26,34 +26,58 @@ $(document).ready(function(){
         let input = $("." + fieldName);
 
         input.val(0);
-    })
+    });
 
 
-
-/*
-    $(function() {
-        var $sidebar   = $("#sidebar-wrapper"),
-            $window    = $(window),
-            offset     = $sidebar.offset(),
-            topPadding = 15;
-
-        $window.scroll(function() {
-            if ($window.scrollTop() > offset.top) {
-                $sidebar.stop().animate({
-                    marginTop: $window.scrollTop() - offset.top + topPadding
-                });
-            } else {
-                $sidebar.stop().animate({
-                    marginTop: 0
-                });
-            }
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
         });
 
-    });
-*/
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
 
-    $("#btn-dinner, #close-sidebar").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+
+
+    $(document).ready(function () {
+        // Add smooth scrolling to all links
+        $("a").on('click', function (event) {
+
+            // Make sure this.hash has a value before overriding default behavior
+            if (this.hash !== "") {
+                // Prevent default anchor click behavior
+                event.preventDefault();
+
+                // Store hash
+                var hash = this.hash;
+
+                // Using jQuery's animate() method to add smooth page scroll
+                // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top
+                }, 800, function () {
+
+                    // Add hash (#) to URL when done scrolling (default click behavior)
+                    window.location.hash = hash;
+                });
+            } // End if
+        });
+    });
+
+    $(window).bind("scroll", function () {
+        if ($(window).scrollTop() > 300) {
+            $('.menu-btn').addClass('sub-menu-top');
+        } else {
+            $('.menu-btn').removeClass('sub-menu-top');
+        }
     });
 });

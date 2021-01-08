@@ -28,7 +28,7 @@ public class ProductService {
     public ModelAndView getAllProductsSortByCategory() {
         List<CategoryTypes> categories  = Arrays.asList(CategoryTypes.values());
         ModelAndView view = new ModelAndView();
-        view.setViewName("product/list-products");
+        view.setViewName("product/products");
         final String quantity = "_quantity";
         String quantityName = "";
             for (CategoryTypes categoryType : categories) {

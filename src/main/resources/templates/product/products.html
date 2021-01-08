@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Products</title>
+    <link th:replace="/fragments/fragments :: bootstrap_css">
+    <link th:replace="/fragments/fragments :: fragment_css">
+    <link rel="stylesheet" href="/css/products.css">
+    <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.concat.min.css">
+
+</head>
+
+<body>
+
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div id="dismiss">
+            <img src="../../img/icons/arrow-121-16.png" aria-hidden="true" rel="Close"/>
+        </div>
+
+        <div class="sidebar-header">
+            <h3>Menu</h3>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li th:each="menuDinner : ${menuDinners}" class="list-group list-group-flush menu-dinner">
+                <a th:text="${menuDinner.name}" data-scroll th:href=" '#' + ${menuDinner.value}" class="list-group-item list-group-item-action bg-light"></a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- Page Content  -->
+    <div id="">
+        <header th:replace="/fragments/fragments :: header"></header>
+        <div class="menu-title">
+            <div class="text-container">
+                <h1>Menu</h1>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light menu-btn">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="fas fa-align-left"></i>
+                    <span>Menu</span>
+                </button>
+                    <ul class="nav navbar-nav ml-auto">
+                        <li>
+                            <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark btn-red create-product" href="/products/create">Create New</a>
+                        </li>
+                    </ul>
+            </div>
+        </nav>
+
+        <div class="container-md">
+            <div id="side_order"></div>
+            <h2>Side Order</h2>
+            <div th:each="side_orders : ${T(com.google.common.collect.Lists).partition(SIDE_ORDER, 3)}" class="row">
+                <div th:each="so : ${side_orders}" th:object="${so}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${so.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col" th:text="${so.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-" th:text="${so.productDescription}"></div>
+                                </div>
+                                <div class="row price">
+                                    <div class="col" th:text="${'$' + so.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${so.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${so.productImagePath})}" alt="Side Order" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${so.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${so.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${so.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${so.id})}" class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${so.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static"
+                         data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${so.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal" th:src="@{/img/{img}(img=${so.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${so.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="side_order_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="side_order_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="side_order_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="side_order_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close"
+                                            data-dismiss="modal" aria-label="Close"
+                                            data-field="side_order_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-md">
+            <h2 id="soup_and_salad">Soup And Salad</h2>
+            <div th:each="soup_salads : ${T(com.google.common.collect.Lists).partition(SOUP_AND_SALAD, 3)}" class="row row-eq-height ">
+                <div th:each="ss : ${soup_salads}" th:object="${ss}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${ss.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12" th:text="${ss.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" th:text="${ss.productDescription}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + ss.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${ssproductImagePath != null}" class="col-6">
+                                <img class="img-fluid rounded float-end"
+                                     th:src="@{/img/{img}(img=${ss.productImagePath})}" alt="Soup and Salad" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${ss.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${ss.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${ss.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${ss.id})}" class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${ss.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static"
+                         data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${ss.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${ss.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${ss.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn"
+                                            data-type="minus" data-field="salad_and_soup_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="salad_and_soup_quantity form-control" name="product_quantity"
+                                           value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="salad_and_soup_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="salad_and_soup_quantity">Add
+                                    </button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="salad_and_soup_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-md">
+            <h2 id="appetizer">Appetizer</h2>
+            <div th:each="appetizers : ${T(com.google.common.collect.Lists).partition(APPETIZER, 3)}" class="row row-eq-height">
+                <div th:each="appetizer : ${appetizers}" th:object="${appetizer}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${appetizer.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12" th:text="${appetizer.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" th:text="${appetizer.productDescription}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + appetizer.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${appetizer.productImagePath != null}" class="col-6">
+                                <img class="img-fluid rounded float-end" th:src="@{/img/{img}(img=${appetizer.productImagePath})}" alt="Appertizar" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark" th:href="@{/products/manage/{id}(id=${appetizer.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red" data-toggle="modal" th:attr="data-target='#deleteModal'+ ${appetizer.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${appetizer.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${appetizer.id})}"
+                                       class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${appetizer.id}" tabindex="-1"
+                         role="dialog" aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static"
+                         data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${appetizer.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${appetizer.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${appetizer.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn"
+                                            data-type="minus" data-field="appetizer_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="appetizer_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="appetizer_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="appetizer_quantity">Add
+                                    </button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="appetizer_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-md">
+            <div id="nigiri_a_la_carte"></div>
+            <h2>Nigiri A La Carte</h2>
+            <div th:each="nigiri_a_la_carte : ${T(com.google.common.collect.Lists).partition(NIGIRI_A_LA_CARTE, 3)}" class="row row-eq-height">
+                <div th:each="nlc : ${nigiri_a_la_carte}" th:object="${nlc}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${nlc.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12 col-lg-6" th:text="${nlc.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${nlc.productDescription}"></div>
+                                </div>
+                                <div class="row price">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + nlc.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${nlc.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${nlc.productImagePath})}" alt="Nigiri a la carte" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${nlc.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${nlc.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${nlc.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${nlc.id})}" class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${nlc.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static"
+                         data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${nlc.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${nlc.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${nlc.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="nigiri_a_la_carte">
+                                        -
+                                    </button>
+                                    <input type="text" class="nigiri_a_la_carte form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="nigiri_a_la_carte">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="nigiri_a_la_carte">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="nigiri_a_la_carte">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container-md">
+            <div id="sashimi_a_la_carte"></div>
+            <h2>Sahimi A La Carte</h2>
+            <div th:each="sashimi_a_la_carte : ${T(com.google.common.collect.Lists).partition(SASHIMI_A_LA_CARTE, 3)}" class="row row-eq-height">
+                <div th:each="slc : ${sashimi_a_la_carte}" th:object="${slc}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${slc.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12 col-lg-6" th:text="${slc.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${slc.productDescription}"></div>
+                                </div>
+                                <div class="row price">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + slc.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${slc.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${slc.productImagePath})}" alt="Sashimi a la carte" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${slc.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${slc.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${slc.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${slc.id})}" class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${slc.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static"
+                         data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${slc.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${slc.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${slc.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="sashimi_a_la_carte_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="sashimi_a_la_carte_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="sashimi_a_la_carte_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="sashimi_a_la_carte_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="sashimi_a_la_carte_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-md">
+            <div id="maki"></div>
+            <h2>Maki</h2>
+            <div th:each="mks : ${T(com.google.common.collect.Lists).partition(MAKI, 3)}" class="row">
+                <div th:each="maki : ${mks}" th:object="${maki}" class="span6 col-12 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${maki.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12" th:text="${maki.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" th:text="${maki.productDescription}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + maki.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${maki.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${maki.productImagePath})}" alt="Maki" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${maki.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${maki.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${maki.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${maki.id})}"
+                                       class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${maki.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${maki.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${maki.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${maki.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="maki_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="maki_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="maki_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="maki_quantity">Add
+                                    </button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="maki_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container-md">
+            <div id="hand_roll"></div>
+            <h2>Hand Roll</h2>
+            <div th:each="hr : ${T(com.google.common.collect.Lists).partition(HAND_ROLL, 3)}" class="row">
+                <div th:each="hand_roll : ${hr}" th:object="${hand_roll}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row row-eq-height" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${hand_roll.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12" th:text="${hand_roll.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" th:text="${hand_roll.productDescription}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + hand_roll.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${hand_roll.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${hand_roll.productImagePath})}" alt="Hand Roll" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${hand_roll.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${hand_roll.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${hand_roll.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${hand_roll.id})}"
+                                       class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${hand_roll.id}" tabindex="-1"
+                         role="dialog" aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${hand_roll.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${hand_roll.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${hand_roll.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="hand_roll_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="hand_roll_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="hand_roll_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="hand_roll_quantity">Add
+                                    </button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="hand_roll_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-md">
+            <div id="vegetable_maki"></div>
+            <h2>Vegetarian Maki</h2>
+            <div th:each="vegetable_makis : ${T(com.google.common.collect.Lists).partition(VEGETABLE_MAKI, 3)}" class="row">
+                <div th:each="vm : ${vegetable_makis}" th:object="${vm}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4product-item">
+                    <div class="col-12">
+                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${vm.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12" th:text="${vm.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" th:text="${vm.productDescription}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + vm.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${vm.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${vm.productImagePath})}" alt="Vegetarian Maki" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                   th:href="@{/products/manage/{id}(id=${vm.id})}">Edit</a>
+                <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                        data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                    Delete
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" th:attr="id='deleteModal' + ${vm.id}" tabindex="-1" role="dialog"
+                     aria-labelledby="ModalTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Delete Item</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this Item?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a th:href="@{/products/delete/{id}(id=${vm.id})}" class="btn btn-dark btn-red">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" th:attr="id='addToOrderModal' + ${vm.id}" tabindex="-1" role="dialog"
+                     aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="row">
+                                    <div th:if="${vm.productImagePath != null}" class="col-12">
+                                        <img class="img-thumbnail menu-image-modal"
+                                             th:src="@{/img/{img}(img=${vm.productImagePath})}" alt="">
+                                    </div>
+                                    <div class="col-12">
+                                        <h5 class="modal-title" th:text="${vm.productName}"></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this Item?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="vegetable_maki_quantity">
+                                    -
+                                </button>
+                                <input type="text" class="vegetable_maki_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="vegetable_maki_quantity">
+                                    +
+                                </button>
+                                <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="vegetable_maki_quantity">Add
+                                </button>
+                                <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="vegetable_maki_quantity">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-md">
+            <div id="funky_roll"></div>
+            <h2>Funky Roll</h2>
+            <div th:each="fkr : ${T(com.google.common.collect.Lists).partition(FUNKY_ROLLS, 3)}" class="row">
+                <div th:each="fr : ${fkr}" th:object="${fr}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${fr.id}">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="product-name col-12" th:text="${fr.productName}"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" th:text="${fr.productDescription}"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-lg-6" th:text="${'$' + fr.price}"></div>
+                            </div>
+                        </div>
+
+                        <div th:if="${fr.productImagePath != null}" class="col-6">
+                            <img class="menu-image" th:src="@{/img/{img}(img=${fr.productImagePath})}" alt="Funky Roall" aria-hidden="true">
+                        </div>
+                    </div>
+                </div>
+                <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                   th:href="@{/products/manage/{id}(id=${fr.id})}">Edit</a>
+                <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                        data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                    Delete
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" th:attr="id='deleteModal' + ${fr.id}" tabindex="-1" role="dialog"
+                     aria-labelledby="ModalTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Delete Item</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this Item?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a th:href="@{/products/delete/{id}(id=${fr.id})}" class="btn btn-dark btn-red">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" th:attr="id='addToOrderModal' + ${fr.id}" tabindex="-1" role="dialog"
+                     aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="row">
+                                    <div th:if="${fr.productImagePath != null}" class="col-12">
+                                        <img class="img-thumbnail menu-image-modal"
+                                             th:src="@{/img/{img}(img=${fr.productImagePath})}" alt="">
+                                    </div>
+                                    <div class="col-12">
+                                        <h5 class="modal-title" th:text="${fr.productName}"></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this Item?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="funky_roll_quantity">
+                                    -
+                                </button>
+                                <input type="text" class="funky_roll_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="funky_roll_quantity">
+                                    +
+                                </button>
+                                <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="funky_roll_quantity">Add</button>
+                                <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="funky_roll_quantity">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--  <div class="container-md">
+              <div id="lunch_sushi"></div>
+              <h2>Lunch Sushi</h2>
+              <div th:each="ls : ${T(com.google.common.collect.Lists).partition(LUNCH_SUSHI, 3)}" class="row">
+                  <div th:each="lunch : ${ls}" th:object="${lunch}"
+                       class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                      <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${lunch.id}">
+                          <div class="col-6 col-md-6 col-lg-8 col-xl-8">
+                              <div class="row">
+                                  <div class="product-name col-12" th:text="${lunch.productName}"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-12" th:text="${lunch.productDescription}"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-12 col-lg-6" th:text="${'$' + lunch.price}"></div>
+                              </div>
+                          </div>
+
+                          <div th:if="${lunch.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
+                              <img class="img-fluid rounded float-end" th:src="@{/img/{img}(img=${lunch.productImagePath})}" alt="">
+                          </div>
+                      </div>
+
+                      <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                         th:href="@{/products/manage/{id}(id=${lunch.id})}">Edit</a>
+                      <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                              data-toggle="modal" th:attr="data-target='#deleteModal'+ ${lunch.id}">
+                          Delete
+                      </button>
+                      <div class="modal fade" th:attr="id='deleteModal' + ${lunch.id}" tabindex="-1"
+                           role="contentinfo" aria-labelledby="ModalTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title">Delete Item</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      Are you sure you want to delete this Item?
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                      </button>
+                                      <a th:href="@{/products/delete/{id}(id=${lunch.id})}"
+                                         class="btn btn-dark btn-red">Delete</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+
+                      <div class="modal fade" th:attr="id='addToOrderModal' + ${lunch.id}" tabindex="-1" role="dialog"
+                           aria-labelledby="ModalTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <div class="row">
+                                          <div th:if="${lunch.productImagePath != null}" class="col-12">
+                                              <img class="img-thumbnail menu-image-modal"
+                                                   th:src="@{/img/{img}(img=${lunch.productImagePath})}" alt="">
+                                          </div>
+                                          <div class="col-12">
+                                              <h5 class="modal-title" th:text="${lunch.productName}"></h5>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="modal-body">
+                                      Are you sure you want to delete this Item?
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn rounded-circle btn-lg add-remove-btn"
+                                              data-type="minus" data-field="lunch_sushi_quantity">
+                                          -
+                                      </button>
+                                      <input type="text" class="lunch_sushi_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                      <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="lunch_sushi_quantity">
+                                          +
+                                      </button>
+                                      <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="lunch_sushi_quantity">Add
+                                      </button>
+                                      <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="lunch_sushi_quantity">
+                                          Cancel
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="container-md">
+              <div id="lunch_entrees"></div>
+              <h2>Lunch Entrees</h2>
+              <div th:each="ln : ${T(com.google.common.collect.Lists).partition(LUNCH_ENTREES, 3)}" class="row">
+                  <div th:each="entrees : ${ln}" th:object="${entrees}"
+                       class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                      <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${entrees.id}">
+                          <div class="col-6 col-md-6 col-lg-8 col-xl-8">
+                              <div class="row">
+                                  <div class="product-name col-12" th:text="${entrees.productName}"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-12" th:text="${entrees.productDescription}"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-12 col-lg-6" th:text="${'$' + entrees.price}"></div>
+                              </div>
+                          </div>
+
+                          <div th:if="${entrees.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
+                              <img class="img-fluid rounded float-end"
+                                   th:src="@{/img/{img}(img=${entrees.productImagePath})}" alt="">
+                          </div>
+                      </div>
+
+                      <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                         th:href="@{/products/manage/{id}(id=${entrees.id})}">Edit</a>
+                      <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                              data-toggle="modal" th:attr="data-target='#deleteModal'+ ${entrees.id}">
+                          Delete
+                      </button>
+
+                      <div class="modal fade" th:attr="id='deleteModal' + ${entrees.id}" tabindex="-1" role="dialog"
+                           aria-labelledby="ModalTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title">Delete Item</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      Are you sure you want to delete this Item?
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                      </button>
+                                      <a th:href="@{/products/delete/{id}(id=${entrees.id})}"
+                                         class="btn btn-dark btn-red">Delete</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="modal fade" th:attr="id='addToOrderModal' + ${entrees.id}" tabindex="-1"
+                           role="dialog" aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static"
+                           data-keyboard="false">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                              <form class="" method="post" action="/products/add-to-order">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <div class="row">
+                                              <div th:if="${entrees.productImagePath != null}" class="col-12">
+                                                  <img class="img-thumbnail menu-image-modal"
+                                                       th:src="@{/img/{img}(img=${entrees.productImagePath})}" alt="">
+                                              </div>
+                                              <input class="product-id" name="product-id" type="hidden"
+                                                     th:value="${entrees.id}">
+                                              <div class="col-12">
+                                                  <h5 class="modal-title" th:text="${entrees.productName}"></h5>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="modal-body">
+                                          Are you sure you want to delete this Item?
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="lunch_entrees_quantity">
+                                              -
+                                          </button>
+                                          <input type="text" class="lunch_entrees_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                          <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="lunch_entrees_quantity">
+                                              +
+                                          </button>
+                                          <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="lunch_entrees_quantity">Add
+                                          </button>
+                                          <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="lunch_entrees_quantity">
+                                              Cancel
+                                          </button>
+                                      </div>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="container-md">
+              <div id="lunch_noodles"></div>
+              <h2>Lunch Noodles</h2>
+              <div th:each="ln : ${T(com.google.common.collect.Lists).partition(LUNCH_NOODLES, 3)}" class="row">
+                  <div th:each="noodles : ${ln}" th:object="${noodles}"
+                       class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                      <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${noodles.id}">
+                          <div class="col-6 col-md-6 col-lg-8 col-xl-8">
+                              <div class="row">
+                                  <div class="product-name col-12" th:text="${noodles.productName}"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-12" th:text="${noodles.productDescription}"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-12 col-lg-6" th:text="${'$' + noodles.price}"></div>
+                              </div>
+                          </div>
+
+                          <div th:if="${noodles.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
+                              <img class="img-fluid rounded float-end"
+                                   th:src="@{/img/{img}(img=${noodles.productImagePath})}" alt="">
+                          </div>
+                      </div>
+                      <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                         th:href="@{/products/manage/{id}(id=${noodles.id})}">Edit</a>
+                      <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                              data-toggle="modal" th:attr="data-target='#deleteModal'+ ${noodles.id}">
+                          Delete
+                      </button>
+
+                      <div class="modal fade" th:attr="id='deleteModal' + ${noodles.id}" tabindex="-1" role="dialog"
+                           aria-labelledby="ModalTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title">Delete Item</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      Are you sure you want to delete this Item?
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                      </button>
+                                      <a th:href="@{/products/delete/{id}(id=${noodles.id})}"
+                                         class="btn btn-dark btn-red">Delete</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="modal fade" th:attr="id='addToOrderModal' + ${noodles.id}" tabindex="-1"
+                           role="dialog" aria-labelledby="ModalTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <div class="row">
+                                          <div th:if="${noodles.productImagePath != null}" class="col-12">
+                                              <img class="img-thumbnail menu-image-modal"
+                                                   th:src="@{/img/{img}(img=${noodles.productImagePath})}" alt="">
+                                          </div>
+                                          <div class="col-12">
+                                              <h5 class="modal-title" th:text="${noodles.productName}"></h5>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="modal-body">
+                                      Are you sure you want to delete this Item?
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="lunch_noodles_quantity">
+                                          -
+                                      </button>
+                                      <input type="text" class="lunch_noodles_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                      <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="lunch_noodles_quantity">
+                                          +
+                                      </button>
+                                      <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="lunch_noodles_quantity">Add
+                                      </button>
+                                      <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="lunch_noodles_quantity">
+                                          Cancel
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="container-md">
+              <div id="lunch_bento_box"></div>
+              <h2>Lunch bento box</h2>
+              <div th:each="bb : ${T(com.google.common.collect.Lists).partition(LUNCH_BENTO_BOX, 3)}" class="row">
+                  <div th:each="lbb : ${bb}" th:object="${lbb}"
+                       class="span6 col-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                      <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${lbb.id}">
+                          <div class="col-6 col-md-6 col-lg-8 col-xl-8">
+                              <div class="row">
+                                  <div class="product-name col-12" th:text="${lbb.productName}"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-12" th:text="${lbb.productDescription}"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-12 col-lg-6" th:text="${'$' + lbb.price}"></div>
+                              </div>
+                          </div>
+
+                          <div th:if="${lbb.productImagePath != null}" class="col-6 col-md-6 col-lg-4 col-xl-4">
+                              <img class="img-fluid rounded float-end"
+                                   th:src="@{/img/{img}(img=${lbb.productImagePath})}" alt="">
+                          </div>
+                      </div>
+                      <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                         th:href="@{/products/manage/{id}(id=${lbb.id})}">Edit</a>
+                      <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                              data-toggle="modal" th:attr="data-target='#deleteModal'+ ${lbb.id}">
+                          Delete
+                      </button>
+
+                      <div class="modal fade" th:attr="id='deleteModal' + ${lbb.id}" tabindex="-1" role="dialog"
+                           aria-labelledby="ModalTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title">Delete Item</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      Are you sure you want to delete this Item?
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                      </button>
+                                      <a th:href="@{/products/delete/{id}(id=${lbb.id})}"
+                                         class="btn btn-dark btn-red">Delete</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="modal fade" th:attr="id='addToOrderModal' + ${lbb.id}" tabindex="-1" role="dialog"
+                           aria-labelledby="ModalTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <div class="row">
+                                          <div th:if="${lbb.productImagePath != null}" class="col-12">
+                                              <img class="img-thumbnail menu-image-modal"
+                                                   th:src="@{/img/{img}(img=${lbb.productImagePath})}" alt="">
+                                          </div>
+                                          <div class="col-12">
+                                              <h5 class="modal-title" th:text="${lbb.productName}"></h5>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="modal-body">
+                                      Are you sure you want to delete this Item?
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="lunch_bento_box_quantity">
+                                          -
+                                      </button>
+                                      <input type="text" class="lunch_bento_box_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                      <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="lunch_bento_box_quantity">
+                                          +
+                                      </button>
+                                      <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="lunch_bento_box_quantity">Add
+                                      </button>
+                                      <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="lunch_bento_box_quantity">
+                                          Cancel
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>   -->
+        <div class="container-md">
+            <h2 id="nigiri_and_maki_sushi">Nigiri And Maki Platter</h2>
+            <div th:each="nms : ${T(com.google.common.collect.Lists).partition(NIGIRI_AND_MAKI_SUSHI, 3)}" class="row">
+                <div th:each="nigiri_maki : ${nms}" th:object="${nms}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row" data-toggle="modal"
+                             th:attr="data-target='#addToOrderModal'+ ${nigiri_maki.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12" th:text="${nigiri_maki.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" th:text="${nigiri_maki.productDescription}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + nigiri_maki.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${nigiri_maki.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${nigiri_maki.productImagePath})}" alt="Nigiri and Maki Sushi" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${nigiri_maki.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                        Delete
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${nigiri_maki.id}" tabindex="-1"
+                         role="dialog" aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${nigiri_maki.id})}"
+                                       class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${nigiri_maki.id}" tabindex="-1"
+                         role="dialog" aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${nigiri_maki.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${nigiri_maki.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${nigiri_maki.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="nigiri_and_maki_sushi_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="nigiri_and_maki_sushi_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="nigiri_and_maki_sushi_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="nigiri_and_maki_sushi_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="nigiri_and_maki_sushi_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="container-md">
+            <h2 id="sashimi_nigiri_maki">Sashimi, Nigiri And Maki</h2>
+            <div th:each="sashimi_nigiri_maki : ${T(com.google.common.collect.Lists).partition(SASHIMI_NIGIRI_MAKI, 3)}" class="row">
+                <div th:each="snm : ${sashimi_nigiri_maki}" th:object="${snm}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${snm.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12" th:text="${snm.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" th:text="${snm.productDescription}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + snm.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${snm.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${snm.productImagePath})}" alt="Sashimi, Nigiri and Maki" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${snm.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${snm.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${snm.id})}"
+                                       class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${snm.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${snm.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${snm.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${snm.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="sashimi_nigiri_maki_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="sashimi_nigiri_maki_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus"
+                                            data-type="plus" data-field="sashimi_nigiri_maki_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="sashimi_nigiri_maki_quantity">Add
+                                    </button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="sashimi_nigiri_maki_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-md">
+            <h2 id="sashimi">Sashimi</h2>
+            <div th:each="sashimis : ${T(com.google.common.collect.Lists).partition(SASHIMI, 3)}" class="row">
+                <div th:each="sahsimi : ${sashimis}" th:object="${sahsimi}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${sahsimi.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12" th:text="${sahsimi.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" th:text="${sahsimi.productDescription}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + sahsimi.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${maki.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${sahsimi.productImagePath})}" alt="Sashimi">
+                            </div>
+                        </div>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${sahsimi.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${sahsimi.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${sahsimi.id})}"
+                                       class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${sahsimi.id}" tabindex="-1"
+                         role="dialog" aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${sahsimi.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${sahsimi.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${sahsimi.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="sashimi_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="sashimi_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="sashimi_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="sashimi_quantity">Add
+                                    </button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="sashimi_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-md">
+            <h2 id="dessert">Dessert</h2>
+            <div th:each="desserts : ${T(com.google.common.collect.Lists).partition(DESSERT, 3)}" class="row">
+                <div th:each="dessert : ${desserts}" th:object="${dessert}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${dessert.id}">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="product-name col-12" th:text="${dessert.productName}"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" th:text="${dessert.productDescription}"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-lg-6" th:text="${'$' + dessert.price}"></div>
+                            </div>
+                        </div>
+
+                        <div th:if="${maki.productImagePath != null}" class="col-6">
+                            <img class="menu-image" th:src="@{/img/{img}(img=${dessert.productImagePath})}" alt="Dessert" aria-hidden="true">
+                        </div>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${dessert.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${dessert.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${dessert.id})}"
+                                       class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${dessert.id}" tabindex="-1"
+                         role="dialog" aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${dessert.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${dessert.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${dessert.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="dessert_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="dessert_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="dessert_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="dessert_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="dessert_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-md">
+            <h2 id="bento_box">Bento box</h2>
+            <div th:each="bento_box : ${T(com.google.common.collect.Lists).partition(BENTO_BOX, 3)}" class="row">
+                <div th:each="bb : ${bento_box}" th:object="${bb}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${bb.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12" th:text="${bb.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" th:text="${bb.productDescription}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + bb.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${bb.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${bb.productImagePath})}" alt="Bento Box" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${bb.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${bb.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${bb.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${bb.id})}" class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${bb.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${bb.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${bb.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${bb.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn rounded-circle btn-lg add-remove-btn">-</button>
+                                    <div class="bento_box_quantity" th:data="${bento_box_quantity}"
+                                         th:text="${bento_box_quantity}"></div>
+                                    <button class="btn rounded-circle  add-remove-btn">+</button>
+                                    <botton th:href="@{/products/add-to-order/{id}/{qty}(id=${bb.id}, qty=${bento_box_quantity})}"
+                                            class="btn btn-dark btn-red btn-lg">Add
+                                    </botton>
+                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal"
+                                            aria-label="Close">
+                                        Cancel
+                                    </button>
+
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="bento_box_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="bento_box_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus"
+                                            data-type="plus" data-field="bento_box_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="bento_box_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="bento_box_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-md">
+            <h2 id="beverages">Beverages</h2>
+            <div th:each="beverages : ${T(com.google.common.collect.Lists).partition(BEVERAGES, 2)}" class="row">
+                <div th:each="bv : ${beverages}" th:object="${bv}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                    <div class="col-12">
+                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${bv.id}">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="product-name col-12" th:text="${bv.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" th:text="${bv.productDescription}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6" th:text="${'$' + bv.price}"></div>
+                                </div>
+                            </div>
+
+                            <div th:if="${bv.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{/img/{img}(img=${bv.productImagePath})}" alt="Beverages" aria-hidden="true">
+                            </div>
+                        </div>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
+                       th:href="@{/products/manage/{id}(id=${bv.id})}">Edit</a>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${bv.id}">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:attr="id='deleteModal' + ${bv.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <a th:href="@{/products/delete/{id}(id=${bv.id})}" class="btn btn-dark btn-red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${bv.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div th:if="${bv.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal"
+                                                 th:src="@{/img/{img}(img=${bv.productImagePath})}" alt="">
+                                        </div>
+                                        <div class="col-12">
+                                            <h5 class="modal-title" th:text="${bv.productName}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Item?
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn rounded-circle btn-lg add-remove-btn">-</button>
+                                    <div class="beverages_quantity" th:data="${beverages_quantity}"
+                                         th:text="${beverages_quantity}"></div>
+                                    <button class="btn rounded-circle  add-remove-btn">+</button>
+                                    <botton th:href="@{/products/add-to-order/{id}/{qty}(id=${bb.id}, qty=${beverages_quantity})}"
+                                            class="btn btn-dark btn-red btn-lg">Add
+                                    </botton>
+                                    <button type="button" class="btn-lg btn-secondary" data-dismiss="modal"
+                                            aria-label="Close">
+                                        Cancel
+                                    </button>
+
+                                    <button type="button" class="btn rounded-circle btn-lg add-remove-btn" \data-type="minus" data-field="bento_box_quantity">
+                                        -
+                                    </button>
+                                    <input type="text" class="bento_box_quantity form-control" name="product_quantity" value="0" min="0" max="50"/>
+                                    <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="bento_box_quantity">
+                                        +
+                                    </button>
+                                    <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="bento_box_quantity">Add</button>
+                                    <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="bento_box_quantity">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="overlay"></div>
+
+<div th:replace="/fragments/fragments :: footer"></div>
+<script th:replace="/fragments/fragments :: jquery"></script>
+<script th:replace="/fragments/fragments :: bootstrap_js"></script>
+<script src="/js/product.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script>
+
+</script>
+</body>
+
+</html>
