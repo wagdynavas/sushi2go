@@ -12,6 +12,7 @@ body, html {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
     height: 100%;
+    overflow-x: hidden;
 }
 
 a,
@@ -20,6 +21,18 @@ a:focus {
     color: inherit;
     text-decoration: none;
     transition: all 0.3s;
+}
+
+.btn-primary-outline {
+    background-color: transparent;
+    border-color: #fafafa;
+    color: #fafafa;
+    width: 10rem;
+}
+
+.btn-primary-outline:hover {
+    color: #fafafa;
+    background-color: rgba(0,0,0,0.4);
 }
 
 
@@ -41,14 +54,47 @@ img {
     background-color: #717171;
 }
 
-.slide-text {
-    color: #f2f2f2;
-    font-size: 15px;
-    padding: 8px 12px;
-    position: absolute;
-    bottom: 8px;
+.slide-text-container {
+    opacity: 2;
+    position: relative;
+    background-color: rgba(0,0,0,0.4);
     width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    transition:opacity 1s;
+
+    color: #f2f2f2;
+    font-size: 3em;
+    padding: 8px 12px;
     text-align: center;
+}
+
+.slide-text {
+    margin-top: 230px;
+}
+
+
+.takeout {
+    font-family: 'Bentham', serif;
+    margin-bottom: 250px;
+    margin-top: 0;
+    text-transform: uppercase;
+    font-size: 1em;
+}
+
+@media only screen and (max-width: 700px) {
+    .takeout {
+        margin-bottom: 15%;
+    }
+    .slide-text {
+        margin-top: 15%;
+    }
+}
+
+.slide-titles {
+    margin-top: 10%;
+    font-family: 'Bentham', serif;
+
 }
 /* The dots/bullets/indicators */
 .dot-container {
@@ -68,9 +114,9 @@ img {
 /* Fading animation */
 .fade {
     -webkit-animation-name: fade;
-    -webkit-animation-duration:3s;
+    -webkit-animation-duration:4s;
     animation-name: fade;
-    animation-duration: 3s;
+    animation-duration: 4s;
 }
 
 @-webkit-keyframes fade {
@@ -109,4 +155,21 @@ img {
 
 .slide-bg-img-03 {
     background-image: url("../img/slide/rsz_1slide03.jpg");
+}
+
+.welcome {
+    font-family: 'Bentham', serif;
+}
+
+.address-container {
+    font-size: 0.3em;
+}
+
+.slide-text h2 {
+    font-family: 'Bentham', serif;
+}
+
+.order-online {
+    text-transform: uppercase;
+    font-size: 1em;
 }
