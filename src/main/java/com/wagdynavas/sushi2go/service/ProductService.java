@@ -148,20 +148,18 @@ public class ProductService {
             view.addObject(product);
             view.setViewName("product/manage-product");
         } else if(!imageFile.isEmpty()) {
-            Path imagePath = null;
+            Path imagePath;
             try {
                 String imageDirectory = product.getCategory().toLowerCase();
                 String productName = product.getProductName();
                 String fileName = ImagesUtil.changeImageFileName(productName ,imageFile.getOriginalFilename());
 
                 imagePath = ImagesUtil.saveImageInNewDirectory(imageFile.getBytes(), fileName, imageDirectory);
+                if (imagePath != null) {
+                    product.setProductImagePath(fileName);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-
-            if (imagePath != null) {
-                String productImagePath = parseImageAbsolutePathToSRC(imagePath.toString());
-                product.setProductImagePath(productImagePath);
             }
             productRepository.save(product);
             view.setViewName("redirect:/products/list");
