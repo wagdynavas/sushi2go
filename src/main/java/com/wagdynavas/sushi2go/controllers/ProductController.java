@@ -96,6 +96,7 @@ public class ProductController {
     @PostMapping("/add-to-order")
     public ModelAndView addProductToOrder( Order order, HttpServletRequest  request) {
         String productId = request.getParameter("product-id");
+        String customersInstructions = request.getParameter("customers-instructions");
         Optional<Product> optionalProduct = productService.getProductById(Long.valueOf(productId));
         List products = order.getProducts();
 

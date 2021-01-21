@@ -125,13 +125,15 @@
                                         <div th:if="${so.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/side_order/' + ${so.productImagePath}}" alt="" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden"
+                                               th:value="${so.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${so.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="side-order-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="side_order_quantity">
@@ -220,13 +222,14 @@
                                         <div th:if="${ss.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/soup_and_salad/' + ${ss.productImagePath}}" alt="" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${ss.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${ss.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="salad-soup-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn"
@@ -315,13 +318,14 @@
                                         <div th:if="${appetizer.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/appetizer/' + ${appetizer.productImagePath}}" alt="Appetizer" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${appetizer.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${appetizer.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="appetizer-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn"
@@ -412,13 +416,14 @@
                                         <div th:if="${nlc.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/nigiri_a_la_carte/' + ${nlc.productImagePath}}" alt="Nigiri A La Carte" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${nlc.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${nlc.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="nigiri_a_la_carte-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="nigiri_a_la_carte">
@@ -508,13 +513,14 @@
                                         <div th:if="${slc.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/sashimi_a_la_carte/' + ${slc.productImagePath}}" alt="Sashimi A La Carte" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${slc.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${slc.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="sashimi_a_la_carte-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="sashimi_a_la_carte_quantity">
@@ -604,13 +610,14 @@
                                             <img class="img-thumbnail menu-image-modal"
                                                  th:src="@{/img/{img}(img=${maki.productImagePath})}" alt="">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${maki.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${maki.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="maki-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="maki_quantity">
@@ -701,13 +708,14 @@
                                         <div th:if="${hand_roll.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/hand_roll/' + ${hand_roll.productImagePath}}" alt="Hand Roll" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${hand_roll.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${hand_roll.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="hand-roll-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="hand_roll_quantity">
@@ -755,7 +763,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
                 <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
                    th:href="@{/products/manage/{id}(id=${vm.id})}">Edit</a>
                 <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
@@ -795,13 +802,14 @@
                                     <div th:if="${vm.productImagePath != null}" class="col-12">
                                         <img class="img-thumbnail menu-image-modal" th:src="@{'/media/vegetable_maki/' + ${vm.productImagePath}}" alt="Vegetable Maki" aria-hidden="true">
                                     </div>
+                                    <input class="product-id" name="product-id" type="hidden" th:value="${vm.id}">
                                     <div class="col-12">
                                         <h5 class="modal-title" th:text="${vm.productName}"></h5>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-body">
-                                Are you sure you want to delete this Item?
+                                <textarea rows="3" id="vegetable-maki-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="vegetable_maki_quantity">
@@ -821,6 +829,7 @@
                       </form>
                     </div>
                 </div>
+              </div>
             </div>
         </div>
 
@@ -846,7 +855,6 @@
                             <img class="menu-image" th:src="@{'/media/funky_roll/' + ${fr.productImagePath}}" alt="Funky Roall" aria-hidden="true">
                         </div>
                     </div>
-                </div>
                 <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
                    th:href="@{/products/manage/{id}(id=${fr.id})}">Edit</a>
                 <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
@@ -886,6 +894,7 @@
                                     <div th:if="${fr.productImagePath != null}" class="col-12">
                                         <img class="img-thumbnail menu-image-modal" th:src="@{'/media/funky_roll/' + ${fr.productImagePath}}" alt="Funky Roll" aria-hidden="true">
                                     </div>
+                                    <input class="product-id" name="product-id" type="hidden" th:value="${fr.id}">
                                     <div class="col-12">
                                         <h5 class="modal-title" th:text="${fr.productName}"></h5>
                                     </div>
@@ -911,6 +920,7 @@
                       </form>
                     </div>
                 </div>
+              </div>
             </div>
         </div>
 
@@ -1352,13 +1362,14 @@
                                         <div th:if="${nigiri_maki.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/nigiri_and_maki_sushi/' + ${nigiri_maki.productImagePath}}" alt="Nigiri and Maki Sushi" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${nigiri_maki.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${nigiri_maki.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="nigiri-maki-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="nigiri_and_maki_sushi_quantity">
@@ -1445,13 +1456,14 @@
                                         <div th:if="${snm.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/sashimi_nigiri_maki/' + ${snm.productImagePath}}" alt="Sashimi, Nigiri and Maki" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${snm.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${snm.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="sashimi-nigiri-maki-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="sashimi_nigiri_maki_quantity">
@@ -1478,35 +1490,35 @@
         <div class="container-md">
             <h2 id="sashimi">Sashimi</h2>
             <div th:each="sashimis : ${T(com.google.common.collect.Lists).partition(SASHIMI, 3)}" class="row">
-                <div th:each="sahsimi : ${sashimis}" th:object="${sahsimi}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
+                <div th:each="sashimi : ${sashimis}" th:object="${sahsimi}" class="span6 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 product-item">
                     <div class="col-12">
-                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${sahsimi.id}">
+                        <div class="row" data-toggle="modal" th:attr="data-target='#addToOrderModal'+ ${sashimi.id}">
                             <div class="col-6">
                                 <div class="row">
-                                    <div class="product-name col-12" th:text="${sahsimi.productName}"></div>
+                                    <div class="product-name col-12" th:text="${sashimi.productName}"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12" th:text="${sahsimi.productDescription}"></div>
+                                    <div class="col-12" th:text="${sashimi.productDescription}"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12 col-lg-6" th:text="${'$' + sahsimi.price}"></div>
+                                    <div class="col-12 col-lg-6" th:text="${'$' + sashimi.price}"></div>
                                 </div>
                             </div>
 
-                            <div th:if="${sahsimi.productImagePath != null}" class="col-6">
-                                <img class="menu-image" th:src="@{'/media/sashimi/' + ${sahsimi.productImagePath}}" alt="Sashimi" aria-hidden="true">
+                            <div th:if="${sashimi.productImagePath != null}" class="col-6">
+                                <img class="menu-image" th:src="@{'/media/sashimi/' + ${sashimi.productImagePath}}" alt="Sashimi" aria-hidden="true">
                             </div>
                         </div>
                     </div>
                     <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark"
-                       th:href="@{/products/manage/{id}(id=${sahsimi.id})}">Edit</a>
+                       th:href="@{/products/manage/{id}(id=${sashimi.id})}">Edit</a>
                     <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-dark btn-red"
-                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${fr.id}">
+                            data-toggle="modal" th:attr="data-target='#deleteModal'+ ${sashimi.id}">
                         Delete
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" th:attr="id='deleteModal' + ${sahsimi.id}" tabindex="-1" role="dialog"
+                    <div class="modal fade" th:attr="id='deleteModal' + ${sashimi.id}" tabindex="-1" role="dialog"
                          aria-labelledby="ModalTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -1522,30 +1534,31 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                                     </button>
-                                    <a th:href="@{/products/delete/{id}(id=${sahsimi.id})}"
+                                    <a th:href="@{/products/delete/{id}(id=${sashimi.id})}"
                                        class="btn btn-dark btn-red">Delete</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="modal fade" th:attr="id='addToOrderModal' + ${sahsimi.id}" tabindex="-1"
+                    <div class="modal fade" th:attr="id='addToOrderModal' + ${sashimi.id}" tabindex="-1"
                          role="dialog" aria-labelledby="ModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <form class="" method="post" action="/products/add-to-order">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <div class="row">
-                                        <div th:if="${sahsimi.productImagePath != null}" class="col-12">
-                                            <img class="img-thumbnail menu-image-modal" th:src="@{'/media/sashimi/' + ${sahsimi.productImagePath}}" alt="Sashimi" aria-hidden="true">
+                                        <div th:if="${sashimi.productImagePath != null}" class="col-12">
+                                            <img class="img-thumbnail menu-image-modal" th:src="@{'/media/sashimi/' + ${sashimi.productImagePath}}" alt="Sashimi" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${sashimi.id}">
                                         <div class="col-12">
-                                            <h5 class="modal-title" th:text="${sahsimi.productName}"></h5>
+                                            <h5 class="modal-title" th:text="${sashimi.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="sashimi-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="sashimi_quantity">
@@ -1630,13 +1643,14 @@
                                         <div th:if="${dessert.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/dessert/' + ${dessert.productImagePath}}" alt="Dessert" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${dessert.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${dessert.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="dessert-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="dessert_quantity">
@@ -1721,13 +1735,14 @@
                                         <div th:if="${bb.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/bento_box/' + ${bb.productImagePath}}" alt="Bento Box" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${bb.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${bb.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="bento-box-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn rounded-circle btn-lg add-remove-btn">-</button>
@@ -1826,13 +1841,14 @@
                                         <div th:if="${bv.productImagePath != null}" class="col-12">
                                             <img class="img-thumbnail menu-image-modal" th:src="@{'/media/beverages/' + ${bv.productImagePath}}" alt="Beverages" aria-hidden="true">
                                         </div>
+                                        <input class="product-id" name="product-id" type="hidden" th:value="${bv.id}">
                                         <div class="col-12">
                                             <h5 class="modal-title" th:text="${bv.productName}"></h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Item?
+                                    <textarea rows="3" id="beverages-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn rounded-circle btn-lg add-remove-btn">-</button>
