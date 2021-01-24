@@ -54,3 +54,18 @@ body {
 .nav-item-li {
     margin-left: 10px;
 }
+
+.cart-basket {
+    width: 20px;
+    padding:3px;
+    opacity:0.9;
+    font-size: .8rem;
+
+    position: relative;
+    top: -50px;
+    right: -29px;
+    color: #fff;
+    background-color: rgb(128, 5, 33);
+    border-radius: 50%;
+    font-weight: bold;
+}

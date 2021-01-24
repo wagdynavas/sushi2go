@@ -16,7 +16,7 @@ public class Order {
     private Long orderId;
 
     @OneToOne
-    @JoinColumn(name = "ORD_USER", nullable = false)
+    @JoinColumn(name = "ORD_USER_ID", nullable = false)
     private User user;
 
     @Column(name = "ORD_STATUS", nullable = false)
@@ -25,7 +25,11 @@ public class Order {
     @Column(name = "ORD_DATE", nullable = false)
     private LocalDate orderDate;
 
+    @Column(name = "ORD_CUSTOMER_INSTRUCTIONS", nullable = false)
+    private String customerInstructions;
+
     @OneToMany
+    @JoinColumn(name = "ORD_PRODUCTS", nullable = false)
     private List<Product> products;
 
     transient private Product product;

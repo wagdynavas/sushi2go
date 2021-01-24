@@ -1,7 +1,6 @@
 package com.wagdynavas.sushi2go.controllers;
 
 
-import com.wagdynavas.sushi2go.model.Category;
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.model.Product;
 import com.wagdynavas.sushi2go.service.ProductService;
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/products")
 //. Any object can be added to the model in controller and it will stored in session if its name matches with the argument in @SessionAttributes
-@SessionAttributes("order") //
+@SessionAttributes("order")
 public class ProductController {
 
     private final  ProductService productService;
@@ -32,6 +31,11 @@ public class ProductController {
         this.productService = productService;
     }
 
+    /**
+     *
+     *
+     * @return <code>ModelAndView</code>
+     */
     @GetMapping("/list")
     public ModelAndView listProduct() {
         ModelAndView mv =  productService.getAllProductsSortByCategory();
@@ -55,6 +59,12 @@ public class ProductController {
         return mv;
     }
 
+    /**
+     * get <code>Product</code> that will be edited
+     *
+     * @param id <code>Product</code> id
+     * @return <code>ModelAndView</code>
+     */
     @GetMapping("/manage/{id}")
     public ModelAndView manageProduct(@PathVariable("id") Long id) {
         Optional<Product> optionalProduct = productService.getProductById(id);
@@ -82,21 +92,46 @@ public class ProductController {
         return view;
     }
 
+    /**
+     * Create new <code>Product</code>
+     *
+     * @param product <code>Product</code> that will be saved in the database
+     * @param result used to make sure that <code>Product</code> attributes are valid
+     * @param imageFile <code>Product</code> image
+     *
+     * @return ModelAndView
+     */
     @PostMapping("/create")
     public ModelAndView createOrUpdate(@Valid Product product, BindingResult result, @RequestParam("imageFile") MultipartFile imageFile) {
         return productService.createProduct(product, result, imageFile);
     }
 
+    /**
+     * Remove <code>Product</code> from database
+     *
+     * @param id <dode>Product</dode> id
+     * @return view redirect:/products/list
+     */
     @GetMapping("/delete/{id}")
     public String delete( @PathVariable("id")  Long id) {
         productService.removeProduct(id);
         return "redirect:/products/list";
     }
 
+    /**
+     * Add <dode>Product</dode> and customer instructions to <code>Order</code>
+     *
+     * @param order customer order
+     * @param request only using the method <code>getParameter</code>
+     *
+     *
+     * @return the view
+     */
     @PostMapping("/add-to-order")
     public ModelAndView addProductToOrder( Order order, HttpServletRequest  request) {
         String productId = request.getParameter("product-id");
         String customersInstructions = request.getParameter("customers-instructions");
+
         Optional<Product> optionalProduct = productService.getProductById(Long.valueOf(productId));
         List products = order.getProducts();
 
@@ -114,9 +149,10 @@ public class ProductController {
                 products.add(product);
             }
             order.setProducts(products);
+            order.setCustomerInstructions(customersInstructions);
         }
 
-        ModelAndView view = listProduct();
+        ModelAndView view = reloadProductList();
         return view;
     }
 
