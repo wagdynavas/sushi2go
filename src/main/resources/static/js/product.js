@@ -15,7 +15,7 @@ $(document).ready(function(){
                     input.val(currentVal + 1).change();
                 }
             } else {
-                input.val(0);
+                input.val(1);
             }
         }
     });
@@ -25,7 +25,7 @@ $(document).ready(function(){
         let fieldName = $(this).attr('data-field');
         let input = $("." + fieldName);
 
-        input.val(0);
+        input.val(1);
     });
 
 
@@ -34,7 +34,7 @@ $(document).ready(function(){
             theme: "minimal"
         });
 
-        $('#dismiss, .overlay').on('click', function () {
+        $('.dismiss, .overlay').on('click', function () {
             $('#sidebar').removeClass('active');
             $('.overlay').removeClass('active');
         });

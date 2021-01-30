@@ -1,0 +1,24 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+}
+
+#delivery-wrapper {
+
+}
+
+ h2 {
+    color: rgb(128, 5, 33);
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.delivery-type {
+    margin-top: 30px;
+    margin-right: 1%;
+    border-radius: 40px;
+    font-size: 1em;
+    font-weight: 300;
+    line-height: 1.7em;
+}

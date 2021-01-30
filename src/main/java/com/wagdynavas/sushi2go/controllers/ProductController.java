@@ -145,9 +145,8 @@ public class ProductController {
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             int quantity = Integer.valueOf(productQuantity);
-            for (int i = 0; i < quantity; i++) {
-                products.add(product);
-            }
+            product.setQuantity(quantity);
+            products.add(product);
             order.setProducts(products);
             order.setCustomerInstructions(customersInstructions);
         }

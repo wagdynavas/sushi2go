@@ -37,6 +37,5 @@ public class Product {
     @NotNull(message = "Please, select a category")
     private String category;
 
-
     transient private Integer quantity;
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Data
@@ -15,10 +16,6 @@ public class Order {
     @Column(name = "ORD_ID")
     private Long orderId;
 
-    @OneToOne
-    @JoinColumn(name = "ORD_USER_ID", nullable = false)
-    private User user;
-
     @Column(name = "ORD_STATUS", nullable = false)
     private String status;
 
@@ -28,8 +25,19 @@ public class Order {
     @Column(name = "ORD_CUSTOMER_INSTRUCTIONS", nullable = false)
     private String customerInstructions;
 
-    @OneToMany
-    @JoinColumn(name = "ORD_PRODUCTS", nullable = false)
+    @Column(name = "ORD_RESTAURANT_BRANCH", nullable = false)
+    private String restaurantBranch;
+
+    @Column(name = "ORD_DELIVER_ADDRESS")
+    private String deliverAddress;
+
+    @Column(name = "ORD_DELIVER_ADDRESS_COMPLEMENT")
+    private String deliverAddressComplement;
+
+    @Column(name = "ORD_DELIVER_INSTRUCTIONS" )
+    private String deliverInstructions;
+
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Product> products;
 
     transient private Product product;

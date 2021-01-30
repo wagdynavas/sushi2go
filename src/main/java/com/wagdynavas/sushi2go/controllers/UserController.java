@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
 
     @GetMapping("/login")
@@ -41,11 +41,11 @@ public class UserController {
         return userService.createUser(user, result);
     }
 
-    @GetMapping("/${username}}")
+   /* @GetMapping("/${username}}")
     public ModelAndView listUsersByUsername(@PathVariable  String username) {
         //return userService.getusersByUsername(user);
 
         return null;
-    }
+    }*/
 
 }

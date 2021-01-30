@@ -27,11 +27,10 @@ a:focus {
 
 #navbar {
     padding: 15px 10px;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.0);
     border: none;
     border-radius: 0;
     margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-btn {
@@ -205,9 +204,18 @@ a.article:hover {
 
 
 h2{
-    font-size: 1.3em;
+
+    font-size: 1.5em;
     color: rgb(128, 5, 33); !important;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+
+.entrees_span {
+    text-transform: none;
+    color: #000000;
+    font-size: 0.8em;
 }
 
 .product-container h1 {
@@ -216,6 +224,11 @@ h2{
 
 .product-name {
     font-weight: bold;
+}
+
+.product-name:hover {
+    color: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
 }
 
 .create-product {
@@ -304,23 +317,6 @@ h2{
     font-weight: bold;
 }
 
-.row {
-    margin-bottom: 10px;
-}
-
-
-
-.product-item {
-    border-right:  solid;
-    border-width: thin;
-    border-color: rgba(0, 0, 0, 0.2);
-}
-
-
-.product-item:hover{
-    background-color: #f7f7f7;
-}
-
 
 .add-remove-btn {
     font-weight: bold;
@@ -333,6 +329,10 @@ h5 {
 
 .product-id {
     display: none;
+}
+
+.row-item {
+    margin-bottom: 1rem;
 }
 
 
