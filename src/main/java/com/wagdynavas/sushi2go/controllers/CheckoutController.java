@@ -22,6 +22,11 @@ public class CheckoutController {
             checkoutOrder = new Order();
         }
 
+        if (checkoutOrder != null) {
+
+
+        }
+
         checkoutOrder.setStatus(OrderTypes.NEW.toString());
         checkoutOrder.setOrderDate(LocalDate.now());
         view.addObject("checkoutOrder", checkoutOrder);

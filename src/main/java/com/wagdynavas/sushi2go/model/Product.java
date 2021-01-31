@@ -28,7 +28,7 @@ public class Product {
 
     @Column(name = "PRODUCT_PRICE", nullable = false)
     @NotNull(message = "Price can't ne null")
-    private BigDecimal price;
+    private BigDecimal price ;
 
     @Column(name = "PRODUCT_IMG_PATH")
     private String productImagePath;
@@ -38,4 +38,13 @@ public class Product {
     private String category;
 
     transient private Integer quantity;
+
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price.setScale(2);
+    }
 }

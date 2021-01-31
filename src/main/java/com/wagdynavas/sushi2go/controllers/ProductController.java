@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -145,6 +146,8 @@ public class ProductController {
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             int quantity = Integer.valueOf(productQuantity);
+            BigDecimal productPrice = productService.calculatePrice(product.getPrice(), quantity);
+            product.setPrice(productPrice);
             product.setQuantity(quantity);
             products.add(product);
             order.setProducts(products);

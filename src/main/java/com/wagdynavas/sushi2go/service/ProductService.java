@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -164,6 +166,7 @@ public class ProductService {
             productRepository.save(product);
             view.setViewName("redirect:/products/list");
         } else {
+            product.setPrice(product.getPrice().setScale(2, RoundingMode.CEILING));
             productRepository.save(product);
             view.setViewName("redirect:/products/list");
         }
@@ -179,6 +182,12 @@ public class ProductService {
         int menuDirectoryIndex = imageAbsolutePath.indexOf("menu" + File.separator );
 
         return menuDirectoryIndex != -1 ? imageAbsolutePath.substring(menuDirectoryIndex).replaceAll("\\\\", "/") : imageAbsolutePath;
+    }
+
+
+    public BigDecimal calculatePrice(BigDecimal productPrice, int productQuantity) {
+        BigDecimal productBigDecimal = new BigDecimal(productQuantity);
+        return productPrice.multiply(productBigDecimal);
     }
 
 

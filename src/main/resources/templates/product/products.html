@@ -135,7 +135,7 @@
                                             <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="dinner_entrees">
                                                 +
                                             </button>
-                                            <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="dinner_entrees">Add</button>
+                                            <button type="submit" class="btn btn-dark btn-red btn-lg add-cart-btn" data-type="minus" data-field="dinner_entrees">Add</button>
                                             <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="dinner_entrees">
                                                 Cancel
                                             </button>
@@ -1843,28 +1843,17 @@
                                             <textarea rows="3" id="bento-box-instructions" name="customers-instructions" class="form-control" placeholder="Add special instructions"></textarea>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="btn rounded-circle btn-lg add-remove-btn">-</button>
-                                            <div class="bento_box_quantity" th:data="${bento_box_quantity}"
-                                                 th:text="${bento_box_quantity}"></div>
-                                            <button class="btn rounded-circle  add-remove-btn">+</button>
-                                            <botton th:href="@{/products/add-to-order/{id}/{qty}(id=${bb.id}, qty=${bento_box_quantity})}"
-                                                    class="btn btn-dark btn-red btn-lg">Add
-                                            </botton>
-                                            <button type="button" class="btn-lg btn-secondary" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                Cancel
-                                            </button>
-
                                             <button type="button" class="btn rounded-circle btn-lg add-remove-btn" data-type="minus" data-field="bento_box_quantity">
                                                 -
                                             </button>
                                             <input type="text" class="bento_box_quantity form-control" name="product_quantity" value="1" min="1" max="50"/>
-                                            <button type="button" class="btn rounded-circle  add-remove-btn plus"
-                                                    data-type="plus" data-field="bento_box_quantity">
+                                            <button type="button" class="btn rounded-circle  add-remove-btn plus" data-type="plus" data-field="bento_box_quantity">
                                                 +
                                             </button>
                                             <button type="submit" class="btn btn-dark btn-red btn-lg" data-type="minus" data-field="bento_box_quantity">Add</button>
-                                            <button type="button" class="btn-lg btn-secondary btn-close" data-dismiss="modal" aria-label="Close" data-field="bento_box_quantity">
+                                            <button type="button" class="btn-lg btn-secondary btn-close"
+                                                    data-dismiss="modal" aria-label="Close"
+                                                    data-field="bento_box_quantity">
                                                 Cancel
                                             </button>
                                         </div>
