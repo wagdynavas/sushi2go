@@ -4,6 +4,7 @@ package com.wagdynavas.sushi2go.controllers;
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.model.Product;
 import com.wagdynavas.sushi2go.service.ProductService;
+import com.wagdynavas.sushi2go.util.SessionUtil;
 import com.wagdynavas.sushi2go.util.type.CategoryTypes;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -30,25 +31,6 @@ public class ProductController {
 
     public ProductController(ProductService productService) {
         this.productService = productService;
-    }
-
-    /**
-     *
-     *
-     * @return <code>ModelAndView</code>
-     */
-    @GetMapping("/list")
-    public ModelAndView listProduct() {
-        ModelAndView mv =  productService.getAllProductsSortByCategory();
-        Order order = new Order();
-        order.setProduct(new Product());
-        order.getProduct().setQuantity(0);
-        mv.addObject("order", order);
-        mv.addObject("menuItems", CategoryTypes.values());
-        mv.addObject("menuLunches", createMenuItems(CategoryTypes.values(),CategoryTypes.LUNCH ));
-        mv.addObject("menuDinners", createMenuItems(CategoryTypes.values(),CategoryTypes.DINNER ));
-
-        return mv;
     }
 
     /**
@@ -82,6 +64,29 @@ public class ProductController {
         view.addObject("h1", "Update Product");
 
         return view;
+    }
+
+    /**
+     *
+     *
+     * @return <code>ModelAndView</code>
+     */
+    @GetMapping("/list")
+    public ModelAndView listProduct(HttpServletRequest request) {
+        ModelAndView mv =  productService.getAllProductsSortByCategory();
+        Order order = new Order();
+        Integer cartQuantity = SessionUtil.getCartQuantity(request);
+        if (cartQuantity > 0) {
+            order = (Order) request.getSession().getAttribute("order");
+        }
+
+        mv.addObject("cartQuantity", SessionUtil.getCartQuantity(request));
+        mv.addObject("order", order);
+        mv.addObject("menuItems", CategoryTypes.values());
+        mv.addObject("menuLunches", createMenuItems(CategoryTypes.values(),CategoryTypes.LUNCH ));
+        mv.addObject("menuDinners", createMenuItems(CategoryTypes.values(),CategoryTypes.DINNER ));
+
+        return mv;
     }
 
     @GetMapping("/create")
@@ -142,10 +147,12 @@ public class ProductController {
         }
 
         String productQuantity = request.getParameter("product_quantity");
+        Integer cartQuantity  = SessionUtil.getCartQuantity(request);
+
+        int quantity = Integer.valueOf(productQuantity);
 
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
-            int quantity = Integer.valueOf(productQuantity);
             BigDecimal productPrice = productService.calculatePrice(product.getPrice(), quantity);
             product.setPrice(productPrice);
             product.setQuantity(quantity);
@@ -154,7 +161,11 @@ public class ProductController {
             order.setCustomerInstructions(customersInstructions);
         }
 
+        cartQuantity += quantity;
+        request.getSession().setAttribute("cartQuantity", cartQuantity);
         ModelAndView view = reloadProductList();
+        view.addObject("cartQuantity", cartQuantity);
+
         return view;
     }
 
