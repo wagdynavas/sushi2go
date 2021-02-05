@@ -22,3 +22,12 @@ body {
     font-weight: 300;
     line-height: 1.7em;
 }
+
+
+.delete-btn {
+    color: #000000;
+}
+
+.delete-btn:hover{
+    color: rgb(128, 5, 33);
+}

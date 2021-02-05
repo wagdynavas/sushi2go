@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,72 +14,84 @@
 <body>
 <header th:replace="/fragments/fragments :: header"></header>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 col-lg-8">
-                <div class="container">
-                    <nav class="nav">
-                        <button type="button" class="btn btn-dark btn-red delivery-type active ">
-                            <i class="fas fa-car"></i>
-                            <span>Delivery</span>
-                        </button>
+<div class="container-fluid">
+    <form class="form-horizontal" method="post" action="/checkout" th:object="${checkoutOrder}">
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <div class="container">
+                <nav class="nav">
+                    <button type="button" class="btn btn-dark btn-red delivery-type active ">
+                        <i class="fas fa-car"></i>
+                        <span>Delivery</span>
+                    </button>
 
-                        <button type="button"  class="btn btn-dark btn-red delivery-type">
-                            <i class="fas fa-walking"></i>
-                            <span>Pickup</span>
-                        </button>
-                    </nav>
+                    <button type="button" class="btn btn-dark btn-red delivery-type">
+                        <i class="fas fa-walking"></i>
+                        <span>Pickup</span>
+                    </button>
+                </nav>
                     <div id="delivery-wrapper">
                         <h2>Deliver Details</h2>
-                        <form class="" method="post" action="" th:object="${checkoutOrder}">
-                            <div class="row">
-                                <div class="form-group col-12 col-lg-9">
-                                    <select th:field="*{restaurantBranch}"   class="form-control form-control-lg" placeholder="">
-                                        <option th:value="${null}"  >Select restaurant branch</option>
-                                        <option th:value="${rbs.getValue()}" th:each="rbs : ${restaurantBranch}" th:text="${rbs.getLabel()}"></option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-12 col-lg-9">
-                                    <input th:field="*{deliverAddress}"  type="text" class="form-control form-control-lg" placeholder="Enter delivery address">
-                                </div>
-
-                                <div class="form-group col-12 col-lg-9">
-                                    <input th:object="${checkoutOrder.deliverAddressComplement}"  type="text" class="form-control form-control-lg" placeholder="Apartment, suite, floor, etc..">
-                                </div>
-
-                                <div class="form-group col-12 col-lg-9">
-                                    <textarea rows="2" th:object="${checkoutOrder.deliverInstructions}"  class="form-control form-control-lg" placeholder="Add deliver instructions"></textarea>
-                                </div>
-
-                                <div class="form-group col-12 col-lg-9">
-                                    <input  type="submit" class="btn btn-dark btn-red btn-lg form-control" value="Save & Continue"/>
-                                </div>
+                        <div class="row">
+                            <div class="form-group col-12 col-lg-9">
+                                <select th:field="*{restaurantBranch}" class="form-control form-control-lg" placeholder="">
+                                    <option th:value="${null}">Select restaurant branch</option>
+                                    <option th:value="${rbs.getValue()}" th:each="rbs : ${restaurantBranch}" th:text="${rbs.getLabel()}"></option>
+                                </select>
                             </div>
-                        </form>
+
+                            <div class="form-group col-12 col-lg-9">
+                                <input th:field="*{deliverAddress}" type="text" class="form-control form-control-lg" placeholder="Enter delivery address">
+                            </div>
+
+                            <div class="form-group col-12 col-lg-9">
+                                <input th:field="*{deliverAddressComplement}" type="text" class="form-control form-control-lg"
+                                       placeholder="Apartment, suite, floor, etc..">
+                            </div>
+
+                            <div class="form-group col-12 col-lg-9">
+                                <textarea rows="2" th:field="*{deliverInstructions}" class="form-control form-control-lg"
+                                          placeholder="Add deliver instructions"></textarea>
+                            </div>
+
+                            <div class="form-group col-12 col-lg-9">
+                                <input type="submit" class="btn btn-dark btn-red btn-lg form-control" value="Save & Continue"/>
+                            </div>
+                        </div>
                     </div>
 
                     <div id="pickup-wrapper">
-
+                        <div class="form-group col-12 col-lg-9">
+                            <select th:field="*{restaurantBranch}" class="form-control form-control-lg" placeholder="">
+                                <option th:value="${null}">Select restaurant branch</option>
+                                <option th:value="${rbs.getValue()}" th:each="rbs : ${restaurantBranch}" th:text="${rbs.getLabel()}"></option>
+                            </select>
+                        </div>
                     </div>
-                </div>
             </div>
-            <div class="col-12 col-lg-4">
-                <div class="container">
-                    <h2>Your Order</h2>
-                    <div th:each="product : ${checkoutOrder.products}" class="row">
-                        <div class="col-12">
-                            <div class="row">
-                                <div th:text="${product.getQuantity()}" class="col-1"></div>
-                                <div th:text="${product.getProductName()}" class="col-8"></div>
-                                <div th:text="'$' + ${product.getPrice()}" class="col-3"></div>
-                            </div>
+        </div>
+
+
+        <div class="col-12 col-lg-4">
+            <div class="container">
+                <h2>Your Order</h2>
+                <div th:each="product : ${checkoutOrder.products}" class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div th:text="${product.getQuantity()}" class="col-1"></div>
+                            <div th:text="${product.getProductName()}" class="col-8"></div>
+                            <div th:text="'$' + ${product.getPrice()}" class="col-2"></div>
+                            <a class="col-1  delete-btn" th:href="@{/delete/{id}(id=${product.getId()})}">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</form>
+</div>
 <div class="footer" th:replace="/fragments/fragments :: footer"></div>
 <script th:replace="/fragments/fragments :: jquery"></script>
 <script th:replace="/fragments/fragments :: bootstrap_js"></script>

@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/products")
@@ -137,6 +138,7 @@ public class ProductController {
     public ModelAndView addProductToOrder( Order order, HttpServletRequest  request) {
         String productId = request.getParameter("product-id");
         String customersInstructions = request.getParameter("customers-instructions");
+
 
         Optional<Product> optionalProduct = productService.getProductById(Long.valueOf(productId));
         List products = order.getProducts();

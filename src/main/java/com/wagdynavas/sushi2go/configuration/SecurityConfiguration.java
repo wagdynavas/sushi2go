@@ -29,7 +29,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    private static final String[] noAuthorizationNeeded  = {"/", "/about", "/products/list", "/contact", "/products/add-to-order", "/media/**", "/checkout"};
+    private static final String[] noAuthorizationNeeded  = {
+            "/", "/about", "/products/list", "/contact", "/products/add-to-order", "/media/**", "/checkout",
+            "/delete/**"
+    };
 
     private static final String[] staticResources  =  {
             "/css/**",
