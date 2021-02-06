@@ -20,12 +20,12 @@
         <div class="col-12 col-lg-8">
             <div class="container">
                 <nav class="nav">
-                    <button type="button" class="btn btn-dark btn-red delivery-type active ">
+                    <button id="btn-delivery" type="button" class="btn btn-dark btn-red delivery-type active ">
                         <i class="fas fa-car"></i>
                         <span>Delivery</span>
                     </button>
 
-                    <button type="button" class="btn btn-dark btn-red delivery-type">
+                    <button id="btn-pickup" type="button" class="btn btn-dark btn-red delivery-type">
                         <i class="fas fa-walking"></i>
                         <span>Pickup</span>
                     </button>
@@ -53,21 +53,44 @@
                                 <textarea rows="2" th:field="*{deliverInstructions}" class="form-control form-control-lg"
                                           placeholder="Add deliver instructions"></textarea>
                             </div>
+                        </div>
+                    </div>
 
+                    <div id="pickup-wrapper" class="hidden">
+                        <h2>Pickup Details</h2>
+                        <div class="row">
                             <div class="form-group col-12 col-lg-9">
-                                <input type="submit" class="btn btn-dark btn-red btn-lg form-control" value="Save & Continue"/>
+                                <select  id="pickup-selector" class="form-control form-control-lg" placeholder="">
+                                    <option>Select restaurant branch</option>
+                                    <option value="dundas">Dundas & Kipling (Dundas)</option>
+                                    <option value="royal-york">Bloor & Royal York (Royal York)</option>
+                                    <option value="queensway">Queensway & Islington (Queensway)</option>
+                                </select>
+                                <div class="row">
+                                    <div id="queensway" class="col-12 address-container hidden">
+                                        <h4>Queensway & Islington (Queensway)</h4>
+                                        <p> Open Monday to Saturday<br> Tel 416-259-4246, 416-259-4665<br>
+                                            Address: 892 The Queensway</p>
+                                    </div>
+                                    <div id="dundas" class="col-12  address-container hidden">
+                                        <h4>Dundas & Kipling (Dundas)</h4>
+                                        <p> Open Monday to Saturday <br> Tel 416-233-4227 <br>
+                                            Address: 5280 Dundas St.West</p>
+                                    </div>
+
+                                    <div id="royal-york" class="col-12  address-container hidden">
+                                        <h4>Bloor & Royal York (Royal York)</h4>
+                                        <p> Open Tuesday to Sunday<br> 416-232-9030, 416-236-5909<br>
+                                            Address: 2976 Bloor St.West</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="pickup-wrapper">
-                        <div class="form-group col-12 col-lg-9">
-                            <select th:field="*{restaurantBranch}" class="form-control form-control-lg" placeholder="">
-                                <option th:value="${null}">Select restaurant branch</option>
-                                <option th:value="${rbs.getValue()}" th:each="rbs : ${restaurantBranch}" th:text="${rbs.getLabel()}"></option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-dark btn-red btn-lg form-control col-12 col-lg-9" value="Save & Continue"/>
+                </div>
             </div>
         </div>
 
@@ -95,5 +118,6 @@
 <div class="footer" th:replace="/fragments/fragments :: footer"></div>
 <script th:replace="/fragments/fragments :: jquery"></script>
 <script th:replace="/fragments/fragments :: bootstrap_js"></script>
+<script  src="/js/checkout.js"></script>
 </body>
 </html>

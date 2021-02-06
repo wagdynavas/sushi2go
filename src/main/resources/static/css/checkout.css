@@ -31,3 +31,11 @@ body {
 .delete-btn:hover{
     color: rgb(128, 5, 33);
 }
+
+.hidden {
+    display: none;
+}
+
+.address-container {
+    margin-top: 20px;
+}
