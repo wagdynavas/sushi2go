@@ -69,3 +69,8 @@ body {
     border-radius: 50%;
     font-weight: bold;
 }
+
+.btn-cart {
+    top: 11px;
+    position: relative;
+}
