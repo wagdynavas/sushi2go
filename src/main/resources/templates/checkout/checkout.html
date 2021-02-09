@@ -8,6 +8,9 @@
     <link th:replace="/fragments/fragments :: fragment_css">
     <link rel="stylesheet" type="text/css" href="/css/checkout.css">
 
+    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 </head>
@@ -15,48 +18,48 @@
 <header th:replace="/fragments/fragments :: header"></header>
 
 <div class="container-fluid checkout-container">
-    <form class="form-horizontal" method="post" action="/checkout" th:object="${checkoutOrder}">
-    <div class="row">
-        <div class="col-12 col-lg-8">
-            <div class="container">
-                <nav class="nav">
-                    <button id="btn-delivery" type="button" class="btn btn-dark btn-red delivery-type active ">
-                        <i class="fas fa-car"></i>
-                        <span>Delivery</span>
-                    </button>
+    <div class="wrapper">
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <div class="container">
+                    <nav class="nav">
+                        <!--  <button id="btn-delivery" type="button" class="btn btn-dark btn-red delivery-type active ">
+                              <i class="fas fa-car"></i>
+                              <span>Delivery</span>
+                          </button> -->
 
-                    <button id="btn-pickup" type="button" class="btn btn-dark btn-red delivery-type">
-                        <i class="fas fa-walking"></i>
-                        <span>Pickup</span>
-                    </button>
-                </nav>
-                    <div id="delivery-wrapper">
-                        <h2>Deliver Details</h2>
-                        <div class="row">
-                            <div class="form-group col-12 col-lg-9">
-                                <select th:field="*{restaurantBranch}" class="form-control form-control-lg" placeholder="">
-                                    <option th:value="${null}">Select restaurant branch</option>
-                                    <option th:value="${rbs.getValue()}" th:each="rbs : ${restaurantBranch}" th:text="${rbs.getLabel()}"></option>
-                                </select>
-                            </div>
+                        <button id="btn-pickup" type="button" class="btn btn-dark btn-red delivery-type">
+                            <i class="fas fa-walking"></i>
+                            <span>Pickup</span>
+                        </button>
+                    </nav>
+                    <!--  <div id="delivery-wrapper">
+                          <h2>Deliver Details</h2>
+                          <div class="row">
+                              <div class="form-group col-12 col-lg-9">
+                                  <select th:field="*{restaurantBranch}" class="form-control form-control-lg" placeholder="">
+                                      <option th:value="${null}">Select restaurant branch</option>
+                                      <option th:value="${rbs.getValue()}" th:each="rbs : ${restaurantBranch}" th:text="${rbs.getLabel()}"></option>
+                                  </select>
+                              </div>
 
-                            <div class="form-group col-12 col-lg-9">
-                                <input th:field="*{deliverAddress}" type="text" class="form-control form-control-lg" placeholder="Enter delivery address">
-                            </div>
+                              <div class="form-group col-12 col-lg-9">
+                                  <input th:field="*{deliverAddress}" type="text" class="form-control form-control-lg" placeholder="Enter delivery address">
+                              </div>
 
-                            <div class="form-group col-12 col-lg-9">
-                                <input th:field="*{deliverAddressComplement}" type="text" class="form-control form-control-lg"
-                                       placeholder="Apartment, suite, floor, etc..">
-                            </div>
+                              <div class="form-group col-12 col-lg-9">
+                                  <input th:field="*{deliverAddressComplement}" type="text" class="form-control form-control-lg"
+                                         placeholder="Apartment, suite, floor, etc..">
+                              </div>
 
-                            <div class="form-group col-12 col-lg-9">
-                                <textarea rows="2" th:field="*{deliverInstructions}" class="form-control form-control-lg"
-                                          placeholder="Add deliver instructions"></textarea>
-                            </div>
-                        </div>
-                    </div>
+                              <div class="form-group col-12 col-lg-9">
+                                  <textarea rows="2" th:field="*{deliverInstructions}" class="form-control form-control-lg"
+                                            placeholder="Add deliver instructions"></textarea>
+                              </div>
+                          </div>
+                      </div> -->
 
-                    <div id="pickup-wrapper" class="hidden">
+                    <div id="pickup-wrapper" class="">
                         <h2>Pickup Details</h2>
                         <div class="row">
                             <div class="form-group col-12 col-lg-9">
@@ -88,36 +91,110 @@
                         </div>
                     </div>
 
-                <div class="form-group">
-                    <input type="submit" class="btn btn-dark btn-red btn-lg form-control col-12 col-lg-9" value="Save & Continue"/>
+                    <div class="tips">
+                        <p>Show you support with a tip:</p>
+                        <div class="btn-group-lg btn-group-toggle" data-toggle="buttons">
+                            <label class="btn  btn-light">
+                                <input type="radio" name="tips" autocomplete="off" >10%
+                            </label>
+                            <label class="btn btn-light active">
+                                <input type="radio" name="tips" autocomplete="off" >15%
+                            </label>
+                            <label class="btn btn-light">
+                                <input type="radio" name="tips" autocomplete="off" >20%
+                            </label>
+                            <label class="btn btn-light">
+                                <input type="radio" name="tips" autocomplete="off" >Edit
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input id="checkout-button" type="submit" class="btn btn-dark btn-red btn-lg form-control col-12 col-lg-9" value="Save & Continue"/>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
-        <div class="col-12 col-lg-4">
-            <div class="container">
-                <h2>Your Order</h2>
-                <div th:each="product : ${checkoutOrder.products}" class="row">
-                    <div class="col-12">
-                        <div class="row">
-                            <div th:text="${product.getQuantity()}" class="col-1"></div>
-                            <div th:text="${product.getProductName()}" class="col-8"></div>
-                            <div th:text="'$' + ${product.getPrice()}" class="col-2"></div>
-                            <a class="col-1  delete-btn" th:href="@{/delete/{id}(id=${product.getId()})}">
-                                <i class="fas fa-trash"></i>
-                            </a>
+            <div class="col-12 col-lg-4">
+                <div class="container">
+                    <h2>Your Order</h2>
+                    <div th:each="product : ${checkoutOrder.products}" class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div th:text="${product.getQuantity()}" class="col-1"></div>
+                                <div th:text="${product.getProductName()}" class="col-6"></div>
+                                <div th:text="'$' + ${product.getPrice()}" class="col-3"></div>
+                                <a class="delete-btn" th:href="@{/delete/{id}(id=${product.getId()})}">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 divisor"></div>
+                    </div>
+                    <div class="row">
+                        <label class="col-7">Subtotal:</label>
+                        <div class="col-3" th:text=" '$' + ${subTotal}"></div>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-7">Taxes:</label>
+                        <div class="col-3" th:text=" '$' + ${tax}"></div>
+                    </div>
+                    <div class="row">
+                        <label class="col-7"><strong>Total:</strong></label>
+                        <div class="col-3 total-amount-value" th:text=" '$' +  ${totalAmount}"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</form>
+   <!-- <form class="form-horizontal" method="POST" action="/charge" th:object="${checkoutOrder}"> -->
+
+<!-- </form> -->
+
 </div>
 <div class="footer" th:replace="/fragments/fragments :: footer"></div>
+
+
+
 <script th:replace="/fragments/fragments :: jquery"></script>
 <script th:replace="/fragments/fragments :: bootstrap_js"></script>
 <script  src="/js/checkout.js"></script>
+<script type="text/javascript">
+
+
+    // Create an instance of the Stripe object with your publishable API key
+    let stripe =Stripe('pk_test_51HgH1FGRXCYNFhPCNMunxSJwfwvQ0ByuLuVV66NokzN14olynK8s2uYOf8g7gExiahYFjKZM8jEQtecc76JBXSEh00n09awOLA');
+    let checkoutButton = document.getElementById('checkout-button');
+
+    checkoutButton.addEventListener('click', function() {
+        // Create a new Checkout Session using the server-side endpoint you
+        // created in step 3.
+        fetch('/create-checkout-session', {
+            method: 'POST',
+        })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(session) {
+                console.log(session)
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .then(function(result) {
+                // If `redirectToCheckout` fails due to a browser or network
+                // error, you should display the localized error message to your
+                // customer using `error.message`.
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+    });
+</script>
 </body>
 </html>

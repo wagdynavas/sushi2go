@@ -1,7 +1,7 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
     font-family: 'Poppins', sans-serif;
-    background: #fafafa;
+    height: 100%;
 }
 
 #delivery-wrapper {
@@ -42,5 +42,35 @@ body {
 
 
 .checkout-container {
-    height: 800px;
+
+}
+
+
+
+.divisor {
+    border-top: solid;
+    border-width: thin;
+    color: #bbbbbb;
+    margin-bottom: 20px;
+}
+
+.total-amount-value {
+    font-weight: 600;
+}
+
+.tips {
+    margin-bottom: 3rem;
+}
+
+.tips p{
+    font-weight: 500;
+    font-size: 1.4em
+}
+
+.wrapper {
+    min-height: calc(100vh - 160px);
+}
+
+.footer {
+    height: 150px;
 }

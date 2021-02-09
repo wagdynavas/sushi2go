@@ -3,6 +3,7 @@ package com.wagdynavas.sushi2go.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,9 @@ public class Order {
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Product> products;
+
+    @Column(name = "ORD_TOTAL_AMOUNT")
+    private BigDecimal totalAmount;
 
     transient private Product product;
 
