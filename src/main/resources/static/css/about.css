@@ -15,7 +15,6 @@ a:focus {
 }
 
 .about-area {
-    min-height: 100%;
     position: relative;
     display: flex;
     align-items: center;
@@ -24,5 +23,14 @@ a:focus {
 
 .main {
     overflow: auto;
+}
+
+
+.wrapper {
+    min-height: calc(100vh - 160px);
+}
+
+.footer {
+    height: 150px;
 }
 
