@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
+    <title>Checkout</title>
     <link th:replace="/fragments/fragments :: bootstrap_css">
     <link th:replace="/fragments/fragments :: fragment_css">
     <link rel="stylesheet" type="text/css" href="/css/checkout.css">
@@ -114,7 +114,7 @@
                                     <div th:text="${product.getQuantity()}" class="col-1"></div>
                                     <div th:text="${product.getProductName()}" class="col-6"></div>
                                     <div th:text="'$' + ${product.getPrice()}" class="col-3"></div>
-                                    <a class="delete-btn" th:href="@{/delete/{id}(id=${product.getId()})}">
+                                    <a class="delete-btn" th:href="@{/checkout/delete/{id}(id=${product.getId()})}">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </div>

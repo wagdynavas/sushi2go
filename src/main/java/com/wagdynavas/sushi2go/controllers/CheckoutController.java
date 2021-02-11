@@ -1,7 +1,6 @@
 package com.wagdynavas.sushi2go.controllers;
 
 import com.stripe.exception.StripeException;
-import com.stripe.model.TaxRate;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.wagdynavas.sushi2go.model.Order;
@@ -11,6 +10,7 @@ import com.wagdynavas.sushi2go.util.NumberUtil;
 import com.wagdynavas.sushi2go.util.SessionUtil;
 import com.wagdynavas.sushi2go.util.type.OrderTypes;
 import com.wagdynavas.sushi2go.util.type.RestaurantBranch;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
+@Log4j2
 public class CheckoutController {
 
     @Value("${stripe.test.key}")
@@ -89,12 +90,13 @@ public class CheckoutController {
     @PostMapping("/create-checkout-session")
     @ResponseBody
     public Map<String, String> create( HttpServletRequest request) throws StripeException {
+        log.debug("Creating Stripe session.");
         Order checkoutOrder  = (Order) request.getSession().getAttribute("order");
 
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("https://example.com/success")
+                .setSuccessUrl("http://localhost:8080/checkout/succeeded")
                 .setCancelUrl("https://example.com/cancel")
                 .addLineItem(
                         SessionCreateParams.LineItem.builder()
@@ -114,6 +116,7 @@ public class CheckoutController {
         Session session = Session.create(params);
         Map<String, String> responseData = new HashMap<>();
         responseData.put("id", session.getId());
+        log.debug("Stripe session created: " + session.getId());
         
 
         return responseData;
@@ -127,7 +130,7 @@ public class CheckoutController {
      *
      * @return view to checkout.html
      */
-    @GetMapping("/delete/{id}")
+    @GetMapping("/checkout/delete/{id}")
     public ModelAndView delete(@PathVariable("id") Long productId, HttpServletRequest request) {
         Order checkoutOrder  = (Order) request.getSession().getAttribute("order");
         ModelAndView view = new ModelAndView();
@@ -157,5 +160,15 @@ public class CheckoutController {
         view.addObject("tipPercentage", value);
         view.setViewName("redirect:/checkout");
         return view;
+    }
+
+    @GetMapping("/checkout/succeeded")
+    public ModelAndView checkoutSucceeded() {
+       return new ModelAndView("/checkout/succeeded");
+    }
+
+    @GetMapping("/checkout/canceled")
+    public ModelAndView checkoutCanceled() {
+        return  new ModelAndView("/checkout/canceled");
     }
 }
