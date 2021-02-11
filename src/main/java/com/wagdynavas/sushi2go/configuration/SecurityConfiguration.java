@@ -31,7 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final String[] noAuthorizationNeeded  = {
             "/", "/about", "/products/list", "/contact", "/products/add-to-order", "/media/**", "/checkout",
-            "/delete/**", "/create-checkout-session"
+            "/delete/**", "/create-checkout-session", "/change-tip/**"
     };
 
     private static final String[] staticResources  =  {

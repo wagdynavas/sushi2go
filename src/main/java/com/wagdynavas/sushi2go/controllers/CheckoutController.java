@@ -1,11 +1,13 @@
 package com.wagdynavas.sushi2go.controllers;
 
 import com.stripe.exception.StripeException;
+import com.stripe.model.TaxRate;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.model.Product;
 import com.wagdynavas.sushi2go.service.CheckoutService;
+import com.wagdynavas.sushi2go.util.NumberUtil;
 import com.wagdynavas.sushi2go.util.SessionUtil;
 import com.wagdynavas.sushi2go.util.type.OrderTypes;
 import com.wagdynavas.sushi2go.util.type.RestaurantBranch;
@@ -42,6 +44,14 @@ public class CheckoutController {
     @GetMapping("/checkout")
     public ModelAndView checkout(HttpServletRequest request) {
         Order checkoutOrder  = (Order) request.getSession().getAttribute("order");
+        final BigDecimal taxPercentage = new BigDecimal(13);
+        String tipParameter =  request.getParameter("tipPercentage");
+        BigDecimal tipPercentage;
+        if (tipParameter == null) {
+             tipPercentage = new BigDecimal(15);
+        } else {
+            tipPercentage = new BigDecimal(tipParameter);
+        }
         List<Integer> productQuantitySelector = IntStream.rangeClosed(1, 50).boxed().collect(Collectors.toList());
         ModelAndView view = new ModelAndView();
 
@@ -51,8 +61,9 @@ public class CheckoutController {
 
 
         BigDecimal subTotal = checkoutService.calculateTotalAmountFromOrder(checkoutOrder);
-        BigDecimal tax = checkoutService.calculateOrderTax(subTotal);
-        BigDecimal totalAmount = subTotal.add(tax);
+        BigDecimal tax = NumberUtil.calculatePercentage(taxPercentage, subTotal);
+        BigDecimal tip = NumberUtil.calculatePercentage(tipPercentage, subTotal);
+        BigDecimal totalAmount = subTotal.add(tax).add(tip);
         checkoutOrder.setTotalAmount(totalAmount);
 
         checkoutOrder.setStatus(OrderTypes.NEW.toString());
@@ -60,6 +71,8 @@ public class CheckoutController {
         view.addObject("stripeKey", stripePublicKey);
         view.addObject("subTotal", subTotal);
         view.addObject("tax", tax);
+        view.addObject("tip", tip);
+        view.addObject("tipPercentage", tipPercentage);
         view.addObject("totalAmount", totalAmount);
         view.addObject("currency", "CAD");
         view.addObject("cartQuantity", SessionUtil.getCartQuantity(request));
@@ -92,7 +105,7 @@ public class CheckoutController {
                                 .setUnitAmount(checkoutService.convertOrderTotalAmountToStripeUnitAmount(checkoutOrder))
                                         .setProductData(
                                                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                .setName("Sushi2GO")
+                                                .setName("Sushi@go")
                                                 .build()
                                         ).build()
                         ).build()
@@ -127,6 +140,21 @@ public class CheckoutController {
 
         request.setAttribute("order", checkoutOrder);
         view.addObject("order", checkoutOrder);
+        view.setViewName("redirect:/checkout");
+        return view;
+    }
+
+    @GetMapping("/change-tip/{value}")
+    public ModelAndView changeTipValue(@PathVariable("value") Long value, HttpServletRequest request) {
+        Order checkoutOrder  = (Order) request.getSession().getAttribute("order");
+        ModelAndView view = new ModelAndView();
+
+
+
+        request.setAttribute("tipPercentage", value);
+        request.setAttribute("order", checkoutOrder);
+        view.addObject("order", checkoutOrder);
+        view.addObject("tipPercentage", value);
         view.setViewName("redirect:/checkout");
         return view;
     }

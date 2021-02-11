@@ -1,7 +1,10 @@
 package com.wagdynavas.sushi2go.service;
 
 import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
+import com.stripe.model.TaxRate;
+import com.stripe.param.TaxRateCreateParams;
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.model.Product;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,16 +51,15 @@ public class CheckoutService {
     }
 
 
-    /**
-     * Calculate tax value
-     *
-     * @param totalAmount Bill value before tax
-     * @return tax value
-     */
-    public BigDecimal calculateOrderTax(BigDecimal totalAmount) {
-        BigDecimal texValue;
-        final BigDecimal tax = new BigDecimal(13);
-        texValue = totalAmount.multiply(tax).divide(new BigDecimal(100), 2, RoundingMode.CEILING);
-        return texValue;
+    public TaxRate createTaxRate() throws StripeException {
+        TaxRateCreateParams params = TaxRateCreateParams.builder()
+                        .setDisplayName("Taxes")
+                        .setInclusive(true)
+                        .setPercentage(new BigDecimal("13"))
+                        .setCountry("CA")
+                        .setState("ON")
+                        .build();
+
+        return TaxRate.create(params);
     }
 }
