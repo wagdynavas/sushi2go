@@ -107,7 +107,7 @@ public class CheckoutController {
                                 .setUnitAmount(checkoutService.convertOrderTotalAmountToStripeUnitAmount(checkoutOrder))
                                         .setProductData(
                                                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                .setName("Sushi@go")
+                                                .setName("Sushi2go")
                                                 .build()
                                         ).build()
                         ).build()

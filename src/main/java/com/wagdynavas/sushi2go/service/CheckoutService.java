@@ -2,7 +2,6 @@ package com.wagdynavas.sushi2go.service;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
 import com.stripe.model.TaxRate;
 import com.stripe.param.TaxRateCreateParams;
 import com.wagdynavas.sushi2go.model.Order;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -25,12 +23,6 @@ public class CheckoutService {
     public void init() {
         Stripe.apiKey = stripePublicKey;
     }
-
-
-    public Charge charge(Order checkoutOrder) {
-        return null;
-    }
-
 
 
     public BigDecimal calculateTotalAmountFromOrder(Order order) {
