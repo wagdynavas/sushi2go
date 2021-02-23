@@ -41,15 +41,25 @@ public class Order {
     @OneToMany(fetch = FetchType.LAZY)
     private List<Product> products;
 
+    @Column(name = "ORD_SUB_TOTAL_AMOUNT")
+    private BigDecimal subTotalAmount;
+
     @Column(name = "ORD_TOTAL_AMOUNT")
     private BigDecimal totalAmount;
 
     transient private Product product;
 
-    //private PaymentDetails paymentDetails;
-    //TODO: Payment_Details. criar objecto e verificar como funcina todo o mecanoismo  de pagamentos com cartao de cretito
+    @Column(name = "ORD_TIP", nullable = false)
+    private BigDecimal tip;
 
+    transient private BigDecimal tipPercentage;
 
+    @Column(name = "ORD_TAX")
+    private BigDecimal tax;
+
+    @OneToOne
+    @JoinColumn(name = "ORD_CUSTOMER_ID")
+    private Customer customer;
 }
 
 

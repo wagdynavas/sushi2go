@@ -8,25 +8,18 @@ import com.wagdynavas.sushi2go.model.Product;
 import com.wagdynavas.sushi2go.service.CheckoutService;
 import com.wagdynavas.sushi2go.util.NumberUtil;
 import com.wagdynavas.sushi2go.util.SessionUtil;
-import com.wagdynavas.sushi2go.util.type.OrderTypes;
-import com.wagdynavas.sushi2go.util.type.RestaurantBranch;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @Log4j2
@@ -34,6 +27,8 @@ public class CheckoutController {
 
     @Value("${stripe.test.key}")
     private  String stripePublicKey;
+
+    private final BigDecimal taxPercentage = new BigDecimal(13);
 
     private CheckoutService checkoutService;
 
@@ -45,46 +40,40 @@ public class CheckoutController {
     @GetMapping("/checkout")
     public ModelAndView checkout(HttpServletRequest request) {
         Order checkoutOrder  = (Order) request.getSession().getAttribute("order");
-        final BigDecimal taxPercentage = new BigDecimal(13);
-        String tipParameter =  request.getParameter("tipPercentage");
-        BigDecimal tipPercentage;
-        if (tipParameter == null) {
-             tipPercentage = new BigDecimal(15);
-        } else {
-            tipPercentage = new BigDecimal(tipParameter);
-        }
-        List<Integer> productQuantitySelector = IntStream.rangeClosed(1, 50).boxed().collect(Collectors.toList());
-        ModelAndView view = new ModelAndView();
-
         if (checkoutOrder == null) {
             checkoutOrder = new Order();
         }
-
+        String tipParameter =  request.getParameter("tipPercentage");
+        if(tipParameter == null) tipParameter = "15";
+        BigDecimal tipPercentage = new BigDecimal(tipParameter);
 
         BigDecimal subTotal = checkoutService.calculateTotalAmountFromOrder(checkoutOrder);
-        BigDecimal tax = NumberUtil.calculatePercentage(taxPercentage, subTotal);
+        checkoutOrder.setSubTotalAmount(subTotal);
+
+        BigDecimal taxes = NumberUtil.calculatePercentage(taxPercentage, subTotal);
+        checkoutOrder.setTax(taxes);
+
         BigDecimal tip = NumberUtil.calculatePercentage(tipPercentage, subTotal);
-        BigDecimal totalAmount = subTotal.add(tax).add(tip);
+        checkoutOrder.setTip(tip);
+        checkoutOrder.setTipPercentage(tipPercentage);
+
+        BigDecimal totalAmount = subTotal.add(taxes).add(tip);
         checkoutOrder.setTotalAmount(totalAmount);
 
-        checkoutOrder.setStatus(OrderTypes.NEW.toString());
-        checkoutOrder.setOrderDate(LocalDate.now());
-        view.addObject("stripeKey", stripePublicKey);
-        view.addObject("subTotal", subTotal);
-        view.addObject("tax", tax);
-        view.addObject("tip", tip);
-        view.addObject("tipPercentage", tipPercentage);
-        view.addObject("totalAmount", totalAmount);
-        view.addObject("currency", "CAD");
-        view.addObject("cartQuantity", SessionUtil.getCartQuantity(request));
-        view.addObject("checkoutOrder", checkoutOrder);
-        view.addObject("restaurantBranch", RestaurantBranch.values());
-        view.addObject("productQuantitySelector", productQuantitySelector);
-
+        ModelAndView view = new ModelAndView();
         view.setViewName("checkout/checkout");
-
+        view.addObject("tip", tip);
+        view.addObject("tax", taxes);
+        view.addObject("subTotal", subTotal);
+        view.addObject("totalAmount", subTotal);
+        view.addObject("tipPercentage", tipPercentage);//used to keep an Active class on btn
+        view.addObject("checkoutOrder", checkoutOrder);
+        view.addObject("restaurantBranch", checkoutOrder.getRestaurantBranch());
+        view.addObject("cartQuantity", SessionUtil.getCartQuantity(request));//USed to keep track of how many item are in the cart
         return view;
     }
+
+
 
 
     @PostMapping("/create-checkout-session")
@@ -147,20 +136,6 @@ public class CheckoutController {
         return view;
     }
 
-    @GetMapping("/change-tip/{value}")
-    public ModelAndView changeTipValue(@PathVariable("value") Long value, HttpServletRequest request) {
-        Order checkoutOrder  = (Order) request.getSession().getAttribute("order");
-        ModelAndView view = new ModelAndView();
-
-
-
-        request.setAttribute("tipPercentage", value);
-        request.setAttribute("order", checkoutOrder);
-        view.addObject("order", checkoutOrder);
-        view.addObject("tipPercentage", value);
-        view.setViewName("redirect:/checkout");
-        return view;
-    }
 
     @GetMapping("/checkout/succeeded")
     public ModelAndView checkoutSucceeded() {
@@ -171,4 +146,38 @@ public class CheckoutController {
     public ModelAndView checkoutCanceled() {
         return  new ModelAndView("/checkout/canceled");
     }
+
+
+    @PostMapping("/checkout/save-and-continue")
+    public ModelAndView saveOrder(Order checkoutOrder, HttpServletRequest request)  {
+        log.debug("Saving order information");
+        Order sessionOrder  = (Order) request.getSession().getAttribute("order");
+
+        sessionOrder.setCustomer(checkoutOrder.getCustomer());
+        ModelAndView view = new ModelAndView();
+        view.setViewName("redirect:/checkout");
+        return view;
+    }
+
+    @GetMapping("/checkout/location/{restaurantLocation}")
+    public ModelAndView changeLocation(@PathVariable String restaurantLocation, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        Order sessionOrder  = (Order) request.getSession().getAttribute("order");
+        if (sessionOrder == null) {
+            sessionOrder = new Order();
+        }
+        sessionOrder.setRestaurantBranch(restaurantLocation);
+
+
+
+        request.setAttribute("restaurantBranch", restaurantLocation);
+        request.setAttribute("order", sessionOrder);
+        view.addObject("restaurantBranch", restaurantLocation);
+        view.addObject("order", sessionOrder);
+        view.setViewName("redirect:/checkout");
+        return view;
+    }
+
+
+
 }

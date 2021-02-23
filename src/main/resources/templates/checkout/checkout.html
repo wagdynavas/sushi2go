@@ -19,7 +19,7 @@
 
 <div class="container-fluid checkout-container">
     <div class="wrapper">
-        <div class="row">
+        <div class="form-group row">
             <div class="col-12 col-lg-7 checkout-right">
                     <nav class="nav">
                         <!--  <button id="btn-delivery" type="button" class="btn btn-dark btn-red delivery-type active ">
@@ -57,17 +57,17 @@
                               </div>
                           </div>
                       </div> -->
-
+                 <form id="from" class="form-group" method="post" th:object="${checkoutOrder}" action="/checkout/save-and-continue">
                     <div id="pickup-wrapper" class="">
                         <h2>Pickup Details</h2>
                         <div class="row">
                             <div class="form-group col-12 col-lg-9">
-                                <select  id="pickup-selector" class="form-control form-control-lg" placeholder="">
-                                    <option>Select restaurant branch</option>
-                                    <option value="dundas">Dundas & Kipling (Dundas)</option>
-                                    <option value="royal-york">Bloor & Royal York (Royal York)</option>
-                                    <option value="queensway">Queensway & Islington (Queensway)</option>
-                                </select>
+                                <div class="locations">
+                                    <p>Select your favorit location:</p>
+                                    <a id="location-DUNDAS" class="btn btn-lg btn-light " th:href="@{/checkout/location/{value}(value=${'DUNDAS'})}" >Dundas</a>
+                                    <a id="location-ROYAL_YORK" class="btn btn-lg btn-light " th:href="@{/checkout/location/{value}(value=${'ROYAL_YORK'})}" >Royal York</a>
+                                    <a id="location-QUEENSWAY" class="btn btn-lg btn-light " th:href="@{/checkout/location/{value}(value=${'QUEENSWAY'})}" >Queensway</a>
+                                </div>
                                 <div class="row">
                                     <div id="queensway" class="col-12 address-container hidden">
                                         <h4>Queensway & Islington (Queensway)</h4>
@@ -86,23 +86,52 @@
                                             Address: 2976 Bloor St.West</p>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-12 form-group">
+                                        <input type="text" th:field="*{customer.customerName}" class="form-control" name="customerName" placeholder="Name:">
+                                    </div>
+
+                                    <div class="col-12 form-group">
+                                        <input type="email" th:field="*{customer.customerEmail}" class="form-control" name="customerEmail" placeholder="Email:">
+                                    </div>
+
+                                    <div class="col-12 form-group">
+                                        <input type="tel" th:field="*{customer.customerPhone}" class="form-control" name="customerPhone" placeholder="Phone:">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="tips">
-                        <p>Show you support with a tip:</p>
-                        <a id="tip-10" class="btn btn-lg btn-light btn-tip" th:href="@{/change-tip/{value}(value=${10})}" >10%</a>
-                        <a id="tip-15" class="btn btn-lg btn-light btn-tip" th:href="@{/change-tip/{value}(value=${15})}" >15%</a>
-                        <a id="tip-20" class="btn btn-lg btn-light btn-tip" th:href="@{/change-tip/{value}(value=${20})}" >20%</a>
-                        <a id="tip-25" class="btn btn-lg btn-light btn-tip" th:href="@{/change-tip/{value}(value=${25})}" >25%</a>
-                        <a id="tip-30" class="btn btn-lg btn-light btn-tip" th:href="@{/change-tip/{value}(value=${30})}" >30%</a>
-                        <a id="tip-0"class="btn btn-lg btn-light btn-tip" th:href="@{/change-tip/{value}(value=${0})}" >No Thanks</a>
-                    </div>
+                     <div>
+
+                     </div>
+                     <div class="btn-group btn-group-toggle tips" data-toggle="buttons">
+                         <label class="btn btn-lg btn-light btn-tip">
+                             <input type="radio" name="options" value="10" id="option1"> 10%
+                         </label>
+                         <label class="btn btn-lg btn-light btn-tip active">
+                             <input type="radio" name="options" value="15" id="option2" checked> 15%
+                         </label>
+                         <label class="btn btn-lg btn-light btn-tip">
+                             <input type="radio" name="options" value="20" id="option3"> 20%
+                         </label>
+                         <label class="btn btn-lg btn-light btn-tip">
+                             <input type="radio" name="options" value="25" id="option4"> 25%
+                         </label>
+                         <label class="btn btn-lg btn-light btn-tip">
+                             <input type="radio" name="options" value="30" id="option5"> 30%
+                         </label>
+                         <label class="btn btn-lg btn-light btn-tip">
+                             <input type="radio" name="options" value="0" id="option6"> No Thanks
+                         </label>
+                     </div>
+
 
                     <div class="form-group">
                         <input id="checkout-button" type="submit" class="btn btn-dark btn-red btn-lg form-control col-12 col-lg-9" value="Save & Continue"/>
                     </div>
+                <form>
             </div>
 
 
@@ -125,20 +154,20 @@
                         </div>
                         <div class="row">
                             <label class="col-7">Subtotal:</label>
-                            <div class="col-3" th:text=" '$' + ${subTotal}"></div>
+                            <div class="col-3" th:text=" '$' + ${checkoutOrder.subTotalAmount}"></div>
                         </div>
                         <div class="row">
                             <label class="col-7">Tip:</label>
-                            <div class="col-3" th:text=" '$' + ${tip}"></div>
+                            <div id="tip" class="tip col-3"></div>
                         </div>
 
                         <div class="row">
                             <label class="col-7">Taxes:</label>
-                            <div class="col-3" th:text=" '$' + ${tax}"></div>
+                            <div class="col-3" th:text=" '$' + ${checkoutOrder.tax}"></div>
                         </div>
                         <div class="row">
                             <label class="col-7"><strong>Total:</strong></label>
-                            <div class="col-3 total-amount-value" th:text=" '$' +  ${totalAmount}"></div>
+                            <div id="totalAmount" class="col-3 total-amount-value"></div>
                         </div>
             </div>
         </div>
@@ -189,18 +218,61 @@
     });
 </script>
 <script th:inline="javascript">
+    const subTotal = /*[[${subTotal}]]*/ 'default';
+
+    $(document).ready(function () {
+        $('.btn-tip').on("change", function(){
+            setTipValueView()
+            setTotalAmountView();
+        });
+    });
+
+
 
     document.addEventListener("DOMContentLoaded", function(){
-        let tipPercentage = /*[[${tipPercentage}]]*/ 'default';
-        $("#tip-10").removeClass("active");
-        $("#tip-15").removeClass("active");
-        $("#tip-20").removeClass("active");
-        $("#tip-25").removeClass("active");
-        $("#tip-30").removeClass("active");
-        $("#tip-0").removeClass("active");
+        setTotalAmountView();
+        setTipValueView();
 
-        $("#tip-" + tipPercentage).addClass("active");
     });
+
+
+    function setTipValueView() {
+        let tipPercentage = $('input[name="options"]:checked').val();
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            url: 'checkout/tips?tipPercentage=' + tipPercentage + "&subTotal=" + subTotal,
+            data: {tipPercentage: tipPercentage, subTotal: subTotal},
+            success: function(response){
+                let divTip = document.getElementById('tip');
+                divTip.innerHTML =  "$" + parseFloat(response).toFixed(2)
+            },
+            error: function(error){
+                console.error('Error:', error);
+            }
+        });
+    }
+
+
+    function setTotalAmountView() {
+        let tax = /*[[${tax}]]*/ 'default';
+        let tipPercentage = $('input[name="options"]:checked').val();
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            url: 'checkout/totalAmount?tipPercentage=' + tipPercentage + "&tax=" + tax + "&subTotal=" + subTotal,
+            success: function(response){
+                let divAmount = document.getElementById('totalAmount');
+                divAmount.innerHTML =  "$" + parseFloat(response).toFixed(2)
+            },
+            error: function(error){
+                console.error('Error:', error);
+            }
+        });
+    }
+
+
+
 </script>
 </body>
 </html>

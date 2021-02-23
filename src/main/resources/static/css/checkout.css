@@ -67,6 +67,25 @@ body {
     font-size: 1.4em
 }
 
+.locations {
+    margin-bottom: 2rem;
+}
+
+.locations p {
+    font-weight: 500;
+    font-size: 1.4em
+}
+
+.input-text {
+    border: none;
+    display: inline;
+    font-family: inherit;
+    font-size: inherit;
+    width: auto;
+    background-color: #FFFFFF;
+}
+
+
 .wrapper {
     min-height: calc(100vh - 160px);
 }
