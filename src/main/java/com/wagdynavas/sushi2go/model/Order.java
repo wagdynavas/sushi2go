@@ -3,13 +3,15 @@ package com.wagdynavas.sushi2go.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Data
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -23,11 +25,9 @@ public class Order {
     @Column(name = "ORD_DATE", nullable = false)
     private LocalDate orderDate;
 
-    @Column(name = "ORD_CUSTOMER_INSTRUCTIONS", nullable = false)
+    @Column(name = "ORD_CUSTOMER_INSTRUCTIONS")
     private String customerInstructions;
 
-    @Column(name = "ORD_RESTAURANT_BRANCH", nullable = false)
-    private String restaurantBranch;
 
     @Column(name = "ORD_DELIVER_ADDRESS")
     private String deliverAddress;
@@ -38,14 +38,17 @@ public class Order {
     @Column(name = "ORD_DELIVER_INSTRUCTIONS" )
     private String deliverInstructions;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Product> products;
+    transient private List<Product> products;
 
-    @Column(name = "ORD_SUB_TOTAL_AMOUNT")
-    private BigDecimal subTotalAmount;
 
     @Column(name = "ORD_TOTAL_AMOUNT")
     private BigDecimal totalAmount;
+
+    @Column(name = "ORD_RESTAURANT_BRANCH", nullable = false)
+    private String restaurantBranch;
+
+    @Column(name = "ORD_SUB_TOTAL_AMOUNT")
+    private BigDecimal subTotalAmount;
 
     transient private Product product;
 
@@ -58,7 +61,9 @@ public class Order {
     private BigDecimal tax;
 
     @OneToOne
-    @JoinColumn(name = "ORD_CUSTOMER_ID")
+    @Valid
+    @NotNull
+    @JoinColumn(name = "ORD_CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")
     private Customer customer;
 }
 

@@ -3,22 +3,32 @@ package com.wagdynavas.sushi2go.controllers;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import com.wagdynavas.sushi2go.exceptions.OrderNotFondException;
+import com.wagdynavas.sushi2go.model.Customer;
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.model.Product;
 import com.wagdynavas.sushi2go.service.CheckoutService;
+import com.wagdynavas.sushi2go.service.CustomerService;
+import com.wagdynavas.sushi2go.service.OrderService;
 import com.wagdynavas.sushi2go.util.NumberUtil;
 import com.wagdynavas.sushi2go.util.SessionUtil;
+import com.wagdynavas.sushi2go.util.type.OrderTypes;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -28,13 +38,20 @@ public class CheckoutController {
     @Value("${stripe.test.key}")
     private  String stripePublicKey;
 
+    @Value("${wn.order.null.error.message}")
+    private String emptyOrderMessage;
+
     private final BigDecimal taxPercentage = new BigDecimal(13);
 
     private CheckoutService checkoutService;
+    private OrderService orderService;
+    private CustomerService customerService;
 
 
-    public CheckoutController(CheckoutService checkoutService) {
+    public CheckoutController(CheckoutService checkoutService, OrderService orderService, CustomerService customerService) {
         this.checkoutService = checkoutService;
+        this.orderService = orderService;
+        this.customerService = customerService;
     }
 
     @GetMapping("/checkout")
@@ -65,11 +82,10 @@ public class CheckoutController {
         view.addObject("tip", tip);
         view.addObject("tax", taxes);
         view.addObject("subTotal", subTotal);
-        view.addObject("totalAmount", subTotal);
-        view.addObject("tipPercentage", tipPercentage);//used to keep an Active class on btn
+        view.addObject("tipPercentage", tipPercentage);//used to keep an Active class on btn-tip checkout.html
         view.addObject("checkoutOrder", checkoutOrder);
         view.addObject("restaurantBranch", checkoutOrder.getRestaurantBranch());
-        view.addObject("cartQuantity", SessionUtil.getCartQuantity(request));//USed to keep track of how many item are in the cart
+        view.addObject("cartQuantity", SessionUtil.getCartQuantity(request));//Used to keep track of how many item are in the cart
         return view;
     }
 
@@ -78,10 +94,16 @@ public class CheckoutController {
 
     @PostMapping("/create-checkout-session")
     @ResponseBody
-    public Map<String, String> create( HttpServletRequest request) throws StripeException {
+    public Map<String, String> create( HttpServletRequest request) throws StripeException, OrderNotFondException {
         log.debug("Creating Stripe session.");
         Order checkoutOrder  = (Order) request.getSession().getAttribute("order");
+        Optional<Order> savedOrder = orderService.getOrderById(checkoutOrder.getOrderId());
 
+        if(savedOrder.isEmpty()) {
+            throw new OrderNotFondException();
+        }
+
+        Order finalOrder = savedOrder.get();
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
@@ -93,7 +115,7 @@ public class CheckoutController {
                         .setPriceData(
                                 SessionCreateParams.LineItem.PriceData.builder()
                                 .setCurrency("cad")
-                                .setUnitAmount(checkoutService.convertOrderTotalAmountToStripeUnitAmount(checkoutOrder))
+                                .setUnitAmount(checkoutService.convertOrderTotalAmountToStripeUnitAmount(finalOrder))
                                         .setProductData(
                                                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                 .setName("Sushi2go")
@@ -149,13 +171,36 @@ public class CheckoutController {
 
 
     @PostMapping("/checkout/save-and-continue")
-    public ModelAndView saveOrder(Order checkoutOrder, HttpServletRequest request)  {
+    public ModelAndView saveOrder(@Valid Order checkoutOrder, BindingResult result, HttpServletRequest request)  {
         log.debug("Saving order information");
         Order sessionOrder  = (Order) request.getSession().getAttribute("order");
-
-        sessionOrder.setCustomer(checkoutOrder.getCustomer());
+        if(sessionOrder == null) {
+            result.addError(new ObjectError("order", emptyOrderMessage));
+        }
+        String stringTipPercentage = request.getParameter("options");
+        String restaurantBranch = request.getParameter("locations");
         ModelAndView view = new ModelAndView();
-        view.setViewName("redirect:/checkout");
+        if (result.hasErrors()) {
+            view.addObject( "checkoutOrder" ,checkoutOrder);
+            view.setViewName("checkout/checkout");
+        } else {
+            sessionOrder.setRestaurantBranch(restaurantBranch);
+            sessionOrder.setTipPercentage(new BigDecimal(stringTipPercentage));
+            Customer customer =  customerService.saveCustomer(checkoutOrder.getCustomer());
+            sessionOrder.setCustomer(customer);
+            sessionOrder.setStatus(OrderTypes.NEW.getValue());
+            sessionOrder.setOrderDate(LocalDate.now());
+
+
+
+            orderService.saveOrder(sessionOrder);
+            view.addObject("isOrderSaved", true); //disable form if is true
+            view.setViewName("redirect:/checkout");
+        }
+
+
+
+
         return view;
     }
 

@@ -20,7 +20,7 @@
 <div class="container-fluid checkout-container">
     <div class="wrapper">
         <div class="form-group row">
-            <div class="col-12 col-lg-7 checkout-right">
+            <div id="form-wrapper" class="col-12 col-lg-7 checkout-right">
                     <nav class="nav">
                         <!--  <button id="btn-delivery" type="button" class="btn btn-dark btn-red delivery-type active ">
                               <i class="fas fa-car"></i>
@@ -61,12 +61,21 @@
                     <div id="pickup-wrapper" class="">
                         <h2>Pickup Details</h2>
                         <div class="row">
-                            <div class="form-group col-12 col-lg-9">
-                                <div class="locations">
-                                    <p>Select your favorit location:</p>
-                                    <a id="location-DUNDAS" class="btn btn-lg btn-light " th:href="@{/checkout/location/{value}(value=${'DUNDAS'})}" >Dundas</a>
-                                    <a id="location-ROYAL_YORK" class="btn btn-lg btn-light " th:href="@{/checkout/location/{value}(value=${'ROYAL_YORK'})}" >Royal York</a>
-                                    <a id="location-QUEENSWAY" class="btn btn-lg btn-light " th:href="@{/checkout/location/{value}(value=${'QUEENSWAY'})}" >Queensway</a>
+                            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                                <p>Please Correct Errors Below</p>
+                            </div>
+                            <div class="form-group col-12 col-lg-9 ">
+                                <p>Choose a Sushi2go location.</p>
+                                <div id="locations-selector" class="btn-group btn-group-toggle locations" data-toggle="buttons">
+                                    <label class="btn btn-lg btn-light btn-location">
+                                        <input type="radio" name="locations" value="DUNDAS" id="location1"> Dundas
+                                    </label>
+                                    <label class="btn btn-lg btn-light btn-location active">
+                                        <input type="radio" name="locations" value="ROYAL_YORK" id="location2" checked> Royal York
+                                    </label>
+                                    <label class="btn btn-lg btn-light btn-location">
+                                        <input type="radio" name="locations" value="QUEENSWAY" id="location3"> Queensway
+                                    </label>
                                 </div>
                                 <div class="row">
                                     <div id="queensway" class="col-12 address-container hidden">
@@ -88,48 +97,54 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12 form-group">
+                                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('customer.customerName')}">
+                                            <label th:errors="*{customer.customerName}"></label>
+                                        </div>
                                         <input type="text" th:field="*{customer.customerName}" class="form-control" name="customerName" placeholder="Name:">
                                     </div>
 
                                     <div class="col-12 form-group">
-                                        <input type="email" th:field="*{customer.customerEmail}" class="form-control" name="customerEmail" placeholder="Email:">
+                                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('customer.customerEmail')}">
+                                            <label th:errors="*{customer.customerEmail}"></label>
+                                        </div>
+                                        <input type="text" th:field="*{customer.customerEmail}" class="form-control" name="customerEmail" placeholder="Email:">
                                     </div>
 
                                     <div class="col-12 form-group">
-                                        <input type="tel" th:field="*{customer.customerPhone}" class="form-control" name="customerPhone" placeholder="Phone:">
+                                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('customer.customerPhone')}">
+                                            <label th:errors="*{customer.customerPhone}"></label>
+                                        </div>
+                                        <input type="tel" th:field="*{customer.customerPhone}" class="form-control" name="customerPhone" placeholder="Phone:" >
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p>Show your support with a tip.</p>
+                                        <div class="btn-group btn-group-toggle tips" data-toggle="buttons">
+                                            <label class="btn  btn-light btn-tip">
+                                                <input type="radio" name="options" value="10" id="option1"> 10%
+                                            </label>
+                                            <label class="btn  btn-light btn-tip active">
+                                                <input type="radio" name="options" value="15" id="option2" checked> 15%
+                                            </label>
+                                            <label class="btn  btn-light btn-tip">
+                                                <input type="radio" name="options" value="20" id="option3"> 20%
+                                            </label>
+                                            <label class="btn  btn-light btn-tip">
+                                                <input type="radio" name="options" value="25" id="option4"> 25%
+                                            </label>
+                                            <label class="btn btn-light btn-tip">
+                                                <input type="radio" name="options" value="0" id="option6"> No Thanks
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                     <div>
-
-                     </div>
-                     <div class="btn-group btn-group-toggle tips" data-toggle="buttons">
-                         <label class="btn btn-lg btn-light btn-tip">
-                             <input type="radio" name="options" value="10" id="option1"> 10%
-                         </label>
-                         <label class="btn btn-lg btn-light btn-tip active">
-                             <input type="radio" name="options" value="15" id="option2" checked> 15%
-                         </label>
-                         <label class="btn btn-lg btn-light btn-tip">
-                             <input type="radio" name="options" value="20" id="option3"> 20%
-                         </label>
-                         <label class="btn btn-lg btn-light btn-tip">
-                             <input type="radio" name="options" value="25" id="option4"> 25%
-                         </label>
-                         <label class="btn btn-lg btn-light btn-tip">
-                             <input type="radio" name="options" value="30" id="option5"> 30%
-                         </label>
-                         <label class="btn btn-lg btn-light btn-tip">
-                             <input type="radio" name="options" value="0" id="option6"> No Thanks
-                         </label>
-                     </div>
-
-
                     <div class="form-group">
-                        <input id="checkout-button" type="submit" class="btn btn-dark btn-red btn-lg form-control col-12 col-lg-9" value="Save & Continue"/>
+                        <input  type="submit" class="btn btn-dark btn-red btn-lg form-control col-12 col-lg-9" value="Save & Continue"/>
                     </div>
                 <form>
             </div>
@@ -169,6 +184,9 @@
                             <label class="col-7"><strong>Total:</strong></label>
                             <div id="totalAmount" class="col-3 total-amount-value"></div>
                         </div>
+                <div class="form-group">
+                    <input id="checkout-button" class="btn btn-dark btn-red btn-lg cursor-disabled form-control col-12" value="Checkout"/>
+                </div>
             </div>
         </div>
     </div>
@@ -219,6 +237,7 @@
 </script>
 <script th:inline="javascript">
     const subTotal = /*[[${subTotal}]]*/ 'default';
+    let isOrderSaved = /*[[${isOrderSaved}]]*/ 'default';
 
     $(document).ready(function () {
         $('.btn-tip').on("change", function(){
@@ -232,6 +251,11 @@
     document.addEventListener("DOMContentLoaded", function(){
         setTotalAmountView();
         setTipValueView();
+
+        if(isOrderSaved) {
+            $("#checkout-button").removeClass("cursor-disabled");
+            $("#form-wrapper").addClass("disable-from");
+        }
 
     });
 
@@ -270,8 +294,6 @@
             }
         });
     }
-
-
 
 </script>
 </body>

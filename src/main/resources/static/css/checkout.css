@@ -68,7 +68,7 @@ body {
 }
 
 .locations {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .locations p {
@@ -98,4 +98,15 @@ body {
     .checkout-right {
         margin-left: 3rem;
     }
+}
+
+.cursor-disabled {
+    cursor: not-allowed;
+}
+
+.disable-from {
+    pointer-events: none;
+
+    /* for "disabled" effect */
+    opacity: 0.5;
 }

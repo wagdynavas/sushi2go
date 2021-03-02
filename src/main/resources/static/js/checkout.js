@@ -1,18 +1,18 @@
 $(document).ready(function () {
-    $("#pickup-selector").change(function () {
-        let selectedValue =  document.getElementById("pickup-selector").value;
+    $(".btn-location").change(function () {
+        let restaurantBranch = $('input[name="locations"]:checked').val();
         let queensway = $('#queensway').addClass('hidden');
         let dundas = $('#dundas').addClass('hidden');
         let royal_york =$('#royal-york').addClass('hidden');
 
-        switch (selectedValue) {
-            case "queensway" : {
+        switch (restaurantBranch) {
+            case "QUEENSWAY" : {
                 queensway.removeClass("hidden");3
                 break;
-            } case "dundas" : {
+            } case "DUNDAS" : {
                 dundas.removeClass("hidden");
                 break;
-            } case "royal-york" : {
+            } case "ROYAL_YORK" : {
                 royal_york.removeClass("hidden");
                 break;
             } default :{
