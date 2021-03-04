@@ -158,9 +158,9 @@ public class ProductController {
             BigDecimal productPrice = productService.calculatePrice(product.getPrice(), quantity);
             product.setPrice(productPrice);
             product.setQuantity(quantity);
+            product.setCustomerInstructions(customersInstructions);
             products.add(product);
             order.setProducts(products);
-            order.setCustomerInstructions(customersInstructions);
         }
 
         cartQuantity += quantity;

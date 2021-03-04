@@ -39,6 +39,8 @@ public class Product {
 
     transient private Integer quantity;
 
+    transient private String customerInstructions;
+
 
     public BigDecimal getPrice() {
         return price;

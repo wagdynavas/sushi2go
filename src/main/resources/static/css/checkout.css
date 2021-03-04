@@ -62,18 +62,14 @@ body {
     margin-bottom: 3rem;
 }
 
-.tips p{
-    font-weight: 500;
-    font-size: 1.4em
-}
 
 .locations {
     margin-bottom: 1rem;
 }
 
-.locations p {
+.p-lg {
     font-weight: 500;
-    font-size: 1.4em
+    font-size: 1.3em
 }
 
 .input-text {

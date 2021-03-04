@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "orderItems")
+@Table(name = "order_items")
 public class OrderItem {
 
     @Id
@@ -19,7 +19,7 @@ public class OrderItem {
     private Order orderId;
 
     @Column(name = "ORD_ITEM_QUANTITY", nullable = false)
-    private Long quantity;
+    private Integer quantity;
 
     @Column(name = "ORD_ITEM_NAME", nullable = false)
     private String name;

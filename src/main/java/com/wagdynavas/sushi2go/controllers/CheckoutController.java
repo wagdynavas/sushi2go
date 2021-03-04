@@ -6,13 +6,16 @@ import com.stripe.param.checkout.SessionCreateParams;
 import com.wagdynavas.sushi2go.exceptions.OrderNotFondException;
 import com.wagdynavas.sushi2go.model.Customer;
 import com.wagdynavas.sushi2go.model.Order;
+import com.wagdynavas.sushi2go.model.OrderItem;
 import com.wagdynavas.sushi2go.model.Product;
 import com.wagdynavas.sushi2go.service.CheckoutService;
 import com.wagdynavas.sushi2go.service.CustomerService;
+import com.wagdynavas.sushi2go.service.OrderItemService;
 import com.wagdynavas.sushi2go.service.OrderService;
 import com.wagdynavas.sushi2go.util.NumberUtil;
 import com.wagdynavas.sushi2go.util.SessionUtil;
 import com.wagdynavas.sushi2go.util.type.OrderTypes;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -33,6 +36,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @Log4j2
+@RequiredArgsConstructor
 public class CheckoutController {
 
     @Value("${stripe.test.key}")
@@ -41,18 +45,17 @@ public class CheckoutController {
     @Value("${wn.order.null.error.message}")
     private String emptyOrderMessage;
 
+    @Value("${wn.order.restaurant.location.error.message}")
+    private String chooseRestaurantLocationErrorMessage;
+
     private final BigDecimal taxPercentage = new BigDecimal(13);
 
-    private CheckoutService checkoutService;
-    private OrderService orderService;
-    private CustomerService customerService;
+    private final CheckoutService checkoutService;
+    private final OrderService orderService;
+    private final CustomerService customerService;
+    private final OrderItemService orderItemService;
 
 
-    public CheckoutController(CheckoutService checkoutService, OrderService orderService, CustomerService customerService) {
-        this.checkoutService = checkoutService;
-        this.orderService = orderService;
-        this.customerService = customerService;
-    }
 
     @GetMapping("/checkout")
     public ModelAndView checkout(HttpServletRequest request) {
@@ -61,7 +64,13 @@ public class CheckoutController {
             checkoutOrder = new Order();
         }
         String tipParameter =  request.getParameter("tipPercentage");
-        if(tipParameter == null) tipParameter = "15";
+        if(tipParameter == null) {
+            tipParameter = "15";
+            BigDecimal orderTipPercentage = checkoutOrder.getTipPercentage();
+            if(orderTipPercentage != null) {
+                tipParameter = orderTipPercentage.toString();
+            }
+        }
         BigDecimal tipPercentage = new BigDecimal(tipParameter);
 
         BigDecimal subTotal = checkoutService.calculateTotalAmountFromOrder(checkoutOrder);
@@ -78,6 +87,11 @@ public class CheckoutController {
         checkoutOrder.setTotalAmount(totalAmount);
 
         ModelAndView view = new ModelAndView();
+
+        if (checkoutOrder.getOrderId() != null ) {
+            view.addObject("orderSaved", Boolean.TRUE); //disable form if is true
+        }
+
         view.setViewName("checkout/checkout");
         view.addObject("tip", tip);
         view.addObject("tax", taxes);
@@ -100,7 +114,7 @@ public class CheckoutController {
         Optional<Order> savedOrder = orderService.getOrderById(checkoutOrder.getOrderId());
 
         if(savedOrder.isEmpty()) {
-            throw new OrderNotFondException();
+            throw new OrderNotFondException("Order id is not valid: " + checkoutOrder.getTip());
         }
 
         Order finalOrder = savedOrder.get();
@@ -179,8 +193,12 @@ public class CheckoutController {
         }
         String stringTipPercentage = request.getParameter("options");
         String restaurantBranch = request.getParameter("locations");
+        if (restaurantBranch == null) {
+            result.addError(new ObjectError("order", chooseRestaurantLocationErrorMessage));
+        }
         ModelAndView view = new ModelAndView();
         if (result.hasErrors()) {
+            //TODO Deal with input error
             view.addObject( "checkoutOrder" ,checkoutOrder);
             view.setViewName("checkout/checkout");
         } else {
@@ -193,8 +211,18 @@ public class CheckoutController {
 
 
 
-            orderService.saveOrder(sessionOrder);
-            view.addObject("isOrderSaved", true); //disable form if is true
+            Order savedOrder = orderService.saveOrder(sessionOrder);
+
+            OrderItem orderItem = new OrderItem();
+            for(Product product : sessionOrder.getProducts()) {
+
+                orderItem.setOrderId(savedOrder);
+                orderItem.setName(product.getProductName());
+                orderItem.setQuantity(product.getQuantity());
+                orderItem.setInstructions(product.getCustomerInstructions());
+                orderItemService.saveOrderItem(orderItem);
+            }
+            checkoutOrder.setOrderId(savedOrder.getOrderId());
             view.setViewName("redirect:/checkout");
         }
 

@@ -7,3 +7,5 @@ create table orderItems (
     ORD_ITEM_SPECIAL_INSTRUCTIONS varchar(500),
     FOREIGN KEY (ORD_ITEM_ORDER_NUMBER) REFERENCES ORDERS(ORD_ID)
 );
+
+RENAME TABLE orderItems TO order_items;
