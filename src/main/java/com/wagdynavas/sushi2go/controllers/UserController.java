@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -32,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public ModelAndView create(User user, BindingResult result) {
+    public ModelAndView create(@Valid User user, BindingResult result) {
         return userService.createUser(user, result);
     }
 

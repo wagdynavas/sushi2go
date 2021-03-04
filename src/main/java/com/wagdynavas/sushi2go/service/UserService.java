@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -47,7 +48,11 @@ public class UserService {
 
     public ModelAndView createUser(User user, BindingResult result) {
         ModelAndView view = new ModelAndView();
-        User userExist = getByUsername(user.getUsername());
+        String username = user.getUsername();
+        User userExist = null;
+        if(!username.isBlank()) {
+            userExist = getByUsername(user.getUsername());
+        }
         if(userExist != null) {
             result.rejectValue("username", "", "This username has already been used.");
         }
@@ -56,7 +61,7 @@ public class UserService {
             result.rejectValue("password", "", "Password does't match!");
         }
         if(result.hasErrors()) {
-            view.setViewName("user/registration");
+            view.setViewName("account/register");
             view.addObject(user);
         }else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));

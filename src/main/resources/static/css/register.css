@@ -39,3 +39,11 @@ h2 {
     font-size: 1.5em;
     color: rgb(128, 5, 33);
 }
+
+.alert-danger {
+    background-color: transparent !important;
+    color: red;
+    border: none;
+    margin: 0;
+    padding: 0;
+}

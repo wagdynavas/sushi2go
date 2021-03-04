@@ -3,6 +3,7 @@ package com.wagdynavas.sushi2go.util.type;
 public enum OrderTypes {
 
     NEW("NEW"),
+    PAYED("PAYED"),
     ACCEPTED("ACCEPTED"),
     CREATED("CREATED"),
     NOT_AVAILABLE("NOT_AVAILABLE"),

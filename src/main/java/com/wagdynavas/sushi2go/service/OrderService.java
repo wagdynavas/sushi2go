@@ -5,6 +5,7 @@ import com.wagdynavas.sushi2go.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,5 +20,15 @@ public class OrderService {
 
     public Optional<Order> getOrderById(Long orderId) {
         return orderRepository.findById(orderId);
+    }
+
+
+    public List<Order> getOrdersByRestaurantBranch(String restaurantBranch) {
+
+        return null;
+    }
+
+    public List<Order> getPayedOrdersByRestaurantBranch(String restaurantBranch) {
+        return orderRepository.findAllPayedOrdersByRestaurantBranch(restaurantBranch);
     }
 }

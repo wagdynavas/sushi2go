@@ -14,7 +14,7 @@
             <form class="form-horizontal" action="/registration" method="post"  th:object="${user}">
                 <div class="form-group text-center">
                     <div class="col-12">
-                        <a href="/"><img class="logo" src="img/logo/sushi2go_logo.png" alt="Sushi2GO logo"></a>
+                        <a href="/"><img class="logo" src="img/logo/sushi2go_logo_blue.png" alt="Sushi2GO logo"></a>
                     </div>
                 </div>
                 <div class="row">
@@ -54,16 +54,33 @@
                         <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}">
                             <label th:errors="*{email}"></label>
                         </div>
-                        <input type="text"  class="form-control" placeholder="Email" id="email"  th:field="*{email}"/>
+                        <input type="email"  class="form-control" placeholder="Email" id="email"  th:field="*{email}"/>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group col-12">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('role')}">
+                            <label th:errors="*{role}"></label>
+                        </div>
                         <select th:field="*{role}" class="form-control" id="role">
                             <option th:value="${null}">Select role</option>
                             <option th:value="ROLE_ADMIN">Admin</option>
                             <option th:value="ROLE_USER">User</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-12">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('userRestaurantBranch')}">
+                            <label th:errors="*{userRestaurantBranch}"></label>
+                        </div>
+                        <select th:field="*{userRestaurantBranch}" class="form-control" id="restaurant-branch">
+                            <option th:value="${null}">Select restaurant branch</option>
+                            <option th:value="DUNDAS">Dundas</option>
+                            <option th:value="ROYAL_YORK">Royal york</option>
+                            <option th:value="QUEENSWAY">Queensway</option>
                         </select>
                     </div>
                 </div>

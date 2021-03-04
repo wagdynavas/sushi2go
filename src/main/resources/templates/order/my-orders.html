@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+
+    <link th:replace="/fragments/fragments :: bootstrap_css">
+    <link th:replace="/fragments/fragments :: fragment_css">
+</head>
+<body>
+    <header th:replace="/fragments/fragments :: header"></header>
+    <div class="container">
+        <table class="table table-light table-striped">
+            <thead class="table-dark">
+                <th scope="col">ID</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col"></th>
+            </thead>
+            <tbody>
+                <tr scope="row" th:each=" order : ${orders}">
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${order.customer.customerName}"></td>
+                    <td th:text="${order.customer.customerPhone}"></td>
+                    <td>
+                        <a>Start</a>
+                        <a>Delivered</a>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <script th:replace="/fragments/fragments :: jquery"></script>
+    <script th:replace="/fragments/fragments :: bootstrap_js"></script>
+</body>
+</html>
