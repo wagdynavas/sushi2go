@@ -1,0 +1,40 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    height: 100%;
+}
+
+.customer-info{
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.subtotal-row {
+    margin-top: 10rem;
+}
+
+.card-container {
+    margin-top: 6.1rem;
+}
+
+.total-amount-value {
+    font-weight: 700; !important;
+}
+
+h1 {
+    color: rgb(128, 5, 33);
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.btn-container {
+    margin-top: 5.9rem;
+    margin-bottom: 2rem;
+}
+
+.wrapper {
+    min-height: calc(100vh - 245px);
+}
+
+.footer {
+    height: 160px;
+}

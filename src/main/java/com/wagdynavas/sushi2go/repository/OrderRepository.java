@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query("select o  from  Order o where o.restaurantBranch = :restaurantBranch and o.status = 'NEW'")
+    @Query("select o  from  Order o where o.restaurantBranch = :restaurantBranch and o.status in('NEW', 'ACCEPTED') ")
     List<Order> findAllPayedOrdersByRestaurantBranch(String restaurantBranch);
 
 }

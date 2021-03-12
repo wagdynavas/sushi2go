@@ -8,25 +8,29 @@
 
     <link th:replace="/fragments/fragments :: bootstrap_css">
     <link th:replace="/fragments/fragments :: fragment_css">
+    <link rel="stylesheet" href="/css/order.css">
 </head>
 <body>
     <header th:replace="/fragments/fragments :: header"></header>
-    <div class="container">
-        <table class="table table-light table-striped">
+    <div class="container-fluid">
+        <h1>Orders</h1>
+        <table id="order-table" class="table table-light table-striped">
             <thead class="table-dark">
                 <th scope="col">ID</th>
                 <th scope="col">Customer Name</th>
                 <th scope="col">Phone</th>
-                <th scope="col"></th>
+                <th scope="col">Actions</th>
             </thead>
             <tbody>
                 <tr scope="row" th:each=" order : ${orders}">
                     <td th:text="${order.orderId}"></td>
-                    <td th:text="${order.customer.customerName}"></td>
+                    <td>
+                        <a class="table-link" th:href="@{/orders/order-item/{orderId}(orderId=${order.orderId})}" th:text="${order.customer.customerName}"></a>
+                    </td>
                     <td th:text="${order.customer.customerPhone}"></td>
                     <td>
-                        <a>Start</a>
-                        <a>Delivered</a>
+                        <a th:if="${order.status == 'NEW'}" class="btn btn-success" th:href="@{/orders/accept/{id}(id=${order.orderId})}">Accept</a>
+                        <a th:if="${order.status == 'ACCEPTED'}" class="btn btn-secondary" th:href="@{/orders/accept/{id}(id=${order.orderId})}">Delivered</a>
                     </td>
                 </tr>
 
@@ -36,5 +40,48 @@
 
     <script th:replace="/fragments/fragments :: jquery"></script>
     <script th:replace="/fragments/fragments :: bootstrap_js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+       // setTimeout(loadTable, 5000);
+    });
+
+    function loadTable() {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            url: '/orders/ajax-orders',
+            success: function(response){
+                $('#order-table tbody > tr').remove();
+                $.each(response, function(index, order){
+                    let status = order.status;
+                    let btnOrder;
+                    if (status === 'NEW') {
+                        btnOrder = ' <a  href="/orders/accept/' + order.orderId + '" class="btn btn-success">Accept</a> '
+                    } else {
+                        btnOrder = '     <a  href="/orders/delivered/' + order.orderId + '" class="btn btn-secondary">Delivered</a> '
+                    }
+                    $('#order-table tbody').append(
+                        '<tr>' +
+                        '  <td>' + order.orderId + '</td>' +
+                        '  <td>' + order.customer.customerName + '</td>' +
+                        '  <td>' + order.customer.customerPhone + '</td>' +
+                        '  <td>' +
+                            btnOrder +
+                        '  </td>' +
+                        '</tr>'
+                    );
+                });
+
+            },
+            error: function(error){
+                console.error('Error:', error);
+            },
+            complete: function() {
+                // Schedule the next request when the current one's complete
+                setTimeout(loadTable, 5000);
+            }
+        });
+    }
+</script>
 </body>
 </html>

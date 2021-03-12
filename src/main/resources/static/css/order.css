@@ -1,0 +1,16 @@
+h1 {
+    color: rgb(128, 5, 33); !important;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+
+.table-link {
+    text-decoration: none;
+    color: #000000;
+}
+
+.table-link:hover{
+    text-decoration: none;
+    color: rgb(128, 5, 33); !important;
+}

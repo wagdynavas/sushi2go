@@ -2,6 +2,7 @@ package com.wagdynavas.sushi2go.service;
 
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.repository.OrderRepository;
+import com.wagdynavas.sushi2go.util.type.OrderTypes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,20 @@ public class OrderService {
 
     public List<Order> getPayedOrdersByRestaurantBranch(String restaurantBranch) {
         return orderRepository.findAllPayedOrdersByRestaurantBranch(restaurantBranch);
+    }
+
+    /**
+     * Change Order status to ACCEPTED
+     *
+     * @param orderId Order to be modified.
+     */
+    public void acceptOrder(Long orderId) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            order.setStatus(OrderTypes.ACCEPTED.getValue());
+
+            orderRepository.save(order);
+        }
     }
 }

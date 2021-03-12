@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+
+    <link th:replace="/fragments/fragments :: bootstrap_css">
+    <link th:replace="/fragments/fragments :: fragment_css">
+    <link rel="stylesheet" href="/css/order-details.css">
+</head>
+<body>
+    <header th:replace="/fragments/fragments :: header"></header>
+
+    <div class="container-fluid">
+        <div class="wrapper">
+            <div class="form-group row">
+                <div class="col-12 col-lg-7">
+                    <h1>Order Details</h1>
+                    <div class="table-container table-responsive">
+                        <table id="order-table" class="table table-light table-striped">
+                            <thead class="table-dark">
+                            <tr class="d-flex">
+                                <th class="col-2" scope="col">Qty</th>
+                                <th class="col-5" scope="col">Dishes</th>
+                                <th class="col-5" scope="col">Customer Instructions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="d-flex" scope="row" th:each=" item : ${orderItems}">
+                                <td class="col-2" th:text="${item.quantity}"></td>
+                                <td class="col-5" th:text="${item.name}"></td>
+                                <td class="col-5" th:text="${item.instructions}"></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="card-container">
+                        <div class="card-header">
+                            <div class="text-center customer-info">Customer Info</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-2" th:text="${order.orderId}"></div>
+                                <div class="col-6" th:text="${order.customer.customerName}"></div>
+                                <div class="col-4 " th:text="${order.orderDate.format(dateTimeFormatter)}"></div>
+                            </div>
+                            <div class="row subtotal-row">
+                                <div class="col">
+
+                                </div>
+                                <div class="col-">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="">Subtotal:</div>
+                                            <div class="">Tip:</div>
+                                            <div class="">Tax:</div>
+                                            <div class="total-amount-value">Total:</div>
+                                        </div>
+                                        <div class="col">
+                                            <div th:text="${order.subTotalAmount}"></div>
+                                            <div th:text="${order.tip}"></div>
+                                            <div th:text="${order.tax}"></div>
+                                            <div class="total-amount-value" th:text="${order.totalAmount}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-1"></div>
+
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row btn-container">
+                <div class="col-12 text-center">
+                    <a href="/orders/my-orders" class="btn btn-lg btn-secondary col-12 col-lg-2">Back</a>
+                    <a th:if="${order.status == 'NEW'}" class="btn btn-lg btn-success col-12 col-lg-2" th:href="@{/orders/accept/{id}(id=${order.orderId})}">Accept</a>
+                    <a th:if="${order.status == 'ACCEPTED'}" class="btn btn-lg btn-dark col-12 col-lg-2" th:href="@{/orders/accept/{id}(id=${order.orderId})}">Delivered</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer" th:replace="/fragments/fragments :: footer"></div>
+    <script th:replace="/fragments/fragments :: jquery"></script>
+    <script th:replace="/fragments/fragments :: bootstrap_js"></script>
+</body>
+</html>

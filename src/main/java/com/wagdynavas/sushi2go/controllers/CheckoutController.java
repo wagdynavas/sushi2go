@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,7 +189,7 @@ public class CheckoutController {
     public ModelAndView saveOrder(@Valid Order checkoutOrder, BindingResult result, HttpServletRequest request)  {
         log.debug("Saving order information");
         Order sessionOrder  = (Order) request.getSession().getAttribute("order");
-        if(sessionOrder == null) {
+        if(sessionOrder == null || sessionOrder.getProducts().isEmpty()) {
             result.addError(new ObjectError("order", emptyOrderMessage));
         }
         String stringTipPercentage = request.getParameter("options");
@@ -207,14 +208,14 @@ public class CheckoutController {
             Customer customer =  customerService.saveCustomer(checkoutOrder.getCustomer());
             sessionOrder.setCustomer(customer);
             sessionOrder.setStatus(OrderTypes.NEW.getValue());
-            sessionOrder.setOrderDate(LocalDate.now());
+            sessionOrder.setOrderDate(LocalDateTime.now());
 
 
 
             Order savedOrder = orderService.saveOrder(sessionOrder);
 
-            OrderItem orderItem = new OrderItem();
             for(Product product : sessionOrder.getProducts()) {
+                OrderItem orderItem = new OrderItem();
 
                 orderItem.setOrderId(savedOrder);
                 orderItem.setName(product.getProductName());
