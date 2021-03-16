@@ -34,15 +34,16 @@ public class OrderService {
     }
 
     /**
-     * Change Order status to ACCEPTED
+     * Update Order status
      *
+     * @param orderType new status
      * @param orderId Order to be modified.
      */
-    public void acceptOrder(Long orderId) {
+    public void changeOrderStatus(Long orderId, OrderTypes orderType) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
-            order.setStatus(OrderTypes.ACCEPTED.getValue());
+            order.setStatus(orderType.getValue());
 
             orderRepository.save(order);
         }

@@ -82,8 +82,8 @@
             <div class="row btn-container">
                 <div class="col-12 text-center">
                     <a href="/orders/my-orders" class="btn btn-lg btn-secondary col-12 col-lg-2">Back</a>
-                    <a th:if="${order.status == 'NEW'}" class="btn btn-lg btn-success col-12 col-lg-2" th:href="@{/orders/accept/{id}(id=${order.orderId})}">Accept</a>
-                    <a th:if="${order.status == 'ACCEPTED'}" class="btn btn-lg btn-dark col-12 col-lg-2" th:href="@{/orders/accept/{id}(id=${order.orderId})}">Delivered</a>
+                    <a th:if="${order.status == 'PAID'}" class="btn btn-lg btn-success col-12 col-lg-2" th:href="@{/orders/accept/{id}(id=${order.orderId})}">Accept</a>
+                    <a th:if="${order.status == 'ACCEPTED'}" class="btn btn-lg btn-dark col-12 col-lg-2" th:href="@{/orders/delivered/{id}(id=${order.orderId})}">Delivered</a>
                 </div>
             </div>
         </div>

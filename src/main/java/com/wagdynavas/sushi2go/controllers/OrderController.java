@@ -7,6 +7,7 @@ import com.wagdynavas.sushi2go.model.User;
 import com.wagdynavas.sushi2go.service.OrderItemService;
 import com.wagdynavas.sushi2go.service.OrderService;
 import com.wagdynavas.sushi2go.service.UserService;
+import com.wagdynavas.sushi2go.util.type.OrderTypes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +50,15 @@ public class OrderController {
     @GetMapping("/accept/{orderId}")
     public ModelAndView acceptOrder(@PathVariable Long orderId) {
         ModelAndView view = new ModelAndView();
-        orderService.acceptOrder(orderId);
+        orderService.changeOrderStatus(orderId, OrderTypes.ACCEPTED);
+        view.setViewName("redirect:/orders/my-orders");
+        return view;
+    }
+
+    @GetMapping("/delivered/{orderId}")
+    public ModelAndView orderDelivered(@PathVariable(name = "orderId") Long orderId) {
+        ModelAndView view = new ModelAndView();
+        orderService.changeOrderStatus(orderId, OrderTypes.DELIVERED);
         view.setViewName("redirect:/orders/my-orders");
         return view;
     }

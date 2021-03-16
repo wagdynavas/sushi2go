@@ -29,8 +29,8 @@
                     </td>
                     <td th:text="${order.customer.customerPhone}"></td>
                     <td>
-                        <a th:if="${order.status == 'NEW'}" class="btn btn-success" th:href="@{/orders/accept/{id}(id=${order.orderId})}">Accept</a>
-                        <a th:if="${order.status == 'ACCEPTED'}" class="btn btn-secondary" th:href="@{/orders/accept/{id}(id=${order.orderId})}">Delivered</a>
+                        <a th:if="${order.status == 'PAID'}" class="btn btn-success" th:href="@{/orders/accept/{id}(id=${order.orderId})}">Accept</a>
+                        <a th:if="${order.status == 'ACCEPTED'}" class="btn btn-secondary" th:href="@{/orders/delivered/{id}(id=${order.orderId})}">Delivered</a>
                     </td>
                 </tr>
 
