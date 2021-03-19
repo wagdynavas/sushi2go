@@ -1,15 +1,18 @@
 package com.wagdynavas.sushi2go.service;
 
+import com.stripe.model.checkout.Session;
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.repository.OrderRepository;
 import com.wagdynavas.sushi2go.util.type.OrderTypes;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class OrderService {
 
@@ -47,5 +50,23 @@ public class OrderService {
 
             orderRepository.save(order);
         }
+    }
+
+    /**
+     * Change Order status for each customer payment confirmed
+     * @param session used to get customer info
+     */
+    public  void fulfillOrder(Session session) {
+
+        String customerEmail = session.getCustomerDetails().getEmail();
+        List<Order> orders = orderRepository.findAllByStatusAndCustomerCustomerEmail(OrderTypes.NEW.getValue(), customerEmail);
+
+        for (Order order : orders) {
+            log.debug("Fulfilling order [ ", order.getOrderId() + " ]");
+            order.setStatus(OrderTypes.PAID.getValue());
+
+            orderRepository.save(order);
+        }
+
     }
 }

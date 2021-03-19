@@ -13,4 +13,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select o  from  Order o where o.restaurantBranch = :restaurantBranch and o.status in('PAID', 'ACCEPTED') ")
     List<Order> findAllPayedOrdersByRestaurantBranch(String restaurantBranch);
 
+    List<Order> findAllByStatusAndCustomerCustomerEmail(String status, String customerEmail);
+
 }

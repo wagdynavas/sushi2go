@@ -33,7 +33,7 @@
                         <a th:if="${order.status == 'ACCEPTED'}" class="btn btn-secondary" th:href="@{/orders/delivered/{id}(id=${order.orderId})}">Delivered</a>
                     </td>
                 </tr>
-
+                <audio id="bell" src="/audio/bell2.wav" controls></audio>
             </tbody>
         </table>
     </div>
@@ -42,8 +42,13 @@
     <script th:replace="/fragments/fragments :: bootstrap_js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function(){
-       // setTimeout(loadTable, 5000);
+        setTimeout(loadTable, 5000);
     });
+
+    function playSound(soundObj) {
+        let sound = document.getElementById(soundObj);
+        sound.play();
+    }
 
     function loadTable() {
         $.ajax({
@@ -55,7 +60,8 @@
                 $.each(response, function(index, order){
                     let status = order.status;
                     let btnOrder;
-                    if (status === 'NEW') {
+                    let orderInfo = ' <a  href="/orders/order-item/' + order.orderId + '" class="table-link">' + order.customer.customerName + '</a> '
+                    if (status === 'PAID') {
                         btnOrder = ' <a  href="/orders/accept/' + order.orderId + '" class="btn btn-success">Accept</a> '
                     } else {
                         btnOrder = '     <a  href="/orders/delivered/' + order.orderId + '" class="btn btn-secondary">Delivered</a> '
@@ -63,15 +69,17 @@
                     $('#order-table tbody').append(
                         '<tr>' +
                         '  <td>' + order.orderId + '</td>' +
-                        '  <td>' + order.customer.customerName + '</td>' +
+                        '  <td>' + orderInfo + '</td>' +
                         '  <td>' + order.customer.customerPhone + '</td>' +
                         '  <td>' +
                             btnOrder +
                         '  </td>' +
                         '</tr>'
                     );
+                    if (status == "PAID") {
+                        playSound("bell");
+                    }
                 });
-
             },
             error: function(error){
                 console.error('Error:', error);

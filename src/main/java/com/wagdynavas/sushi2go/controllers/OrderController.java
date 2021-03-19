@@ -1,5 +1,6 @@
 package com.wagdynavas.sushi2go.controllers;
 
+import com.stripe.Stripe;
 import com.wagdynavas.sushi2go.exceptions.OrderNotFondException;
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.model.OrderItem;
@@ -9,6 +10,7 @@ import com.wagdynavas.sushi2go.service.OrderService;
 import com.wagdynavas.sushi2go.service.UserService;
 import com.wagdynavas.sushi2go.util.type.OrderTypes;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import java.security.Principal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,6 +33,17 @@ public class OrderController {
     private final OrderService orderService;
     private final UserService userService;
     private final OrderItemService orderItemService;
+
+    @Value("${stripe.test.key}")
+    private  String stripePublicKey;
+
+    @Value("${stripe.endpoint.secret}")
+    private String endpointSecret;
+
+    @PostConstruct
+    public void init() {
+        Stripe.apiKey = stripePublicKey;
+    }
 
     @GetMapping("/my-orders")
     public ModelAndView getMyOrders(Principal principal) {

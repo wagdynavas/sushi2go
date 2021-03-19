@@ -14,3 +14,7 @@ h1 {
     text-decoration: none;
     color: rgb(128, 5, 33); !important;
 }
+
+#bell {
+    display: none;
+}
