@@ -23,20 +23,6 @@ public class UserService {
     // @Autowired
     //private BCryptPasswordEncoder passwordEncoder;
 
-    public ModelAndView getUserById(Long userId) {
-        ModelAndView view = new ModelAndView();
-        Optional<User> optionalUser = userRepository.findById(userId);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            view.setViewName("user/registration");
-            view.addObject("user", user);
-        } else {
-            view.setViewName("user/error");
-        }
-
-        return view;
-    }
 
     public User getByEmail(String email) {
         return userRepository.findByEmail(email);
