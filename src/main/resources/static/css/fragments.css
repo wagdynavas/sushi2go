@@ -74,3 +74,10 @@ body {
     top: 11px;
     position: relative;
 }
+
+
+@media only screen and (max-width: 700px) {
+    .icon-bar {
+        margin-left: -2.5rem;
+    }
+}

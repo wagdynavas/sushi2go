@@ -39,3 +39,12 @@ iframe {
 .address-container {
     margin-left: 2%;
 }
+
+
+.wrapper {
+    min-height: calc(100vh - 250px);
+}
+
+.footer {
+    height: 160px;
+}
