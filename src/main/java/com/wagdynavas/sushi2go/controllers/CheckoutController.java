@@ -126,7 +126,7 @@ public class CheckoutController {
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setCustomerEmail(checkoutOrder.getCustomer().getCustomerEmail())
                 .setSuccessUrl("http://localhost:8080/checkout/succeeded")
-                .setCancelUrl("https://example.com/cancel")
+                .setCancelUrl("http://localhost:8080/")
                 .addLineItem(
                         SessionCreateParams.LineItem.builder()
                         .setQuantity(1L)
@@ -182,10 +182,6 @@ public class CheckoutController {
        return new ModelAndView("/checkout/succeeded");
     }
 
-    @GetMapping("/checkout/canceled")
-    public ModelAndView checkoutCanceled() {
-        return  new ModelAndView("/checkout/canceled");
-    }
 
 
     @PostMapping("/checkout/save-and-continue")
