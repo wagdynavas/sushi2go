@@ -1,0 +1,32 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+body {
+    font-family: 'Poppins', sans-serif;
+    height: 100%;
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center
+}
+
+.btn-logo {
+}
+
+.msg-container {
+
+}
+
+.msg {
+    margin-top: 2rem;
+}
+
+.tks {
+    font-weight: 700;
+}
+
+.tks-msg {
+    font-size: 1.7em;
+}
