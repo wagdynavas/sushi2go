@@ -10,4 +10,8 @@ public class OrderNotFondException extends RuntimeException{
     public OrderNotFondException() {
 
     }
+
+    public OrderNotFondException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

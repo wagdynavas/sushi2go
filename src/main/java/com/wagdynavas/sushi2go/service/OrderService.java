@@ -22,15 +22,16 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    /**
+     * Retrieves an entity by its id.
+     *
+     * @param orderId must not be {@literal null}.
+     * @return the entity with the given id or {@literal Optional#empty()} if none found.
+     */
     public Optional<Order> getOrderById(Long orderId) {
         return orderRepository.findById(orderId);
     }
 
-
-    public List<Order> getOrdersByRestaurantBranch(String restaurantBranch) {
-
-        return null;
-    }
 
     public List<Order> getPayedOrdersByRestaurantBranch(String restaurantBranch) {
         return orderRepository.findAllPayedOrdersByRestaurantBranch(restaurantBranch);

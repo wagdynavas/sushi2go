@@ -91,6 +91,12 @@ public class OrderController {
         return payedOrders;
     }
 
+    /**
+     * Get All OrderItems by Order orderId
+     *
+     * @param orderId id of the Order
+     * @return  view with All OrderItems for orderId and a DateTimeFormatter for orderDate
+     */
     @GetMapping("/order-item/{orderId}")
     public ModelAndView getOrderItems(@PathVariable("orderId") Long orderId) {
         Optional <Order> optionalOrder = orderService.getOrderById(orderId);

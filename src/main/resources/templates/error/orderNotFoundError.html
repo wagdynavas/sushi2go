@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+
+    <link th:replace="/fragments/fragments :: bootstrap_css">
+    <link th:replace="/fragments/fragments :: fragment_css">
+    <link rel="stylesheet" href="/css/succeeded.css">
+</head>
+<body>
+<div class="container text-center">
+
+    <div class="msg-container text-center">
+        <div class="col-12 btn-logo">
+            <a href="/home"><img class="logo" src="/img/logo/sushi2go_logo_blue.png" alt="Sushi2GO logo"></a>
+        </div>
+        <div class="msg">
+            <p class="tks-msg"><span class="tks">Oops, cannot find this order, try again later </span></p>
+            <a href="/home" class="btn btn-lg btn-primary">Back</a>
+        </div>
+    </div>
+</div>
+
+
+<script th:replace="/fragments/fragments :: jquery"></script>
+<script th:replace="/fragments/fragments :: bootstrap_js"></script>
+</body>
+</html>
