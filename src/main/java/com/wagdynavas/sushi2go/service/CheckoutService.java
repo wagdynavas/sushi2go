@@ -6,10 +6,10 @@ import com.stripe.model.TaxRate;
 import com.stripe.param.TaxRateCreateParams;
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.model.Product;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -30,7 +30,9 @@ public class CheckoutService {
         if (order != null) {
             List<Product> products = order.getProducts();
             if(products != null) {
-                totalAmount = products.stream().map(product ->  product.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+                totalAmount = products.stream()
+                        .map(Product::getPrice)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
             }
         }
 

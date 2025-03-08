@@ -3,14 +3,13 @@ package com.wagdynavas.sushi2go.controllers;
 
 import com.wagdynavas.sushi2go.model.User;
 import com.wagdynavas.sushi2go.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor

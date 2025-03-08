@@ -1,6 +1,7 @@
 package com.wagdynavas.sushi2go.model;
 
-import javax.persistence.*;
+
+import jakarta.persistence.*;
 
 @Entity
 public class Role {

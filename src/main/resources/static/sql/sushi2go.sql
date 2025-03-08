@@ -1,6 +1,4 @@
--- noinspection SqlNoDataSourceInspectionForFile
-select * from user;
+CREATE SCHEMA `sushi2go_dev1`;
 
-select * from orders;
 
 alter table product change PRODUCT_PRICE  PRODUCT_PRICE DECIMAL(6,2);

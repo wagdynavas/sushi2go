@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Order Online</title>
-    <link th:replace="/fragments/fragments :: bootstrap_css">
-    <link th:replace="/fragments/fragments :: fragment_css">
+    <link th:replace="~{/fragments/fragments :: bootstrap_css}">
+    <link th:replace="~{/fragments/fragments :: fragment_css}">
     <link rel="stylesheet" href="/css/products.css">
     <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.concat.min.css">
 
@@ -39,7 +39,7 @@
 
     <!-- Page Content  -->
     <div id="">
-        <header th:replace="/fragments/fragments :: header"></header>
+        <header th:replace="~{/fragments/fragments :: header}"></header>
         <div class="menu-title">
             <div class="text-container">
                 <h1>Menu</h1>
@@ -1837,9 +1837,9 @@
 
 <div class="overlay"></div>
 
-<div th:replace="/fragments/fragments :: footer"></div>
-<script th:replace="/fragments/fragments :: jquery"></script>
-<script th:replace="/fragments/fragments :: bootstrap_js"></script>
+<div class="footer" th:replace="~{/fragments/fragments :: footer}"></div>
+<script th:replace="~{/fragments/fragments :: jquery}"></script>
+<script th:replace="~{/fragments/fragments :: bootstrap_js}"></script>
 <script src="/js/product.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>

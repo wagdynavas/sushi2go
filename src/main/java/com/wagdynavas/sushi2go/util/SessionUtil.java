@@ -2,10 +2,13 @@ package com.wagdynavas.sushi2go.util;
 
 import com.wagdynavas.sushi2go.model.Order;
 import com.wagdynavas.sushi2go.model.Product;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionUtil {
 
     public static Integer getCartQuantity(HttpServletRequest request) {

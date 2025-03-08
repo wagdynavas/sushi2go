@@ -3,8 +3,7 @@ package com.wagdynavas.sushi2go.model;
 
 import lombok.Data;
 
-import javax.persistence.*;
-
+import jakarta.persistence.*;
 @Entity
 @Data
 public class ProductImage {
