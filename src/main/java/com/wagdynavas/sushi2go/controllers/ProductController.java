@@ -6,21 +6,19 @@ import com.wagdynavas.sushi2go.model.Product;
 import com.wagdynavas.sushi2go.service.ProductService;
 import com.wagdynavas.sushi2go.util.SessionUtil;
 import com.wagdynavas.sushi2go.util.type.CategoryTypes;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/products")
@@ -39,8 +37,7 @@ public class ProductController {
      * @return
      */
     private ModelAndView reloadProductList() {
-        ModelAndView mv =  productService.getAllProductsSortByCategory();
-        return mv;
+        return productService.getAllProductsSortByCategory();
     }
 
     /**
@@ -53,7 +50,7 @@ public class ProductController {
     public ModelAndView manageProduct(@PathVariable("id") Long id) {
         Optional<Product> optionalProduct = productService.getProductById(id);
         ModelAndView view = new ModelAndView();
-        if (!optionalProduct.isPresent()) {
+        if (optionalProduct.isEmpty()) {
             view.setViewName("errors/default");
             return view;
         }
@@ -135,23 +132,23 @@ public class ProductController {
      * @return the view
      */
     @PostMapping("/add-to-order")
-    public ModelAndView addProductToOrder( Order order, HttpServletRequest  request) {
+    public ModelAndView addProductToOrder( Order order, HttpServletRequest request) {
         String productId = request.getParameter("product-id");
         String customersInstructions = request.getParameter("customers-instructions");
 
 
         Optional<Product> optionalProduct = productService.getProductById(Long.valueOf(productId));
-        List products = order.getProducts();
+        List<Product> products = order.getProducts();
 
 
         if (products == null) {
-            products = new ArrayList();
+            products = new ArrayList<>();
         }
 
         String productQuantity = request.getParameter("product_quantity");
         Integer cartQuantity  = SessionUtil.getCartQuantity(request);
 
-        int quantity = Integer.valueOf(productQuantity);
+        int quantity = Integer.parseInt(productQuantity);
 
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
@@ -180,9 +177,15 @@ public class ProductController {
     private List<CategoryTypes> createMenuItems(CategoryTypes[] categoryTypes, CategoryTypes menuType) {
         List<CategoryTypes> menuItems;
         if (menuType == CategoryTypes.LUNCH) {
-             menuItems = Arrays.asList(categoryTypes).stream().filter(ct -> ct.getValue().startsWith("lunch_")).collect(Collectors.toList());
+             menuItems = Arrays.stream(categoryTypes)
+                     .filter(ct -> ct.getValue()
+                             .startsWith("lunch_"))
+                     .toList();
         } else {
-            menuItems = Arrays.asList(categoryTypes).stream().filter(ct -> !ct.getValue().startsWith("lunch") && !ct.getValue().equals("dinner")).collect(Collectors.toList());
+            menuItems = Arrays.stream(categoryTypes)
+                    .filter(ct -> !ct.getValue()
+                            .startsWith("lunch") && !ct.getValue().equals("dinner"))
+                    .toList();
         }
 
         return menuItems;

@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account</title>
 
-    <link th:replace="/fragments/fragments :: bootstrap_css">
-    <link th:replace="/fragments/fragments :: fragment_css">
+    <link th:replace="~{/fragments/fragments :: bootstrap_css}">
+    <link th:replace="~{/fragments/fragments :: fragment_css}">
     <link rel="stylesheet" href="css/register.css">
 </head>
 <body>
@@ -90,8 +90,8 @@
             </form>
     </div>
 
-    <script th:replace="/fragments/fragments :: jquery"></script>
-    <script th:replace="/fragments/fragments :: bootstrap_js"></script>
+    <script th:replace="~{/fragments/fragments :: jquery}"></script>
+    <script th:replace="~{/fragments/fragments :: bootstrap_js}"></script>
     <script>
         function cancel() {
             window.history.back();

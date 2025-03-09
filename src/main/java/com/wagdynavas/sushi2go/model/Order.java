@@ -1,12 +1,11 @@
 package com.wagdynavas.sushi2go.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,6 +13,7 @@ import java.util.List;
 @Data
 @Table(name = "orders")
 public class Order {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +39,8 @@ public class Order {
     @Column(name = "ORD_DELIVER_INSTRUCTIONS" )
     private String deliverInstructions;
 
-    transient private List<Product> products;
-
+    @Transient
+    private List<Product> products;
 
     @Column(name = "ORD_TOTAL_AMOUNT")
     private BigDecimal totalAmount;
@@ -51,12 +51,14 @@ public class Order {
     @Column(name = "ORD_SUB_TOTAL_AMOUNT")
     private BigDecimal subTotalAmount;
 
-    transient private Product product;
+    @Transient
+    private Product product;
 
     @Column(name = "ORD_TIP", nullable = false)
     private BigDecimal tip;
 
-    transient private BigDecimal tipPercentage;
+    @Transient
+    private BigDecimal tipPercentage;
 
     @Column(name = "ORD_TAX")
     private BigDecimal tax;

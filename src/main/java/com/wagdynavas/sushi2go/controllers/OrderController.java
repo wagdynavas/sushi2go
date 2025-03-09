@@ -9,6 +9,7 @@ import com.wagdynavas.sushi2go.service.OrderItemService;
 import com.wagdynavas.sushi2go.service.OrderService;
 import com.wagdynavas.sushi2go.service.UserService;
 import com.wagdynavas.sushi2go.util.type.OrderTypes;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.PostConstruct;
 import java.security.Principal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

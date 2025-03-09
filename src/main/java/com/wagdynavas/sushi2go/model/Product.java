@@ -1,11 +1,13 @@
 package com.wagdynavas.sushi2go.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
+
+import static java.math.RoundingMode.HALF_UP;
 
 @Entity
 @Data
@@ -18,7 +20,7 @@ public class Product {
 
     @Column(name = "PRODUCT_NAME", nullable = false)
     @NotNull(message = "Please, type a name for this product!")
-    @Length(max = 250, message = "Description can have a maximum of 250 characters!")
+    @Length(max = 250, message = "Product name can have a maximum of 250 characters!")
     private String productName;
 
     @Column(name = "PRODUCT_DESCRIPTION", nullable = false)
@@ -37,16 +39,14 @@ public class Product {
     @NotNull(message = "Please, select a category")
     private String category;
 
-    transient private Integer quantity;
+    @Transient
+    private Integer quantity;
 
-    transient private String customerInstructions;
+    @Transient
+    private String customerInstructions;
 
-
-    public BigDecimal getPrice() {
-        return price;
-    }
 
     public void setPrice(BigDecimal price) {
-        this.price = price.setScale(2);
+        this.price = price.setScale(2, HALF_UP);
     }
 }

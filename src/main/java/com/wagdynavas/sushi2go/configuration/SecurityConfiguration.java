@@ -2,20 +2,25 @@ package com.wagdynavas.sushi2go.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
 
     @Value("${spring.queries.user-query}")
     private String usernameQuery;
@@ -43,35 +48,51 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/media/**"
     };
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.jdbcAuthentication()
-                .usersByUsernameQuery(usernameQuery)
-                .authoritiesByUsernameQuery(roleQuery)
-                .dataSource(dataSource)
-                .passwordEncoder(passwordEncoder);
+    @Bean
+    public AuthenticationManager authenticationManager(DataSource dataSource, BCryptPasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(jdbcUserDetailsService(dataSource)); // Custom user details service
+        authProvider.setPasswordEncoder(passwordEncoder);
+
+        return new ProviderManager(authProvider);
     }
 
-    @Override
-    public void configure(HttpSecurity httpSecurity) throws Exception{
-         httpSecurity.authorizeRequests()
-                 .antMatchers(noAuthorizationNeeded).permitAll()
-                 .antMatchers("/login").permitAll()
-                 .antMatchers("/registration").hasAuthority("ROLE_ADMIN")
-                 .antMatchers(staticResources).permitAll()
-                 .anyRequest()
-                    .authenticated()
-                        .and().csrf().disable()
-                    .formLogin()
-                        .loginPage("/login").failureUrl("/login?error=true").defaultSuccessUrl("/")
-                        .usernameParameter("username").passwordParameter("password")
-                 .and().logout()
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
+    @Bean
+    public UserDetailsService jdbcUserDetailsService(DataSource dataSource) {
+        JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
+        userDetailsManager.setUsersByUsernameQuery(usernameQuery);
+        userDetailsManager.setAuthoritiesByUsernameQuery(roleQuery);
+        return userDetailsManager;
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/webjars/**");
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+         return httpSecurity.authorizeHttpRequests(authorize -> {
+                    authorize.requestMatchers(noAuthorizationNeeded).permitAll()
+                            .requestMatchers("/login").permitAll()
+                            .requestMatchers("/registration").hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(staticResources).permitAll()
+                            .anyRequest()
+                            .authenticated();
+
+
+                 }).formLogin(login -> login
+                         .loginPage("/login")
+                         .failureUrl("/login?error=true")
+                         .defaultSuccessUrl("/", true)
+                         .usernameParameter("username")
+                         .passwordParameter("password")
+                 )
+                 .logout(logout -> logout
+                         .logoutUrl("/logout")  // Replaces AntPathRequestMatcher
+                         .logoutSuccessUrl("/login")
+                 )
+                 .csrf(AbstractHttpConfigurer::disable)//TODO: Add support to csrf and remove this part
+                 .build();
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer()  {
+        return (web) -> web.ignoring().requestMatchers("/webjars/**", "/webjars/**");
+    }
 }
