@@ -39,9 +39,11 @@ public class Product {
     @NotNull(message = "Please, select a category")
     private String category;
 
-    transient private Integer quantity;
+    @Transient
+    private Integer quantity;
 
-    transient private String customerInstructions;
+    @Transient
+    private String customerInstructions;
 
 
     public void setPrice(BigDecimal price) {

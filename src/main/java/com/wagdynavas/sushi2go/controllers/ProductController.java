@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/products")
@@ -38,8 +37,7 @@ public class ProductController {
      * @return
      */
     private ModelAndView reloadProductList() {
-        ModelAndView mv =  productService.getAllProductsSortByCategory();
-        return mv;
+        return productService.getAllProductsSortByCategory();
     }
 
     /**
@@ -52,7 +50,7 @@ public class ProductController {
     public ModelAndView manageProduct(@PathVariable("id") Long id) {
         Optional<Product> optionalProduct = productService.getProductById(id);
         ModelAndView view = new ModelAndView();
-        if (!optionalProduct.isPresent()) {
+        if (optionalProduct.isEmpty()) {
             view.setViewName("errors/default");
             return view;
         }
@@ -140,17 +138,17 @@ public class ProductController {
 
 
         Optional<Product> optionalProduct = productService.getProductById(Long.valueOf(productId));
-        List products = order.getProducts();
+        List<Product> products = order.getProducts();
 
 
         if (products == null) {
-            products = new ArrayList();
+            products = new ArrayList<>();
         }
 
         String productQuantity = request.getParameter("product_quantity");
         Integer cartQuantity  = SessionUtil.getCartQuantity(request);
 
-        int quantity = Integer.valueOf(productQuantity);
+        int quantity = Integer.parseInt(productQuantity);
 
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
@@ -179,9 +177,15 @@ public class ProductController {
     private List<CategoryTypes> createMenuItems(CategoryTypes[] categoryTypes, CategoryTypes menuType) {
         List<CategoryTypes> menuItems;
         if (menuType == CategoryTypes.LUNCH) {
-             menuItems = Arrays.asList(categoryTypes).stream().filter(ct -> ct.getValue().startsWith("lunch_")).collect(Collectors.toList());
+             menuItems = Arrays.stream(categoryTypes)
+                     .filter(ct -> ct.getValue()
+                             .startsWith("lunch_"))
+                     .toList();
         } else {
-            menuItems = Arrays.asList(categoryTypes).stream().filter(ct -> !ct.getValue().startsWith("lunch") && !ct.getValue().equals("dinner")).collect(Collectors.toList());
+            menuItems = Arrays.stream(categoryTypes)
+                    .filter(ct -> !ct.getValue()
+                            .startsWith("lunch") && !ct.getValue().equals("dinner"))
+                    .toList();
         }
 
         return menuItems;

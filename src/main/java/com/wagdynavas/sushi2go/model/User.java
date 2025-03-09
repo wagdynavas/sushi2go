@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@Table(name = "WN_USER")
 public class User {
 
     @Id
@@ -28,7 +29,8 @@ public class User {
     @NotBlank(message = "Select a role please.")
     private String role;
 
-    transient private String confirmPassword;
+    @Transient
+    private String confirmPassword;
 
     @Column(name = "USER_EMAIL", nullable = false)
     @NotBlank(message = "Email cannot be empty. Please enter a valid email, e.g., name@example.com")

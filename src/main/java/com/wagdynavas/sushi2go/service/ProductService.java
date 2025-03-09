@@ -14,7 +14,6 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class ProductService {
 
 
     public ModelAndView getAllProductsSortByCategory() {
-        List<CategoryTypes> categories  = Arrays.asList(CategoryTypes.values());
+        CategoryTypes[] categories  = CategoryTypes.values();
         ModelAndView view = new ModelAndView();
         view.setViewName("product/products");
         final String quantity = "_quantity";

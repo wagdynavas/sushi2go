@@ -1,5 +1,8 @@
 package com.wagdynavas.sushi2go.util.type;
 
+import lombok.Getter;
+
+@Getter
 public enum CategoryTypes  {
     SIDE_ORDER("Side Order", "side_order"),
     SOUP_AND_SALAD("Soup And Salad", "soup_and_salad"),
@@ -25,29 +28,12 @@ public enum CategoryTypes  {
     DINNER("Dinner", "dinner");
 
 
-    private String name;
-    private String value;
+    private final String name;
+    private final String value;
 
 
     CategoryTypes(String name, String value) {
         this.name = name;
-        this.value = value;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
         this.value = value;
     }
 }

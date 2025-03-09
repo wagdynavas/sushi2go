@@ -5,8 +5,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,10 +12,8 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "orders")
-public class Order implements Serializable {
+public class Order {
 
-    @Serial
-    private static final long serialVersionUID = -6423698573429746348L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +39,8 @@ public class Order implements Serializable {
     @Column(name = "ORD_DELIVER_INSTRUCTIONS" )
     private String deliverInstructions;
 
-    transient private List<Product> products;
-
+    @Transient
+    private List<Product> products;
 
     @Column(name = "ORD_TOTAL_AMOUNT")
     private BigDecimal totalAmount;
@@ -55,12 +51,14 @@ public class Order implements Serializable {
     @Column(name = "ORD_SUB_TOTAL_AMOUNT")
     private BigDecimal subTotalAmount;
 
-    transient private Product product;
+    @Transient
+    private Product product;
 
     @Column(name = "ORD_TIP", nullable = false)
     private BigDecimal tip;
 
-    transient private BigDecimal tipPercentage;
+    @Transient
+    private BigDecimal tipPercentage;
 
     @Column(name = "ORD_TAX")
     private BigDecimal tax;
