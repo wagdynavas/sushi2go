@@ -1,5 +1,8 @@
 package com.wagdynavas.sushi2go.configuration;
 
+import com.wagdynavas.sushi2go.exceptions.SimpleFailureHandler;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +23,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
     @Value("${spring.queries.user-query}")
@@ -28,11 +32,13 @@ public class SecurityConfiguration {
     @Value("${spring.queries.roles-query}")
     private String roleQuery;
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    private final SimpleFailureHandler simpleFailureHandler;
+
+    private static final String LOGIN = "/login";
 
     private static final String[] noAuthorizationNeeded  = {
             "/", "/about", "/products/list", "/contact", "/products/add-to-order", "/media/**", "/checkout/**",
@@ -67,27 +73,23 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-         return httpSecurity.authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers(noAuthorizationNeeded).permitAll()
-                            .requestMatchers("/login").permitAll()
-                            .requestMatchers("/registration").hasAuthority("ROLE_ADMIN")
-                            .requestMatchers(staticResources).permitAll()
-                            .anyRequest()
-                            .authenticated();
-
-
-                 }).formLogin(login -> login
-                         .loginPage("/login")
+         return httpSecurity.authorizeHttpRequests(authorize -> authorize.requestMatchers(noAuthorizationNeeded).permitAll()
+                 .requestMatchers(LOGIN).permitAll()
+                 .requestMatchers("/registration").hasAuthority("ROLE_ADMIN")
+                 .requestMatchers(staticResources).permitAll()
+                 .anyRequest()
+                 .authenticated()).formLogin(login -> login
+                         .loginPage(LOGIN)
                          .failureUrl("/login?error=true")
+                         .failureHandler(simpleFailureHandler)
                          .defaultSuccessUrl("/", true)
                          .usernameParameter("username")
                          .passwordParameter("password")
                  )
                  .logout(logout -> logout
                          .logoutUrl("/logout")  // Replaces AntPathRequestMatcher
-                         .logoutSuccessUrl("/login")
+                         .logoutSuccessUrl(LOGIN)
                  )
-                 .csrf(AbstractHttpConfigurer::disable)//TODO: Add support to csrf and remove this part
                  .build();
     }
 

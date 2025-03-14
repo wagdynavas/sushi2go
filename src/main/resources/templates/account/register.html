@@ -11,7 +11,8 @@
 </head>
 <body>
     <div class="container card main-container">
-            <form class="form-horizontal" action="/registration" method="post"  th:object="${user}">
+            <form class="form-horizontal" th:action="@{/registration}" method="post" th:object="${user}">
+
                 <div class="form-group text-center">
                     <div class="col-12">
                         <a href="/"><img class="logo" src="img/logo/sushi2go_logo_blue.png" alt="Sushi2GO logo"></a>

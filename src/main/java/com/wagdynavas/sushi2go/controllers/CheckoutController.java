@@ -31,10 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -51,7 +48,9 @@ public class CheckoutController {
     @Value("${wn.order.restaurant.location.error.message}")
     private String chooseRestaurantLocationErrorMessage;
 
-    private final BigDecimal taxPercentage = new BigDecimal(13);
+
+    private final BigDecimal taxPercentage = new BigDecimal(13);//HST consisting of 5% GST and 8% PST
+    public static final String ORDER = "order";
 
     private final CheckoutService checkoutService;
     private final OrderService orderService;
@@ -62,16 +61,17 @@ public class CheckoutController {
 
     @GetMapping("/checkout")
     public ModelAndView checkout(HttpServletRequest request) {
-        Order checkoutOrder  = (Order) request.getSession().getAttribute("order");
+        Order checkoutOrder  = (Order) request.getSession().getAttribute(ORDER);
         if (checkoutOrder == null) {
             checkoutOrder = new Order();
         }
         String tipParameter =  request.getParameter("tipPercentage");
         if(tipParameter == null) {
-            tipParameter = "15";
             BigDecimal orderTipPercentage = checkoutOrder.getTipPercentage();
             if(orderTipPercentage != null) {
                 tipParameter = orderTipPercentage.toString();
+            } else {
+                tipParameter = "15";
             }
         }
         BigDecimal tipPercentage = new BigDecimal(tipParameter);
@@ -112,12 +112,12 @@ public class CheckoutController {
     @PostMapping("/create-checkout-session")
     @ResponseBody
     public Map<String, String> create( HttpServletRequest request) throws StripeException, OrderNotFondException {
-        log.debug("Creating Stripe session.");
-        Order checkoutOrder  = (Order) request.getSession().getAttribute("order");
+        log.info("Creating Stripe session.");
+        Order checkoutOrder  = (Order) request.getSession().getAttribute(ORDER);
         Optional<Order> savedOrder = orderService.getOrderById(checkoutOrder.getOrderId());
 
         if(savedOrder.isEmpty()) {
-            throw new OrderNotFondException("Order id is not valid: " + checkoutOrder.getTip());
+            throw new OrderNotFondException("Order id is not valid: " + checkoutOrder.getOrderId());
         }
 
         Order finalOrder = savedOrder.get();
@@ -145,7 +145,7 @@ public class CheckoutController {
         Session session = Session.create(params);
         Map<String, String> responseData = new HashMap<>();
         responseData.put("id", session.getId());
-        log.debug("Stripe session created: " + session.getId());
+        log.info("Stripe session created: " + session.getId());
         
 
         return responseData;
@@ -161,17 +161,17 @@ public class CheckoutController {
      */
     @GetMapping("/checkout/delete/{id}")
     public ModelAndView delete(@PathVariable("id") Long productId, HttpServletRequest request) {
-        Order checkoutOrder  = (Order) request.getSession().getAttribute("order");
+        Order checkoutOrder  = (Order) request.getSession().getAttribute(ORDER);
         ModelAndView view = new ModelAndView();
 
-         List<Product> products = checkoutOrder.getProducts().stream().filter(p -> p.getId() != productId).collect(Collectors.toList());
+         List<Product> products = checkoutOrder.getProducts()
+                 .stream()
+                 .filter(p -> !Objects.equals(p.getId(), productId))
+                 .toList();
 
-
-
-         checkoutOrder.setProducts(products);
-
-        request.setAttribute("order", checkoutOrder);
-        view.addObject("order", checkoutOrder);
+        checkoutOrder.setProducts(products);
+        request.setAttribute(ORDER, checkoutOrder);
+        view.addObject(ORDER, checkoutOrder);
         view.setViewName("redirect:/checkout");
         return view;
     }
@@ -187,14 +187,14 @@ public class CheckoutController {
     @PostMapping("/checkout/save-and-continue")
     public ModelAndView saveOrder(@Valid Order checkoutOrder, BindingResult result, HttpServletRequest request)  {
         log.debug("Saving order information");
-        Order sessionOrder  = (Order) request.getSession().getAttribute("order");
+        Order sessionOrder  = (Order) request.getSession().getAttribute(ORDER);
         if(sessionOrder == null || sessionOrder.getProducts().isEmpty()) {
-            result.addError(new ObjectError("order", emptyOrderMessage));
+            result.addError(new ObjectError(ORDER, emptyOrderMessage));
         }
         String stringTipPercentage = request.getParameter("options");
         String restaurantBranch = request.getParameter("locations");
         if (restaurantBranch == null) {
-            result.addError(new ObjectError("order", chooseRestaurantLocationErrorMessage));
+            result.addError(new ObjectError(ORDER, chooseRestaurantLocationErrorMessage));
         }
         ModelAndView view = new ModelAndView();
         if (result.hasErrors()) {
@@ -225,17 +225,14 @@ public class CheckoutController {
             checkoutOrder.setOrderId(savedOrder.getOrderId());
             view.setViewName("redirect:/checkout");
         }
-
-
-
-
         return view;
     }
 
     @GetMapping("/checkout/location/{restaurantLocation}")
     public ModelAndView changeLocation(@PathVariable String restaurantLocation, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
-        Order sessionOrder  = (Order) request.getSession().getAttribute("order");
+        String restaurantBranch = "restaurantBranch";
+        Order sessionOrder  = (Order) request.getSession().getAttribute(ORDER);
         if (sessionOrder == null) {
             sessionOrder = new Order();
         }
@@ -243,14 +240,11 @@ public class CheckoutController {
 
 
 
-        request.setAttribute("restaurantBranch", restaurantLocation);
-        request.setAttribute("order", sessionOrder);
-        view.addObject("restaurantBranch", restaurantLocation);
-        view.addObject("order", sessionOrder);
+        request.setAttribute(restaurantBranch, restaurantLocation);
+        request.setAttribute(ORDER, sessionOrder);
+        view.addObject(restaurantBranch, restaurantLocation);
+        view.addObject(ORDER, sessionOrder);
         view.setViewName("redirect:/checkout");
         return view;
     }
-
-
-
 }

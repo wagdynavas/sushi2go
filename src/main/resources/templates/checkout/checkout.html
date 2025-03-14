@@ -57,7 +57,7 @@
                               </div>
                           </div>
                       </div> -->
-                 <form id="from" class="form-group" method="post" th:object="${checkoutOrder}" action="/checkout/save-and-continue">
+                 <form id="from" class="form-group" method="post" th:object="${checkoutOrder}" th:action="@{/checkout/save-and-continue}" >
                     <div id="pickup-wrapper" class="">
                         <h2>Pickup Details</h2>
                         <div class="row">

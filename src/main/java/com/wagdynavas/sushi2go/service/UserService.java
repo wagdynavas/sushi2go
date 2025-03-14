@@ -42,7 +42,7 @@ public class UserService {
         }
 
         if (!user.getPassword().equals(user.getConfirmPassword())) {
-            result.rejectValue("password", "", "Password does't match!");
+            result.rejectValue("password", "", "Password doesn't match!");
         }
         if(result.hasErrors()) {
             view.setViewName("account/register");
