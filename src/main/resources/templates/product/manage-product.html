@@ -14,7 +14,7 @@
     <div class="container product-container">
         <div class="main">
             <h1 th:text="${h1}"></h1>
-            <form class="from-horizontal main" action="/products/create" method="post" th:object="${product}" enctype="multipart/form-data">
+            <form class="from-horizontal main" th:action="@{/products/create}" method="post" th:object="${product}" enctype="multipart/form-data">
                 <input type="hidden" th:field="*{id}">
                 <div class="row">
                     <div class="col-12 col-lg-9 form-group">

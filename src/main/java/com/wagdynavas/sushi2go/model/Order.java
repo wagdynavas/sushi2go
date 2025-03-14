@@ -14,7 +14,6 @@ import java.util.List;
 @Table(name = "orders")
 public class Order {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ORD_ID")
@@ -29,15 +28,14 @@ public class Order {
     @Column(name = "ORD_CUSTOMER_INSTRUCTIONS")
     private String customerInstructions;
 
+    @Column(name = "ORD_DELIVERY_ADDRESS")
+    private String deliveryAddress;
 
-    @Column(name = "ORD_DELIVER_ADDRESS")
-    private String deliverAddress;
+    @Column(name = "ORD_DELIVERY_ADDRESS_COMPLEMENT")
+    private String deliveryAddressComplement;
 
-    @Column(name = "ORD_DELIVER_ADDRESS_COMPLEMENT")
-    private String deliverAddressComplement;
-
-    @Column(name = "ORD_DELIVER_INSTRUCTIONS" )
-    private String deliverInstructions;
+    @Column(name = "ORD_DELIVERY_INSTRUCTIONS" )
+    private String deliveryInstructions;
 
     @Transient
     private List<Product> products;
